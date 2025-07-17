@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TicketNotification;
 use App\Models\Activity;
 use App\Models\File;
 use App\Models\Ticket;
@@ -12,10 +13,26 @@ use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
 {
+    public function get_tickets_by_internal()
+    {
+        $user = Auth::user();
+        $tickets = Ticket::where([
+            ['site_id', $user->site_id],
+            ['location', $user->location],
+        ])->with(['assigned_to', 'category', 'site', 'user'])->orderBy('id', 'desc')->paginate(10);
+        return response()->json($tickets, 200);
+    }
+
+    public function get_tickets_by_user()
+    {
+        $user = Auth::user();
+        $tickets = Ticket::where('user_id', $user->id)->with(['assigned_to', 'category', 'site', 'user'])->paginate(10);
+        return response()->json($tickets, 200);
+    }
 
     public function show($ticket_id)
     {
-        $ticket = Ticket::where('ticket_id', $ticket_id)->with(['assigned_to', 'user', 'category', 'site', 'activities','notes'])->first();
+        $ticket = Ticket::where('ticket_id', $ticket_id)->with(['assigned_to', 'user', 'category', 'site', 'activities', 'notes'])->first();
         return response()->json($ticket, 200);
     }
 
@@ -48,7 +65,7 @@ class TicketController extends Controller
             'category_id' => intval($request->category_id),
             'details' => $request->details,
             'station' => $request->station,
-            'location' => $user->location,
+            'location' => in_array($request->site_id, [1, 3, 4]) ? "San Carlos" : "Carcar",
             'status' => 'Pending',
             'isUrgent' => $request->isUrgent,
             'start' => $request->start,
@@ -86,6 +103,7 @@ class TicketController extends Controller
                 ]);
             }
         }
+        event(new TicketNotification($ticket));
         // $message = $ticket;
         // event(new OpenTicketNotification($message));
         // $user = User::where('id', $request->assigned_to)->first();

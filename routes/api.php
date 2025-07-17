@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TicketController;
 use Illuminate\Http\Request;
@@ -13,9 +14,14 @@ Route::get('/user', function (Request $request) {
 
 
 Route::resource('tickets', TicketController::class);
+Route::get('get_tickets_by_user', [TicketController::class, 'get_tickets_by_user']);
+Route::get('get_tickets_by_internal', [TicketController::class, 'get_tickets_by_internal']);
 Route::resource('categories', CategoryController::class);
 Route::resource('sites', SiteController::class);
 Route::resource('accounts', AccountController::class);
+Route::resource('notes', NoteController::class);
+
+
 Route::get('get_account_by_department', [AccountController::class, 'get_account_by_department']);
 
 

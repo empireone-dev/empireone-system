@@ -25,7 +25,7 @@ export default function LoginFormSection() {
           ```
         */}
             <div className="flex bg-[url('/images/login_background.gif')] bg-cover bg-left md:bg-center h-screen flex-1">
-                <div className="flex flex-1 border-2 shadow-xl border-white my-3 rounded-lg m-5 p-2 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+                <div className="flex flex-1 border-2 shadow-2xl bg-white/10 border-white my-3 rounded-lg m-5 p-2 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
                     <div className="mx-auto w-full max-w-sm lg:w-96">
                         <div>
                             <div className="text-2xl font-black border-4 p-2 px-10 rounded-tr-3xl rounded-bl-3xl">

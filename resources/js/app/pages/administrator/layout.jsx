@@ -9,14 +9,23 @@ import {
     FcOrganization,
     FcPortraitMode,
     FcPrivacy,
+    FcSupport,
     FcTemplate,
     FcTimeline,
 } from "react-icons/fc";
 import FloatingButtonSection from "./_sections/floating-button-section";
+import { useEffect } from "react";
+import store from "@/app/store/store";
+import { get_user_thunk } from "@/app/redux/account-thunk";
 
 export default function Layout({ children }) {
     const isCurrentMain = window.location.pathname.split("/")[2];
     const isCurrentSub = window.location.pathname.split("/")[3];
+
+
+     useEffect(() => {
+        store.dispatch(get_user_thunk())
+    }, []);
     const navigation = [
         {
             name: "Dashboard",
@@ -78,7 +87,7 @@ export default function Layout({ children }) {
         {
             name: "Ticketing",
             href: "#",
-            icon: <FcOrganization className="h-6 w-6" />,
+            icon: <FcSupport className="h-6 w-6" />,
             current: isCurrentMain == "ticketing",
             children: [
                  {
@@ -129,6 +138,8 @@ export default function Layout({ children }) {
         { name: "Your profile", href: "#" },
         { name: "Sign out", href: "#" },
     ];
+
+  
     return (
         <>
             <SidebarSection navigation={navigation} />

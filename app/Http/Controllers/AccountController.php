@@ -26,14 +26,15 @@ class AccountController extends Controller
             'position' => 'required|string|max:255',
         ]);
 
-      $user=  User::create([
+        $user =  User::create([
             'name' => $request->name,
             'email' => $request->email,
             'location' => $request->location,
+            'account_type' => $request->account_type ?? 2,
             'department' => $request->department,
             'position' => $request->position,
             'password' => Hash::make('Business12'),
-            'status'=>'active'
+            'status' => 'active'
         ]);
 
         $user->notify(new AccountCreatedNotification($user, 'Business12'));

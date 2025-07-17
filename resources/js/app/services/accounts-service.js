@@ -1,5 +1,16 @@
 import axios from "axios"
 
+
+
+export function get_user_service() {
+    try {
+        const result = axios.get('/api/user')
+        return result
+    } catch (error) {
+
+    }
+}
+
 export function get_account_by_department_service(data) {
     try {
         const result = axios.get('/api/get_account_by_department?'+ new URLSearchParams(data).toString())

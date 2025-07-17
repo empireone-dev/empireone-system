@@ -17,7 +17,7 @@ Route::get('/', function () {
 Route::middleware('auth:sanctum')->prefix('administrator')->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('administrator/dashboard/page');
-    })->name('dashboard');
+    })->name('administrator.dashboard');
 
 
     Route::prefix('users')->group(function () {
@@ -53,9 +53,27 @@ Route::middleware('auth:sanctum')->prefix('administrator')->group(function () {
     });
 });
 
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth:sanctum')->prefix('users')->group(function () {
+    Route::get('dashboard', function () {
+        return Inertia::render('users/dashboard/page');
+    })->name('users.dashboard');
+
+    Route::prefix('ticketing')->group(function () {
+        Route::get('my_ticket', function () {
+            return Inertia::render('users/ticketing/my_ticket/page');
+        });
+        Route::get('internal_request', function () {
+            return Inertia::render('users/ticketing/internal_request/page');
+        });
+          Route::get('{path}/{ticket_id}/details', function () {
+            return Inertia::render('users/ticketing/details/page');
+        });
+    });
+    Route::get('settings', function () {
+        return Inertia::render('users/settings/page');
+    });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

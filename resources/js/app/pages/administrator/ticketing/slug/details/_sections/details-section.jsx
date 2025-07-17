@@ -1,52 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import {
-    Dialog,
-    DialogPanel,
-    Label,
-    Listbox,
-    ListboxButton,
-    ListboxOption,
-    ListboxOptions,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-} from "@headlessui/react";
-import {
-    Bars3Icon,
-    CalendarDaysIcon,
-    CreditCardIcon,
-    EllipsisVerticalIcon,
-    FaceFrownIcon,
-    FaceSmileIcon,
-    FireIcon,
-    HandThumbUpIcon,
-    HeartIcon,
-    PaperClipIcon,
-    UserCircleIcon,
-    XMarkIcon as XMarkIconMini,
-} from "@heroicons/react/20/solid";
-import {
-    BellIcon,
-    XMarkIcon as XMarkIconOutline,
-} from "@heroicons/react/24/outline";
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import { useEffect, useRef, useState } from "react";
 import Title from "@/app/_components/title";
 import { useSelector } from "react-redux";
 import HtmlContent from "@/app/_components/html";
-import { FcClock } from "react-icons/fc";
-import moment from "moment";
-import ActivitiesSection from "./activities-section";
 import LogsSection from "./logs-section";
 import AddCommentSection from "./add-comment-section";
 
-
-
 export default function DetailsSection() {
+    const scrollRef = useRef(null);
     const { ticket } = useSelector((store) => store.tickets);
 
+    useEffect(() => {
+        const el = scrollRef.current;
+        if (el) {
+            el.scrollTop = el.scrollHeight;
+        }
+    }, [ticket?.notes?.length]);
+    
     return (
         <>
             <div className="mx-auto max-w-7xl  lg:px-4">
@@ -161,8 +132,10 @@ export default function DetailsSection() {
                             </tbody>
                         </table>
                     </div>
-                    <div className="h-[60vh] py-10 px-3 thin-scrollbar overflow-auto flex flex-col gap-5">
-                        <ActivitiesSection />
+                    <div
+                     ref={scrollRef}
+                    className="h-[64vh]  px-3 thin-scrollbar overflow-auto flex flex-col gap-5">
+                     
                         <LogsSection />
                     </div>
                     <AddCommentSection />

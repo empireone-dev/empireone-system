@@ -13,9 +13,13 @@ import Wysiwyg from "@/app/_components/wysiwyg";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import store from "@/app/store/store";
-import { create_tickets_thunk } from "@/app/redux/ticket-thunk";
+import {
+    create_tickets_thunk,
+    get_tickets_thunk,
+} from "@/app/redux/ticket-thunk";
 import { department_data } from "@/app/lib/department-lib";
 import { get_categories_thunk } from "@/app/redux/categories-thunk";
+import SwalAlert from "@/app/_components/swal";
 
 const { Dragger } = Upload;
 const { RangePicker } = DatePicker;
@@ -35,7 +39,7 @@ export default function CreateTicketSection() {
         defaultValues: {
             description: "",
             files: [],
-            date_range: null,
+            date_range: [dayjs(), dayjs().add(3, "day")],
         },
     });
 
@@ -80,8 +84,10 @@ export default function CreateTicketSection() {
         try {
             // send via axios or fetch
             await store.dispatch(create_tickets_thunk(formData));
-
-            alert("Ticket created!");
+            await store.dispatch(get_tickets_thunk());
+            await SwalAlert({
+                type: "success",
+            });
             reset();
             setOpen(false);
         } catch (err) {
@@ -193,6 +199,10 @@ export default function CreateTicketSection() {
                                             showTime
                                             onChange={field.onChange}
                                             value={field.value}
+                                            disabledDate={(current) =>
+                                                current &&
+                                                current < dayjs().startOf("day")
+                                            }
                                         />
                                     )}
                                 />

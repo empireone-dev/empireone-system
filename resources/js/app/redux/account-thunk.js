@@ -1,6 +1,15 @@
-import { create_accounts_service, get_account_by_department_service, get_accounts_by_id_service, get_accounts_service, update_accounts_service } from "../services/accounts-service";
+import { create_accounts_service, get_account_by_department_service, get_accounts_by_id_service, get_accounts_service, get_user_service, update_accounts_service } from "../services/accounts-service";
 import { accountSlice } from "./account-slice";
 
+
+
+
+export function get_user_thunk() {
+    return async function (dispatch, getState) {
+        const res = await get_user_service();
+        dispatch(accountSlice.actions.setUser(res.data));
+    };
+}
 
 
 export function get_account_by_department_thunk(data) {

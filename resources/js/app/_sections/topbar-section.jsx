@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setSidebarOpen } from "../redux/app-slice";
 import {
@@ -12,12 +12,16 @@ import { Link } from "@inertiajs/react";
 import NotificationSection from "./notification-section";
 import SearchSection from "./search-section";
 import HeaderMenuSection from "./header-menu-section";
+import TicketAlertNotification from "../pages/administrator/_sections/ticket-alert-notification";
 
 export default function TopbarSection({ userNavigation }) {
     const dispatch = useDispatch();
 
+
+    
     return (
         <div className="sticky top-0 z-40 lg:mx-auto lg:max-w-7xl lg:px-0">
+             <TicketAlertNotification />
             <div className="flex h-16 items-center gap-x-4 border-b shadow-md border-gray-300 bg-white px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-0 lg:shadow-none">
                 <button
                     type="button"
@@ -65,7 +69,7 @@ export default function TopbarSection({ userNavigation }) {
                         </div>
                     </div>
                     <div className="flex items-center gap-x-4 lg:gap-x-6">
-                        <NotificationSection />
+                        {/* <NotificationSection /> */}
                         <HeaderMenuSection userNavigation={userNavigation}/>
                         {/* Profile dropdown */}
                     </div>
