@@ -10,6 +10,13 @@ import { Provider } from "react-redux";
 const appName = import.meta.env.VITE_APP_NAME || "Archers Arena";
 window.global = window;
 
+if ("Notification" in window && Notification.permission !== "granted") {
+    Notification.requestPermission().then((permission) => {
+        if (permission !== "granted") {
+            console.warn("Notification permission denied.");
+        }
+    });
+}
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) =>

@@ -51,10 +51,10 @@ class Ticket extends Model
     {
         return $this->hasOne(Category::class, 'id', 'category_id');
     }
-    // public function files(): HasMany
-    // {
-    //     return $this->hasMany(File::class, 'ticket_id');
-    // }
+    public function files(): HasMany
+    {
+        return $this->hasMany(File::class, 'ticket_id');
+    }
     public function notes(): HasMany
     {
         return $this->hasMany(Note::class, 'ticket_id')->with(['user']);

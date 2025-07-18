@@ -27,9 +27,9 @@ export default function AddCommentSection() {
                 ...data,
             });
             await store.dispatch(get_tickets_by_id_thunk(ticket_id()));
-            await SwalAlert({
-                type: "success",
-            });
+            // await SwalAlert({
+            //     type: "success",
+            // });
             reset();
         } catch (error) {
             await SwalAlert({

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import HtmlContent from "@/app/_components/html";
 import LogsSection from "./logs-section";
 import AddCommentSection from "./add-comment-section";
+import ShowFilesSection from "./show-files-section";
 
 export default function DetailsSection() {
     const scrollRef = useRef(null);
@@ -131,6 +132,7 @@ export default function DetailsSection() {
                                 </tr>
                             </tbody>
                         </table>
+                        <ShowFilesSection />
                     </div>
                     <div
                      ref={scrollRef}

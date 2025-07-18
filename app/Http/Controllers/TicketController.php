@@ -13,26 +13,43 @@ use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
 {
-    public function get_tickets_by_internal()
+    public function get_tickets_by_internal(Request $request)
     {
         $user = Auth::user();
+        $search = $request->query('search');
+        
         $tickets = Ticket::where([
             ['site_id', $user->site_id],
             ['location', $user->location],
-        ])->with(['assigned_to', 'category', 'site', 'user'])->orderBy('id', 'desc')->paginate(10);
+        ])
+        ->when($search, function ($query, $search) {
+            $query->where('ticket_id', 'like', "%{$search}%");
+        })
+        ->with(['assigned_to', 'category', 'site', 'user'])
+        ->orderBy('id', 'desc')
+        ->paginate(10);
+        
         return response()->json($tickets, 200);
     }
 
-    public function get_tickets_by_user()
+    public function get_tickets_by_user(Request $request)
     {
         $user = Auth::user();
-        $tickets = Ticket::where('user_id', $user->id)->with(['assigned_to', 'category', 'site', 'user'])->paginate(10);
+        $search = $request->query('search');
+        
+        $tickets = Ticket::where('user_id', $user->id)
+            ->when($search, function ($query, $search) {
+                $query->where('ticket_id', 'like', "%{$search}%");
+            })
+            ->with(['assigned_to', 'category', 'site', 'user'])
+            ->paginate(10);
+            
         return response()->json($tickets, 200);
     }
 
     public function show($ticket_id)
     {
-        $ticket = Ticket::where('ticket_id', $ticket_id)->with(['assigned_to', 'user', 'category', 'site', 'activities', 'notes'])->first();
+        $ticket = Ticket::where('ticket_id', $ticket_id)->with(['assigned_to', 'user', 'category', 'site', 'activities', 'notes','files'])->first();
         return response()->json($ticket, 200);
     }
 

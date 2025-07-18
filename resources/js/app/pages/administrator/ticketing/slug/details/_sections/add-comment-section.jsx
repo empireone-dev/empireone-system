@@ -26,10 +26,10 @@ export default function AddCommentSection() {
                 ...ticket,
                 ...data,
             });
-            await store.dispatch(get_tickets_by_id_thunk(ticket_id()));
-            await SwalAlert({
-                type: "success",
-            });
+            // await store.dispatch(get_tickets_by_id_thunk(ticket_id()));
+            // await SwalAlert({
+            //     type: "success",
+            // });
             reset();
         } catch (error) {
             await SwalAlert({
