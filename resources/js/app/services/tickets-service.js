@@ -1,6 +1,16 @@
 import axios from "axios"
 
 
+
+export function assign_ticket_service(data) {
+    try {
+        const result = axios.post('/api/assign_ticket', data)
+        return result
+    } catch (error) {
+
+    }
+}
+
 export async function get_tickets_by_user_service() {
     const res = await axios.get('/api/get_tickets_by_user')
     return res

@@ -13,22 +13,47 @@ use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
 {
+
+    public function assign_ticket(Request $request)
+    {
+        $user = Auth::user();
+        $ticket = Ticket::where('ticket_id', $request->ticket_id)->first();
+        if ($ticket) {
+            $ticket->update([
+                'department' => $request->department,
+            ]);
+
+            Activity::create([
+                'ticket_id' => $ticket->id,
+                'user_id' => $user->id,
+                'message' => 'Ticket assigned to ' . $request->department,
+                'type' => 'reassigned',
+            ]);
+
+            event(new TicketNotification($ticket));
+        }
+
+
+
+        return response()->json(['message' => 'Ticket assigned successfully'], 200);
+    }
     public function get_tickets_by_internal(Request $request)
     {
         $user = Auth::user();
         $search = $request->query('search');
-        
+
         $tickets = Ticket::where([
             ['site_id', $user->site_id],
             ['location', $user->location],
+            ['department', $user->department],
         ])
-        ->when($search, function ($query, $search) {
-            $query->where('ticket_id', 'like', "%{$search}%");
-        })
-        ->with(['assigned_to', 'category', 'site', 'user'])
-        ->orderBy('id', 'desc')
-        ->paginate(10);
-        
+            ->when($search, function ($query, $search) {
+                $query->where('ticket_id', 'like', "%{$search}%");
+            })
+            ->with(['assigned_to', 'category', 'site', 'user'])
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
         return response()->json($tickets, 200);
     }
 
@@ -36,20 +61,20 @@ class TicketController extends Controller
     {
         $user = Auth::user();
         $search = $request->query('search');
-        
+
         $tickets = Ticket::where('user_id', $user->id)
             ->when($search, function ($query, $search) {
                 $query->where('ticket_id', 'like', "%{$search}%");
             })
             ->with(['assigned_to', 'category', 'site', 'user'])
             ->paginate(10);
-            
+
         return response()->json($tickets, 200);
     }
 
     public function show($ticket_id)
     {
-        $ticket = Ticket::where('ticket_id', $ticket_id)->with(['assigned_to', 'user', 'category', 'site', 'activities', 'notes','files'])->first();
+        $ticket = Ticket::where('ticket_id', $ticket_id)->with(['assigned_to', 'user', 'category', 'site', 'activities', 'notes', 'files'])->first();
         return response()->json($ticket, 200);
     }
 

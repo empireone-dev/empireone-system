@@ -16,6 +16,8 @@ Route::get('/user', function (Request $request) {
 Route::resource('tickets', TicketController::class);
 Route::get('get_tickets_by_user', [TicketController::class, 'get_tickets_by_user']);
 Route::get('get_tickets_by_internal', [TicketController::class, 'get_tickets_by_internal']);
+Route::post('assign_ticket', [TicketController::class, 'assign_ticket']);
+
 Route::resource('categories', CategoryController::class);
 Route::resource('sites', SiteController::class);
 Route::resource('accounts', AccountController::class);

@@ -67,13 +67,15 @@ export default function TicketAlertNotification() {
         messageChannel.bind("message-sent", (response) => {
             const { ticket, user_id } = response.data;
             dispatch(setLoad(Math.random()));
+            console.log("sssss0", user?.department);
+            console.log("sssss00", ticket?.department);
             console.log("sssss1", user?.account_type);
             console.log("sssss2", ticket.location);
             console.log("sssss3", user.location);
             console.log("sssss4", user?.id);
             console.log("sssss5", user_id);
             if (
-                ticket.department == user.department &&
+                // ticket.department == user.department &&
                 ticket.location == user.location &&
                 user?.id != user_id
             ) {
