@@ -11,16 +11,34 @@ export default function LoginFormSection() {
     });
 
     const [bgLoaded, setBgLoaded] = useState(false);
+    const [loadingPercentage, setLoadingPercentage] = useState(0);
 
     // Preload background image
     useEffect(() => {
         const img = new Image();
         img.src = "/images/login_background.gif";
+        
+        // Simulate loading progress
+        const interval = setInterval(() => {
+            setLoadingPercentage(prev => {
+                if (prev >= 100) {
+                    clearInterval(interval);
+                    return 100;
+                }
+                return prev + Math.random() * 15; // Random increment for realistic loading
+            });
+        }, 100);
+
         img.onload = () => {
+            // Ensure we reach 100% then wait a bit before hiding loader
+            setLoadingPercentage(100);
             setTimeout(() => {
                 setBgLoaded(true);
-            }, 2000);
+                clearInterval(interval);
+            }, 500);
         };
+
+        return () => clearInterval(interval);
     }, []);
 
     const submit = (e) => {
@@ -32,8 +50,20 @@ export default function LoginFormSection() {
         <>
             {!bgLoaded && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black text-white text-lg">
-                    <div className="animate-pulse">
-                        Welcome to <b>E</b>mpire<b>O</b>ne! Please Wait!
+                    <div className="text-center">
+                        <div className="animate-pulse mb-4">
+                            Welcome to <b>E</b>mpire<b>O</b>ne! Please Wait!
+                        </div>
+                        <div className="text-sm mb-2">Loading...</div>
+                        <div className="w-64 bg-gray-700 rounded-full h-2 mb-2">
+                            <div 
+                                className="bg-white h-2 rounded-full transition-all duration-300 ease-out"
+                                style={{ width: `${Math.min(loadingPercentage, 100)}%` }}
+                            ></div>
+                        </div>
+                        <div className="text-xs text-white">
+                            {Math.round(Math.min(loadingPercentage, 100))}%
+                        </div>
                     </div>
                 </div>
             )}
