@@ -16,7 +16,11 @@ export default function LoginFormSection() {
     useEffect(() => {
         const img = new Image();
         img.src = "/images/login_background.gif";
-        img.onload = () => setBgLoaded(true);
+        img.onload = () => {
+            setTimeout(() => {
+                setBgLoaded(true);
+            }, 2000);
+        };
     }, []);
 
     const submit = (e) => {
