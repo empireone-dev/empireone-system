@@ -14,6 +14,27 @@ use Illuminate\Support\Facades\Storage;
 class TicketController extends Controller
 {
 
+    public function change_ticket_status(Request $request)
+    {
+        $user = Auth::user();
+        $ticket = Ticket::where('ticket_id', $request->ticket_id)->first();
+        if ($ticket) {
+            $ticket->update([
+                'status' => $request->status,
+            ]);
+
+            Activity::create([
+                'ticket_id' => $ticket->id,
+                'user_id' => $user->id,
+                'message' => 'Ticket status changed to ' . $request->status,
+                'type' => 'status_change',
+            ]);
+
+            // event(new TicketNotification($ticket));
+        }
+
+        return response()->json(['message' => 'Ticket status updated successfully'], 200);
+    }
     public function assign_ticket(Request $request)
     {
         $user = Auth::user();

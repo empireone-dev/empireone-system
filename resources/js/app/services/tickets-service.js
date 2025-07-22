@@ -1,6 +1,14 @@
 import axios from "axios"
 
 
+export function change_ticket_status_service(data) {
+    try {
+        const result = axios.post('/api/change_ticket_status', data)
+        return result
+    } catch (error) {
+
+    }
+}
 
 export function assign_ticket_service(data) {
     try {
@@ -12,7 +20,7 @@ export function assign_ticket_service(data) {
 }
 
 export async function get_tickets_by_user_service() {
-    const res = await axios.get('/api/get_tickets_by_user')
+    const res = await axios.get('/api/get_tickets_by_user'+window.location.search)
     return res
 }
 

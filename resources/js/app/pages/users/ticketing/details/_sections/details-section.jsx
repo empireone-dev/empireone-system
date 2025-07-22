@@ -37,7 +37,9 @@ export default function DetailsSection() {
                     </Link>
                     <div className="flex flex-col sm:flex-row items-center gap-5">
                         <div>
-                            <CloseTicketSection />
+                            {ticket?.status == "Pending" && (
+                                <CloseTicketSection />
+                            )}
                         </div>
                         <Title label={`Details - ${ticket.ticket_id}`} />
                     </div>
