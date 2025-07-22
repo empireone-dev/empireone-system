@@ -10,18 +10,18 @@ export default function LoginFormSection() {
         remember: false,
     });
 
-    const [bgLoaded, setBgLoaded] = useState(false);
+    // const [bgLoaded, setBgLoaded] = useState(true);
 
-    // Preload background image
-    useEffect(() => {
-        const img = new Image();
-        img.src = "/images/login_background.gif";
-        img.onload = () => {
-            setTimeout(() => {
-                setBgLoaded(true);
-            }, 2000);
-        };
-    }, []);
+    // // Preload background image
+    // useEffect(() => {
+    //     const img = new Image();
+    //     img.src = "/images/login_background.gif";
+    //     img.onload = () => {
+    //         setTimeout(() => {
+    //             setBgLoaded(true);
+    //         }, 2000);
+    //     };
+    // }, []);
 
     const submit = (e) => {
         e.preventDefault();

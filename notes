@@ -2,10 +2,9 @@ in itcket table remove the
 - scsite
 - site
 
-
 add column table in file
 -files_from
-add column table in user
+add column table in users & tickets
 -location
 
 UPDATE `users` SET `location`='Carcar' WHERE `site_id`='2'
