@@ -1,0 +1,1 @@
+import{c as r,e as s}from"./app-StZgS0PU.js";function n(t){try{return r.post("/api/categories",t)}catch{}}function c(t){try{return r.get("/api/categories?"+new URLSearchParams(t).toString())}catch{}}function g(t){return async function(e,o){const a=await c(t);e(s.actions.setCategories(a.data))}}export{n as c,g};
