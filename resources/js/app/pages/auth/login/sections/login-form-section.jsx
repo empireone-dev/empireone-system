@@ -12,13 +12,13 @@ export default function LoginFormSection() {
         remember: false,
     });
 
-    const [bgLoaded, setBgLoaded] = useState(false);
+    const [bgLoaded, setBgLoaded] = useState(true);
 
     // Preload background image
     useEffect(() => {
         const img = new Image();
         img.src = "/images/login_background.gif";
-        img.onload = () => setBgLoaded(true);
+        img.onload = () => setBgLoaded(false);
     }, []);
 
     const submit = (e) => {
