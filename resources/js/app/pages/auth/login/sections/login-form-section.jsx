@@ -18,27 +18,51 @@ export default function LoginFormSection() {
         const img = new Image();
         img.src = "/images/login_background.gif";
         
-        // Simulate loading progress
-        const interval = setInterval(() => {
-            setLoadingPercentage(prev => {
-                if (prev >= 100) {
-                    clearInterval(interval);
-                    return 100;
-                }
-                return prev + Math.random() * 15; // Random increment for realistic loading
-            });
-        }, 100);
+        // Track actual loading progress
+        let progressInterval;
+        let startTime = Date.now();
+        
+        // Simulate progress based on time elapsed (more realistic for GIFs)
+        const updateProgress = () => {
+            const elapsed = Date.now() - startTime;
+            const estimatedLoadTime = 3000; // Estimate 3 seconds for loading
+            const progress = Math.min((elapsed / estimatedLoadTime) * 90, 90); // Cap at 90% until actually loaded
+            setLoadingPercentage(progress);
+            
+            if (progress < 90) {
+                progressInterval = setTimeout(updateProgress, 50);
+            }
+        };
+        
+        updateProgress();
 
         img.onload = () => {
-            // Ensure we reach 100% then wait a bit before hiding loader
+            // Clear any ongoing progress updates
+            if (progressInterval) {
+                clearTimeout(progressInterval);
+            }
+            
+            // Quickly complete to 100%
             setLoadingPercentage(100);
             setTimeout(() => {
                 setBgLoaded(true);
-                clearInterval(interval);
-            }, 500);
+            }, 300);
         };
 
-        return () => clearInterval(interval);
+        img.onerror = () => {
+            // Handle error case
+            if (progressInterval) {
+                clearTimeout(progressInterval);
+            }
+            setLoadingPercentage(100);
+            setBgLoaded(true);
+        };
+
+        return () => {
+            if (progressInterval) {
+                clearTimeout(progressInterval);
+            }
+        };
     }, []);
 
     const submit = (e) => {
