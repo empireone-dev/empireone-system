@@ -1,30 +1,51 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
 import { useForm } from "@inertiajs/react";
 
 export default function LoginFormSection() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing } = useForm({
         email: "",
         password: "",
         remember: false,
     });
 
+    const [bgLoaded, setBgLoaded] = useState(false);
+
+    // Preload background image
+    useEffect(() => {
+        const img = new Image();
+        img.src = "/images/login_background.gif";
+        img.onload = () => setBgLoaded(true);
+    }, []);
+
     const submit = (e) => {
         e.preventDefault();
-
         post(route("auth.login"));
     };
+
     return (
         <>
-            {/*
-          This example requires updating your template:
-  
-          ```
-          <html class="h-full bg-white">
-          <body class="h-full">
-          ```
-        */}
-            <div className="flex bg-[url('/images/login_background.gif')] bg-cover bg-left md:bg-center h-screen flex-1">
+            {!bgLoaded && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black text-white text-lg">
+                    <div className="animate-pulse">
+                        Welcome to <b>E</b>mpire<b>O</b>ne! Please Wait!
+                    </div>
+                </div>
+            )}
+
+            <div
+                className={`flex h-screen flex-1 transition-opacity duration-500 ${
+                    bgLoaded ? "opacity-100" : "opacity-0"
+                }`}
+                style={{
+                    backgroundImage: `url('/images/login_background.gif')`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "left",
+                }}
+            >
                 <div className="flex flex-1 border-2 shadow-2xl bg-white/10 border-white my-3 rounded-lg m-5 p-2 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
                     <div className="mx-auto w-full max-w-sm lg:w-96">
                         <div>
@@ -35,94 +56,63 @@ export default function LoginFormSection() {
                                     className="h-18 w-auto"
                                 />
                             </div>
-
                             <h2 className="mt-8 text-2xl/9 text-center font-bold tracking-tight text-white">
                                 Sign in to your account
                             </h2>
                         </div>
 
                         <div className="mt-10">
-                            <div>
-                                <form onSubmit={submit} className="space-y-6">
-                                    <Input
-                                        name="email"
-                                        label="Email"
-                                        type="email"
-                                        onChange={(e) =>
-                                            setData("email", e.target.value)
-                                        }
-                                    />
+                            <form onSubmit={submit} className="space-y-6">
+                                <Input
+                                    name="email"
+                                    label="Email"
+                                    type="email"
+                                    onChange={(e) =>
+                                        setData("email", e.target.value)
+                                    }
+                                />
+                                <Input
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    onChange={(e) =>
+                                        setData("password", e.target.value)
+                                    }
+                                />
 
-                                    <Input
-                                        name="password"
-                                        label="Password"
-                                        type="password"
-                                        onChange={(e) =>
-                                            setData("password", e.target.value)
-                                        }
-                                    />
-
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex gap-3">
-                                            <div className="flex h-6 shrink-0 items-center">
-                                                <div className="group grid size-4 grid-cols-1">
-                                                    <input
-                                                        id="remember-me"
-                                                        name="remember-me"
-                                                        type="checkbox"
-                                                        className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                                                    />
-                                                    <svg
-                                                        fill="none"
-                                                        viewBox="0 0 14 14"
-                                                        className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
-                                                    >
-                                                        <path
-                                                            d="M3 8L6 11L11 3.5"
-                                                            strokeWidth={2}
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            className="opacity-0 group-has-checked:opacity-100"
-                                                        />
-                                                        <path
-                                                            d="M3 7H11"
-                                                            strokeWidth={2}
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            className="opacity-0 group-has-indeterminate:opacity-100"
-                                                        />
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                            <label
-                                                htmlFor="remember-me"
-                                                className="block text-sm/6 text-white"
-                                            >
-                                                Remember me
-                                            </label>
-                                        </div>
-
-                                        <div className="text-sm/6">
-                                            <a
-                                                href="#"
-                                                className="font-semibold text-indigo-600 hover:text-indigo-500"
-                                            >
-                                                Forgot password?
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <Button
-                                            loading={processing}
-                                            type="submit"
-                                            className="w-full py-2"
+                                <div className="flex items-center justify-between">
+                                    <div className="flex gap-3">
+                                        <input
+                                            id="remember-me"
+                                            name="remember-me"
+                                            type="checkbox"
+                                            className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                        />
+                                        <label
+                                            htmlFor="remember-me"
+                                            className="text-sm text-white"
                                         >
-                                            SIGN IN
-                                        </Button>
+                                            Remember me
+                                        </label>
                                     </div>
-                                </form>
-                            </div>
+                                    <div className="text-sm">
+                                        <a
+                                            href="#"
+                                            className="font-semibold text-indigo-600 hover:text-indigo-500"
+                                        >
+                                            Forgot password?
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <Button
+                                    loading={processing}
+                                    type="submit"
+                                    className="w-full py-2"
+                                >
+                                    SIGN IN
+                                </Button>
+                            </form>
 
                             <div className="mt-10">
                                 <div className="relative">
@@ -142,8 +132,9 @@ export default function LoginFormSection() {
                                 <div className="mt-6 grid grid-cols-1 gap-4">
                                     <a
                                         href="#"
-                                        className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus-visible:ring-transparent"
+                                        className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50"
                                     >
+                                        {/* Google Icon */}
                                         <svg
                                             viewBox="0 0 24 24"
                                             aria-hidden="true"
@@ -166,22 +157,13 @@ export default function LoginFormSection() {
                                                 fill="#34A853"
                                             />
                                         </svg>
-                                        <span className="text-sm/6 font-semibold">
-                                            Google
-                                        </span>
+                                        <span>Google</span>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                {/* <div className="relative hidden w-0 flex-1 lg:block">
-                    <img
-                        alt=""
-                       src="/images/login_background.gif"
-                        className="absolute inset-0 h-full"
-                    />
-                </div> */}
             </div>
         </>
     );
