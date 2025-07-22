@@ -9,6 +9,7 @@ export default function Skeleton() {
                 <div class="h-3 bg-gray-200  w-full"></div>
                 <div class="h-3 bg-gray-200  w-full"></div>
                 <div class="h-3 bg-gray-200  w-full"></div>
+                <div class="h-3 bg-gray-200  w-full"></div>
             </div>
         </>
     );
