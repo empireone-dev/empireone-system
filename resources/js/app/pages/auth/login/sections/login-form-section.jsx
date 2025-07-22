@@ -4,7 +4,7 @@ import Input from "@/app/_components/input";
 import { useForm } from "@inertiajs/react";
 
 export default function LoginFormSection() {
-    const { data, setData, post, processing } = useForm({
+    const { data, setData, post, processing,errors } = useForm({
         email: "",
         password: "",
         remember: false,
@@ -128,6 +128,7 @@ export default function LoginFormSection() {
                                     onChange={(e) =>
                                         setData("email", e.target.value)
                                     }
+                                    error={errors.email}
                                 />
                                 <Input
                                     name="password"
@@ -136,6 +137,7 @@ export default function LoginFormSection() {
                                     onChange={(e) =>
                                         setData("password", e.target.value)
                                     }
+                                    error={errors.password}
                                 />
 
                                 <div className="flex items-center justify-between">
