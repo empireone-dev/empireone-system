@@ -7,7 +7,7 @@ import { createRoot } from "react-dom/client";
 import store from "./app/store/store";
 import { Provider } from "react-redux";
 
-const appName = import.meta.env.VITE_APP_NAME || "Archers Arena";
+const appName = import.meta.env.VITE_APP_NAME || "EmpireOne";
 window.global = window;
 
 if ("Notification" in window && Notification.permission !== "granted") {

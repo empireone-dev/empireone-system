@@ -7,8 +7,13 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect('/administrator/dashboard');
+    $user = Auth::user();
+    if ($user) {
+        if ($user->account_type == '1') {
+            return redirect('/administrator/dashboard');
+        } elseif ($user->account_type == '2') {
+            return redirect('/users/dashboard');
+        }
     }
     return Inertia::render('auth/login/page');
 })->name('login');
@@ -66,7 +71,7 @@ Route::middleware('auth:sanctum')->prefix('users')->group(function () {
         Route::get('internal_request', function () {
             return Inertia::render('users/ticketing/internal_request/page');
         });
-          Route::get('{path}/{ticket_id}/details', function () {
+        Route::get('{path}/{ticket_id}/details', function () {
             return Inertia::render('users/ticketing/details/page');
         });
     });
