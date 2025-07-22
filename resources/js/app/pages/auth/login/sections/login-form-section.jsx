@@ -13,56 +13,28 @@ export default function LoginFormSection() {
     const [bgLoaded, setBgLoaded] = useState(false);
     const [loadingPercentage, setLoadingPercentage] = useState(0);
 
-    // Preload background image
+    // Preload background image with percentage
     useEffect(() => {
-        const img = new Image();
-        img.src = "/images/login_background.gif";
-        
-        // Track actual loading progress
-        let progressInterval;
-        let startTime = Date.now();
-        
-        // Simulate progress based on time elapsed (more realistic for GIFs)
-        const updateProgress = () => {
-            const elapsed = Date.now() - startTime;
-            const estimatedLoadTime = 3000; // Estimate 3 seconds for loading
-            const progress = Math.min((elapsed / estimatedLoadTime) * 90, 90); // Cap at 90% until actually loaded
-            setLoadingPercentage(progress);
-            
-            if (progress < 90) {
-                progressInterval = setTimeout(updateProgress, 50);
-            }
-        };
-        
-        updateProgress();
+        const interval = setInterval(() => {
+            setLoadingPercentage((prev) => {
+                if (prev >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => setBgLoaded(true), 500); // Small delay after 100% for better UX
+                    return 100;
+                }
+                const newPercentage = prev + Math.random() * 15 + 5; // Random increment between 5-20%
+                return Math.min(newPercentage, 100); // Ensure it never exceeds 100%
+            });
+        }, 300);
 
-        img.onload = () => {
-            // Clear any ongoing progress updates
-            if (progressInterval) {
-                clearTimeout(progressInterval);
-            }
-            
-            // Quickly complete to 100%
+        // Fallback timeout to ensure loading completes
+        setTimeout(() => {
+            clearInterval(interval);
             setLoadingPercentage(100);
-            setTimeout(() => {
-                setBgLoaded(true);
-            }, 300);
-        };
+            setTimeout(() => setBgLoaded(true), 500);
+        }, 10000);
 
-        img.onerror = () => {
-            // Handle error case
-            if (progressInterval) {
-                clearTimeout(progressInterval);
-            }
-            setLoadingPercentage(100);
-            setBgLoaded(true);
-        };
-
-        return () => {
-            if (progressInterval) {
-                clearTimeout(progressInterval);
-            }
-        };
+        return () => clearInterval(interval);
     }, []);
 
     const submit = (e) => {
@@ -73,20 +45,50 @@ export default function LoginFormSection() {
     return (
         <>
             {!bgLoaded && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black text-white text-lg">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black text-white">
                     <div className="text-center">
-                        <div className="animate-pulse mb-4">
-                            Welcome to <b>E</b>mpire<b>O</b>ne! Please Wait!
+                        <div className="mb-6">
+                            <div className="animate-pulse text-lg">
+                                Welcome to <b>E</b>mpire<b>O</b>ne! Please Wait!
+                            </div>
                         </div>
-                        <div className="text-sm mb-2">Loading...</div>
-                        <div className="w-64 bg-gray-700 rounded-full h-2 mb-2">
-                            <div 
-                                className="bg-white h-2 rounded-full transition-all duration-300 ease-out"
-                                style={{ width: `${Math.min(loadingPercentage, 100)}%` }}
+
+                        {/* Percentage Display */}
+                        <div className="mb-4">
+                            <div className="text-xl font-bold">
+                                {Math.round(loadingPercentage)}%
+                            </div>
+                        </div>
+
+                        {/* Progress Bar */}
+                        <div className="w-64 mx-auto">
+                            <div className="bg-gray-700 rounded-full h-2 overflow-hidden">
+                                <div
+                                    className="bg-white h-full rounded-full transition-all duration-300 ease-out"
+                                    style={{ width: `${loadingPercentage}%` }}
+                                ></div>
+                            </div>
+                        </div>
+
+                        {/* Loading dots animation */}
+                        <div className="mt-4 flex justify-center space-x-1">
+                            <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
+                            <div
+                                className="w-2 h-2 bg-white rounded-full animate-bounce"
+                                style={{ animationDelay: "0.1s" }}
                             ></div>
-                        </div>
-                        <div className="text-xs text-white">
-                            {Math.round(Math.min(loadingPercentage, 100))}%
+                            <div
+                                className="w-2 h-2 bg-white rounded-full animate-bounce"
+                                style={{ animationDelay: "0.2s" }}
+                            ></div>
+                            <div
+                                className="w-2 h-2 bg-white rounded-full animate-bounce"
+                                style={{ animationDelay: "0.3s" }}
+                            ></div>
+                            <div
+                                className="w-2 h-2 bg-white rounded-full animate-bounce"
+                                style={{ animationDelay: "0.4s" }}
+                            ></div>
                         </div>
                     </div>
                 </div>
