@@ -25,7 +25,6 @@ export default function Ticketing() {
                         <Skeleton />
                         <Skeleton />
                         <Skeleton />
-                        <Skeleton />
                     </>
                 ) : (
                     <TicketTableSection />
