@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
@@ -12,13 +10,13 @@ export default function LoginFormSection() {
         remember: false,
     });
 
-    const [bgLoaded, setBgLoaded] = useState(true);
+    const [bgLoaded, setBgLoaded] = useState(false);
 
     // Preload background image
     useEffect(() => {
         const img = new Image();
         img.src = "/images/login_background.gif";
-        img.onload = () => setBgLoaded(false);
+        img.onload = () => setBgLoaded(true);
     }, []);
 
     const submit = (e) => {
