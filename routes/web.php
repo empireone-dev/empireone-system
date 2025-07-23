@@ -19,14 +19,9 @@ Route::get('/', function () {
 })->name('login');
 
 
-Route::middleware('auth:sanctum')->prefix('administrator')->group(function () {
+Route::middleware(['auth:sanctum', 'account_type:1'])->prefix('administrator')->group(function () {
 
-    $user = Auth::user();
-    if ($user) {
-        if ($user->account_type != '1') {
-            return redirect('/users/dashboard');
-        }
-    }
+
     Route::get('dashboard', function () {
         return Inertia::render('administrator/dashboard/page');
     })->name('administrator.dashboard');
@@ -66,13 +61,7 @@ Route::middleware('auth:sanctum')->prefix('administrator')->group(function () {
 });
 
 
-Route::middleware('auth:sanctum')->prefix('users')->group(function () {
-    $user = Auth::user();
-    if ($user) {
-        if ($user->account_type != '2') {
-            return redirect('/administrator/dashboard');
-        }
-    }
+Route::middleware(['auth:sanctum', 'account_type:2'])->prefix('users')->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('users/dashboard/page');
     })->name('users.dashboard');

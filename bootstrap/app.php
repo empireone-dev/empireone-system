@@ -12,7 +12,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Register alias for parameterized middleware (array syntax)
+        $middleware->alias([
+            'account_type' => \App\Http\Middleware\AccountTypeMiddleware::class,
+        ]);
+
         $middleware->web(append: [
+            \App\Http\Middleware\AccountTypeMiddleware::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
