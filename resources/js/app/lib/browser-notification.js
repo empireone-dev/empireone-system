@@ -1,4 +1,4 @@
-export default function browser_notification(title, options = {}, onClick = null) {
+export default function browser_notification(title, options = {}, onClick = null,path) {
     if (!("Notification" in window)) {
         console.warn("This browser does not support notifications.");
         return;
@@ -7,9 +7,10 @@ export default function browser_notification(title, options = {}, onClick = null
     const showNotification = () => {
         const notification = new Notification(title, options);
 
-        // ✅ Attach click handler
+        // Always open the app in a new tab when notification is clicked
         notification.onclick = (event) => {
-            event.preventDefault(); 
+            event.preventDefault();
+            window.open(path, "MsgWindow", "width=1280,height=800");
             if (typeof onClick === "function") {
                 onClick(event);
             }

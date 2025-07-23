@@ -6,7 +6,6 @@ import { ticket_id } from "@/app/lib/search-lib";
 import Skeleton from "@/app/_components/skeleton";
 import Layout from "../../layout";
 import { useSelector } from "react-redux";
-import browser_notification from "@/app/lib/browser-notification";
 
 export default function Page() {
     const { load } = useSelector((store) => store.app);
