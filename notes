@@ -13,3 +13,8 @@ UPDATE `users` SET `location`='San Carlos' WHERE `site_id`='1'
 
 UPDATE `tickets` SET `location`='Carcar' WHERE `site_id`='2'
 UPDATE `tickets` SET `location`='San Carlos' WHERE `site_id`='1'
+
+
+UPDATE `users` SET `department` = 'Operations Department' WHERE `position` = 'Team Leader';
+
+
