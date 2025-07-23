@@ -21,9 +21,9 @@ class AccountTypeMiddleware
         $user = Auth::user();
         if (!$user || ($type !== null && $user->account_type != $type)) {
             // Redirect based on type
-            if ($type != '1') {
+            if ($type && $type != '1') {
                 return redirect('/administrator/dashboard');
-            } else if ($type != '2') {
+            } else if ($type && $type != '2') {
                 return redirect('/users/dashboard');
             } 
         }
