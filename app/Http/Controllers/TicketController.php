@@ -21,6 +21,7 @@ class TicketController extends Controller
         if ($ticket) {
             $ticket->update([
                 'status' => $request->status,
+                'assigned_to'=>$user->id,
             ]);
 
             Activity::create([
