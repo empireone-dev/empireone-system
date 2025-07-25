@@ -18,6 +18,6 @@ class Note extends Model
     }
      public function ticket(): HasOne
     {
-        return $this->hasOne(Ticket::class, 'id', 'ticket_id');
+        return $this->hasOne(Ticket::class, 'id', 'ticket_id')->with(['user']);
     }
 }

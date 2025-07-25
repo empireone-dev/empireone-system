@@ -74,22 +74,35 @@ export default function TicketAlertNotification() {
             console.log("sssss3", user.location);
             console.log("sssss4", user?.id);
             console.log("sssss5", user_id);
-            if (
-                ticket.department == user.department &&
-                user?.id != user_id
-            ) {
-                browser_notification(
-                    "New Message",
-                    {
-                        body: `You have a new message from ${ticket.ticket_id}`,
-                        icon: "/images/logs.png",
-                    },
-                    () => {
-                        const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
-                        router.visit(path);
-                    },
-                    `/users/ticketing/internal_request/${ticket.ticket_id}/details`
-                );
+            console.log("sssss6", ticket);
+            if (ticket.department == user.department && user?.id != user_id) {
+                if (ticket.location == user.location) {
+                    browser_notification(
+                        "New Message",
+                        {
+                            body: `You have a new message from ${ticket.ticket_id}`,
+                            icon: "/images/logs.png",
+                        },
+                        () => {
+                            const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
+                            router.visit(path);
+                        },
+                        `/users/ticketing/internal_request/${ticket.ticket_id}/details`
+                    );
+                } else if (ticket?.user?.location != ticket.location) {
+                    browser_notification(
+                        "New Message",
+                        {
+                            body: `You have a new message from ${ticket.ticket_id}`,
+                            icon: "/images/logs.png",
+                        },
+                        () => {
+                            const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
+                            router.visit(path);
+                        },
+                        `/users/ticketing/internal_request/${ticket.ticket_id}/details`
+                    );
+                }
             } else if (
                 user?.account_type == "1" &&
                 ticket.location == user.location &&

@@ -88,6 +88,7 @@ class TicketController extends Controller
             ->when($search, function ($query, $search) {
                 $query->where('ticket_id', 'like', "%{$search}%");
             })
+            ->orderBy('id', 'desc')
             ->with(['assigned_to', 'category', 'site', 'user'])
             ->paginate(10);
 
