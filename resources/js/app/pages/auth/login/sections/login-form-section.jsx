@@ -99,7 +99,7 @@ export default function LoginFormSection() {
                     bgLoaded ? "opacity-100" : "opacity-0"
                 }`}
                 style={{
-                    backgroundImage: `url('/images/login_background.gif')`,
+                    backgroundImage: `url('/images/login_background2.gif')`,
                     backgroundSize: "cover",
                     backgroundPosition: "left",
                 }}
@@ -110,7 +110,7 @@ export default function LoginFormSection() {
                             <div className="text-2xl font-black border-4 p-2 px-10 rounded-tr-3xl rounded-bl-3xl">
                                 <img
                                     alt="Your Company"
-                                    src="/images/logo.png"
+                                    src="/images/newlogo.png"
                                     className="h-18 w-auto"
                                 />
                             </div>
