@@ -1,0 +1,1 @@
+import{u as a,j as o}from"./app-BspDB-S5.js";import{P as s}from"./pagination-ZFXuR7yk.js";import"./search-lib-CUdHKsvq.js";function i(){const{accounts:t}=a(n=>n.accounts);return console.log("accounts",t),o.jsx(o.Fragment,{children:o.jsx(s,{data:t})})}export{i as default};

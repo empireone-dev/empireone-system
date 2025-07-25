@@ -75,8 +75,7 @@ export default function TicketAlertNotification() {
             console.log("sssss4", user?.id);
             console.log("sssss5", user_id);
             if (
-                // ticket.department == user.department &&
-                ticket.location == user.location &&
+                ticket.department == user.department &&
                 user?.id != user_id
             ) {
                 browser_notification(
