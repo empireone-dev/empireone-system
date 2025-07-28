@@ -45,27 +45,7 @@ export default function Layout({ children }) {
                 },
             ],
         },
-        //  {
-        //     name: "Inventory",
-        //     href: "#",
-        //     icon: <FcOrganization className="h-6 w-6" />,
-        //     current: isCurrentMain == "ticketing",
-        //     children: [
-        //         {
-        //             name: "Carcar",
-
-        //             href: "/administrator/ticketing/carcar/tickets",
-        //             icon: <FcHome className="h-6 w-6" />,
-        //             current: isCurrentSub == "carcar",
-        //         },
-        //         {
-        //             name: "San Carlos",
-        //             href: "/administrator/ticketing/san_carlos/tickets",
-        //             icon: <FcHome className="h-6 w-6" />,
-        //             current: isCurrentSub == "san_carlos",
-        //         },
-        //     ],
-        // },
+       
     ];
 
     const userNavigation = [

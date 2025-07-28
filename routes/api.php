@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TicketController;
@@ -21,6 +22,7 @@ Route::post('change_ticket_status', [TicketController::class, 'change_ticket_sta
 
 
 Route::resource('categories', CategoryController::class);
+Route::resource('dashboard', DashboardController::class);
 Route::resource('sites', SiteController::class);
 Route::resource('accounts', AccountController::class);
 Route::resource('notes', NoteController::class);

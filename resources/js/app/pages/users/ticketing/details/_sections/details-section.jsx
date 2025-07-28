@@ -14,7 +14,8 @@ import CloseTicketSection from "./close-ticket-section";
 export default function DetailsSection() {
     const scrollRef = useRef(null);
     const { ticket } = useSelector((store) => store.tickets);
-
+    const queryParams = new URLSearchParams(window.location.search);
+    const page = queryParams.get("page") ?? "";
     useEffect(() => {
         const el = scrollRef.current;
         if (el) {
@@ -30,7 +31,7 @@ export default function DetailsSection() {
                         href={`/users/ticketing/${department_slug().replace(
                             " ",
                             "_"
-                        )}`}
+                        )}?page=${page}`}
                         className=" flex gap-3 text-2xl font-semibold text-gray-900 my-3"
                     >
                         <FcUpLeft /> Back

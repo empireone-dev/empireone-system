@@ -8,6 +8,9 @@ import { useSelector } from "react-redux";
 
 export default function TicketTableSection() {
     const { tickets } = useSelector((store) => store.tickets);
+
+    const queryParams = new URLSearchParams(window.location.search);
+     const page = queryParams.get("page")??'';
     const columns = [
         { header: "Name of Requestor", accessor: "requestor" },
         { header: "Ticket No.", accessor: "ticket_no" },
@@ -35,7 +38,7 @@ export default function TicketTableSection() {
                             href={`/users/ticketing/${department_slug().replace(
                                 " ",
                                 "_"
-                            )}/${res.ticket_id}/details`}
+                            )}/${res.ticket_id}/details?${page ? `page=${page}` : ""}`}
                         >
                             <FcFinePrint className="h-6 w-6" />
                         </Link>

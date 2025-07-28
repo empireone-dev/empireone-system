@@ -5,6 +5,7 @@ import activitiesSlice  from "../redux/activity-slice";
 import sitesSlice  from "../redux/site-slice";
 import ticketsSlice  from "../redux/ticket-slice";
 import  accountSlice from "../redux/account-slice";
+import  dashboardsSlice  from "../redux/dashboard-slice";
 
 const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
         activities: activitiesSlice,
         sites:sitesSlice,
         tickets:ticketsSlice,
-        accounts:accountSlice
+        accounts:accountSlice,
+        dashboards:dashboardsSlice
     },
 });
 
