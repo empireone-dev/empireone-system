@@ -40,7 +40,7 @@ export default function ReassignedTicketSection() {
     return (
         <>
             <Button onClick={() => setOpen(true)} variant="danger">
-                Assign Ticket
+                Transfer Ticket
             </Button>
             <Modal
                 isOpen={open}
