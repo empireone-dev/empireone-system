@@ -2,6 +2,7 @@ import Button from "@/app/_components/button";
 import Modal from "@/app/_components/modal";
 import Select from "@/app/_components/select";
 import SwalAlert from "@/app/_components/swal";
+import TextArea from "@/app/_components/textarea";
 import { department_data } from "@/app/lib/department-lib";
 import { ticket_id } from "@/app/lib/search-lib";
 import { get_tickets_by_id_thunk } from "@/app/redux/ticket-thunk";
@@ -28,6 +29,7 @@ export default function UpdateTicketStatusSection() {
             await change_ticket_status_service({
                 ...ticket,
                 status: data.status,
+                notes: data.notes,
             });
             await store.dispatch(get_tickets_by_id_thunk(ticket_id()));
             await SwalAlert({
@@ -35,7 +37,7 @@ export default function UpdateTicketStatusSection() {
             });
             reset();
             setOpen(false);
-        } catch (error) {}
+        } catch (error) { }
     }
     return (
         <>
@@ -63,6 +65,14 @@ export default function UpdateTicketStatusSection() {
                         register={register("status", {
                             required: "This field is required",
                         })}
+                    />
+                    <TextArea
+                        register={register("notes", {
+                            required: "This field is required",
+                        })}
+                        error={errors?.notes?.message}
+                        name="notes"
+                        label="Notes"
                     />
                     <Button
                         type="submit"

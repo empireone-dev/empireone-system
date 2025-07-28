@@ -14,6 +14,12 @@ export default function LogsSection() {
         ...(ticket?.activities || []),
     ].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
 
+    function htmlToText(html) {
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
+        return temp.textContent || temp.innerText || "";
+    }
+
     return (
         <div className="lg:col-start-3">
             {/* Activity feed */}
@@ -41,7 +47,11 @@ export default function LogsSection() {
                                         <span className="font-medium text-gray-900">
                                             {res?.user?.name ?? "N/A"}:
                                         </span>{" "}
-                                        {res.notes ? res.notes : res.message}
+                                        {/* {res.notes ? res.notes : res.message} */}
+                                        <div
+                                            className="py-0.5 text-xs/5 text-gray-500"
+                                            dangerouslySetInnerHTML={{ __html: res.notes || res.message }}
+                                        />
                                     </div>
                                     <time
                                         dateTime={moment(

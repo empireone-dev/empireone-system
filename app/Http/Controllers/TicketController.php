@@ -21,13 +21,13 @@ class TicketController extends Controller
         if ($ticket) {
             $ticket->update([
                 'status' => $request->status,
-                'assigned_to'=>$user->id,
+                'assigned_to' => $user->id,
             ]);
 
             Activity::create([
                 'ticket_id' => $ticket->id,
                 'user_id' => $user->id,
-                'message' => 'Ticket status changed to ' . $request->status,
+                'message' => 'Ticket status changed to <strong>' . strtoupper($request->status) . '</strong>, ' . $request->notes,
                 'type' => 'status_change',
             ]);
 
@@ -154,7 +154,7 @@ class TicketController extends Controller
         Activity::create([
             'ticket_id' => $ticket->id,
             'user_id' => $user->id,
-            'message' => 'created new ' . $request->isUrgent . 'ticket',
+            'message' => 'created new ' . $request->isUrgent . ' ticket',
             'type' => 'create',
         ]);
         if ($request->hasFile('files')) {
