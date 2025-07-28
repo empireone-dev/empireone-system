@@ -154,7 +154,7 @@ class TicketController extends Controller
         Activity::create([
             'ticket_id' => $ticket->id,
             'user_id' => $user->id,
-            'message' => 'created new ' . $request->isUrgent . ' ticket',
+            'message' => 'created new ' . $request->isUrgent . ' ticket',   
             'type' => 'create',
         ]);
         if ($request->hasFile('files')) {

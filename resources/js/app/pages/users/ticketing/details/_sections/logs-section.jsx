@@ -45,7 +45,7 @@ export default function LogsSection() {
                                 <div className="flex justify-between gap-x-4">
                                     <div className="py-0.5 text-xs/5 text-gray-500">
                                         <span className="font-medium text-gray-900">
-                                            {res?.user?.name ?? "N/A"}:
+                                            {res?.user?.name ?? " EO-AI Chat Bot"}:
                                         </span>{" "}
                                         {/* {res.notes ? res.notes : res.message} */}
                                         <div
