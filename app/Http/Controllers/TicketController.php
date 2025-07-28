@@ -65,7 +65,7 @@ class TicketController extends Controller
         $search = $request->query('search');
 
         $tickets = Ticket::where([
-            ['site_id', $user->site_id],
+            // ['site_id', $user->site_id],
             ['location', $user->location],
             ['department', $user->department],
         ])
