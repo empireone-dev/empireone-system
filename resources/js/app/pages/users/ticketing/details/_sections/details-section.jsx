@@ -25,7 +25,7 @@ export default function DetailsSection() {
 
     return (
         <>
-            <div className="mx-auto max-w-7xl  lg:px-4">
+            <div className="px-6 w-full">
                 <div className="w-full items-center  flex-col sm:flex-row  justify-between flex gap-10">
                     <Link
                         href={`/users/ticketing/${department_slug().replace(
