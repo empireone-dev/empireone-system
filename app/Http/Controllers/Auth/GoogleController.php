@@ -40,7 +40,7 @@ class GoogleController extends Controller
 
             return redirect('/administrator/dashboard');
         } catch (\Exception $e) {
-            return redirect('/login')->withErrors(['login' => 'Google login failed.']);
+            return redirect('/')->withErrors(['login' => 'Google login failed.']);
         }
     }
 }
