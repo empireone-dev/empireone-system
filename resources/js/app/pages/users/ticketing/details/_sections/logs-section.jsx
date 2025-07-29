@@ -39,7 +39,8 @@ export default function LogsSection() {
                             {res.notes ? (
                                 <FcAssistant className="relative mt-3 size-6 flex-none rounded-full bg-gray-50" />
                             ) : (
-                                <FcClock className="relative mt-3 size-6 flex-none rounded-full bg-gray-50" />
+                                <img src="/images/robot_head.png" className="relative h-7 mt-2 text-center" alt="" />
+                                // <FcClock className="relative mt-3 size-6 flex-none rounded-full bg-gray-50" />
                             )}
                             <div className="flex-auto relative bg-white rounded-lg p-3 ring-1 ring-gray-300 ring-inset before:content-[''] before:absolute before:left-[-8px] before:top-3 before:w-0 before:h-0 before:border-t-[8px] before:border-t-transparent before:border-r-[8px] before:border-r-gray-300 before:border-b-[8px] before:border-b-transparent after:content-[''] after:absolute after:left-[-7px] after:top-3 after:w-0 after:h-0 after:border-t-[8px] after:border-t-transparent after:border-r-[8px] after:border-r-white after:border-b-[8px] after:border-b-transparent">
                                 <div className="flex justify-between gap-x-4">
