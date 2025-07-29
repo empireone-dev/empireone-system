@@ -11,9 +11,14 @@ export const department_data = [
     label: "QA Department",
     value: "QA Department",
   },
+ 
   {
     label: "Operations Department",
     value: "Operations Department",
+  },
+  {
+    label: " Compliance Department",
+    value: " Compliance Department",
   },
    {
     label: "Accounting Department",

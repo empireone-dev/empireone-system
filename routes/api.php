@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\OpenAIController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TicketController;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ Route::get('get_tickets_by_user', [TicketController::class, 'get_tickets_by_user
 Route::get('get_tickets_by_internal', [TicketController::class, 'get_tickets_by_internal']);
 Route::post('assign_ticket', [TicketController::class, 'assign_ticket']);
 Route::post('change_ticket_status', [TicketController::class, 'change_ticket_status']);
+Route::get('get_stats', [TicketController::class, 'get_stats']);
 
 
 Route::resource('categories', CategoryController::class);
@@ -26,6 +28,8 @@ Route::resource('dashboard', DashboardController::class);
 Route::resource('sites', SiteController::class);
 Route::resource('accounts', AccountController::class);
 Route::resource('notes', NoteController::class);
+
+Route::post('/ticketing_prompt_stats', [OpenAIController::class, 'ticketing_prompt_stats']);
 
 
 Route::get('get_account_by_department', [AccountController::class, 'get_account_by_department']);

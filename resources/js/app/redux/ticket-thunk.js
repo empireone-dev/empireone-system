@@ -1,5 +1,21 @@
-import { create_tickets_service, get_tickets_by_id_service, get_tickets_by_internal_service, get_tickets_by_user_service, get_tickets_service, update_tickets_service } from "../services/tickets-service";
+import { ticketing_prompt_stats_service } from "../services/open-ai-service";
+import { create_tickets_service, get_stats_service, get_tickets_by_id_service, get_tickets_by_internal_service, get_tickets_by_user_service, get_tickets_service, update_tickets_service } from "../services/tickets-service";
 import { ticketsSlice } from "./ticket-slice";
+
+
+export function get_stats_thunk() {
+    return async function (dispatch, getState) {
+        const res = await get_stats_service()
+        dispatch(ticketsSlice.actions.setStats(res.data));
+    };
+}
+
+export function ticketing_prompt_stats_thunk(data) {
+    return async function (dispatch, getState) {
+        const res = await ticketing_prompt_stats_service(data)
+        dispatch(ticketsSlice.actions.setPrompts(res.data));
+    };
+}
 
 export function get_tickets_by_internal_thunk() {
     return async function (dispatch, getState) {

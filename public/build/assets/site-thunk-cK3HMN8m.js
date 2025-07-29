@@ -1,1 +1,0 @@
-import{c as e,f as i}from"./app-CHw4kelg.js";function r(){try{return e.get("/api/sites")}catch{}}function c(){return async function(t,a){const s=await r();t(i.actions.setSites(s.data))}}export{c as g};

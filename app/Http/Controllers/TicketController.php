@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Storage;
 class TicketController extends Controller
 {
 
+    public function get_stats()
+    {
+        $users = User::with('assignees')
+            ->whereHas('assignees') 
+            ->get();
+
+        return response()->json($users, 200);
+    }
+
     public function change_ticket_status(Request $request)
     {
         $user = Auth::user();
@@ -154,7 +163,7 @@ class TicketController extends Controller
         Activity::create([
             'ticket_id' => $ticket->id,
             'user_id' => $user->id,
-            'message' => 'created new ' . $request->isUrgent . ' ticket',   
+            'message' => 'created new ' . $request->isUrgent . ' ticket',
             'type' => 'create',
         ]);
         if ($request->hasFile('files')) {

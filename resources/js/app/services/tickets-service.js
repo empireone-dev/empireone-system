@@ -1,5 +1,13 @@
 import axios from "axios"
 
+export function get_stats_service() {
+    try {
+        const result = axios.get('/api/get_stats')
+        return result
+    } catch (error) {
+
+    }
+}
 
 export function change_ticket_status_service(data) {
     try {

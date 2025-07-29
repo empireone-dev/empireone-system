@@ -3,13 +3,7 @@ import { useDispatch } from "react-redux";
 import { setSidebarOpen } from "../redux/app-slice";
 import {
     Bars3Icon,
-    BellIcon,
-    ChevronDownIcon,
-    MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { Link } from "@inertiajs/react";
-import NotificationSection from "./notification-section";
 import SearchSection from "./search-section";
 import HeaderMenuSection from "./header-menu-section";
 import TicketAlertNotification from "../pages/administrator/_sections/ticket-alert-notification";

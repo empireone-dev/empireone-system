@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
-import { useForm } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 
 export default function LoginFormSection() {
-    const { data, setData, post, processing,errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         email: "",
         password: "",
         remember: false,
@@ -191,7 +191,7 @@ export default function LoginFormSection() {
 
                                 <div className="mt-6 grid grid-cols-1 gap-4">
                                     <a
-                                        href="#"
+                                        href={route("auth.google")} 
                                         className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50"
                                     >
                                         {/* Google Icon */}

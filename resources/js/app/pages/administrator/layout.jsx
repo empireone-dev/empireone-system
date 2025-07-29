@@ -22,9 +22,8 @@ export default function Layout({ children }) {
     const isCurrentMain = window.location.pathname.split("/")[2];
     const isCurrentSub = window.location.pathname.split("/")[3];
 
-
-     useEffect(() => {
-        store.dispatch(get_user_thunk())
+    useEffect(() => {
+        store.dispatch(get_user_thunk());
     }, []);
     const navigation = [
         {
@@ -34,7 +33,6 @@ export default function Layout({ children }) {
             current: isCurrentMain == "dashboard",
         },
 
-       
         {
             name: "Departments",
             href: "#",
@@ -55,6 +53,7 @@ export default function Layout({ children }) {
                     icon: <FcPortraitMode className="h-6 w-6" />,
                     current: isCurrentSub == "HR_Department",
                 },
+
                 {
                     name: "QA Department",
                     href: "/administrator/users/QA_Department",
@@ -67,12 +66,11 @@ export default function Layout({ children }) {
                     icon: <FcPortraitMode className="h-6 w-6" />,
                     current: isCurrentSub == "Operations_Department",
                 },
-
                 {
-                    name: "Engagement Department",
-                    href: "/administrator/users/Engagement_Department",
+                    name: "Compliance Department",
+                    href: "/administrator/users/Compliance_Department",
                     icon: <FcPortraitMode className="h-6 w-6" />,
-                    current: isCurrentSub == "Engagement_Department",
+                    current: isCurrentSub == "Compliance_Department",
                 },
 
                 {
@@ -80,6 +78,12 @@ export default function Layout({ children }) {
                     href: "/administrator/users/Accounting_Department",
                     icon: <FcPortraitMode className="h-6 w-6" />,
                     current: isCurrentSub == "Accounting_Department",
+                },
+                {
+                    name: "Engagement Department",
+                    href: "/administrator/users/Engagement_Department",
+                    icon: <FcPortraitMode className="h-6 w-6" />,
+                    current: isCurrentSub == "Engagement_Department",
                 },
             ],
         },
@@ -90,7 +94,7 @@ export default function Layout({ children }) {
             icon: <FcSupport className="h-6 w-6" />,
             current: isCurrentMain == "ticketing",
             children: [
-                 {
+                {
                     name: "Categories",
                     href: "/administrator/ticketing/categories?department=IT Department",
                     icon: <FcTimeline className="h-6 w-6" />,
@@ -139,7 +143,6 @@ export default function Layout({ children }) {
         { name: "Sign out", href: "#" },
     ];
 
-  
     return (
         <>
             <SidebarSection navigation={navigation} />

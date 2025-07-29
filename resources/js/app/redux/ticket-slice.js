@@ -5,6 +5,8 @@ export const ticketsSlice = createSlice({
     initialState: {
         ticket: {},
         tickets: [],
+        prompts:{},
+        stats: []
     },
     reducers: {
         setTicket: (state, action) => {
@@ -14,8 +16,14 @@ export const ticketsSlice = createSlice({
             console.log('action.payload',action.payload)
             state.tickets = action.payload;
         },
+        setPrompts: (state, action) => {
+            state.prompts = action.payload;
+        },
+        setStats: (state, action) => {
+            state.stats = action.payload;
+        }
     },
 });
-export const { setTicket, setTickets } = ticketsSlice.actions;
+export const { setTicket, setTickets, setPrompts, setStats } = ticketsSlice.actions;
 
 export default ticketsSlice.reducer;
