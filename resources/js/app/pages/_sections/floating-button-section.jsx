@@ -11,7 +11,7 @@ export default function ChatbotModal() {
     const [animateIn, setAnimateIn] = useState(false);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [messages, setMessages] = useState([
-        { from: "bot", text: "Hello! How can I assist you today?" },
+        { from: "bot", text: "Hello! How can I assist you today regarding the Code of Conduct and Discipline document?" },
     ]);
     const [input, setInput] = useState("");
 
