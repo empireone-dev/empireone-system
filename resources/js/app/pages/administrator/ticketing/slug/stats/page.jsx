@@ -9,7 +9,7 @@ import StatsSearchSection from "./_section.jsx/stats-search-section";
 export default function Page() {
     useEffect(() => {
         store.dispatch(get_stats_thunk());
-    }, []);
+    }, [window.location.search]);
     return (
         <Layout>
             <LocationLayout>

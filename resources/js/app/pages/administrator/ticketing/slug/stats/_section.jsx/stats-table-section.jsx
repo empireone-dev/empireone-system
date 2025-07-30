@@ -25,9 +25,9 @@ export default function StatsTableSection() {
             key: "total_overdue",
         },
         {
-            title: "Not Overdue",
-            dataIndex: "total_not_overdue",
-            key: "total_not_overdue",
+            title: "On Time",
+            dataIndex: "on_time",
+            key: "on_time",
         },
         {
             title: "Result",
@@ -67,7 +67,11 @@ export default function StatsTableSection() {
         { title: "Requestor", dataIndex: "requestor", key: "requestor" },
         { title: "Status", dataIndex: "status", key: "status" },
         { title: "Urgent Type", dataIndex: "isUrgent", key: "isUrgent" },
-        { title: "Location", dataIndex: "location", key: "location" },
+        {
+            title: "Fixed Duration",
+            dataIndex: "fixed_duration",
+            key: "fixed_duration",
+        },
         { title: "Started At", dataIndex: "start", key: "start" },
         { title: "Ended At", dataIndex: "end", key: "end" },
         {
@@ -85,14 +89,7 @@ export default function StatsTableSection() {
             title: "Overdue Duration",
             dataIndex: "overdue",
             key: "overdue",
-            render: (text) =>
-                text !== "—" ? (
-                    `⏱ ${text}`
-                ) : (
-                    <>
-                        <FcLike className="text-4xl" />
-                    </>
-                ),
+            render: (text) => (text !== "—" ? `⏱ ${text}` : <>⏱ No Overdue</>),
         },
     ];
 
@@ -104,7 +101,17 @@ export default function StatsTableSection() {
                     <Table
                         columns={columns2}
                         dataSource={record?.assignees?.map((assignee) => {
+                            const startTime = moment(assignee.created_at);
+                            const startTime2 = moment(assignee.start);
                             const updatedTime = moment(assignee.updated_at);
+                            const fixedDurationMoment = moment.duration(
+                                updatedTime.diff(startTime2)
+                            );
+                            const fdDays = fixedDurationMoment.days();
+                            const fdHours = fixedDurationMoment.hours();
+                            const fdMinutes = fixedDurationMoment.minutes();
+                            const fixed_duration = `${fdDays}d ${fdHours}h ${fdMinutes}m`;
+
                             const endTime = moment(assignee.end);
                             const isOverdue = updatedTime.isAfter(endTime);
 
@@ -125,7 +132,7 @@ export default function StatsTableSection() {
                                 requestor: assignee.user?.name ?? "N/A",
                                 status: assignee.status,
                                 isUrgent: assignee.isUrgent,
-                                location: assignee.location,
+                                fixed_duration: fixed_duration,
                                 start: moment(assignee.start).format(
                                     "M-D-YYYY h:mm:ss A"
                                 ),
@@ -166,7 +173,7 @@ export default function StatsTableSection() {
                     total_overdue: assignees.filter((a) =>
                         moment(a.updated_at).isAfter(moment(a.end))
                     ).length,
-                    total_not_overdue: assignees.filter(
+                    on_time: assignees.filter(
                         (a) => !moment(a.updated_at).isAfter(moment(a.end))
                     ).length,
                     percentage: { percent, result },

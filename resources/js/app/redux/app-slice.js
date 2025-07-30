@@ -7,6 +7,7 @@ export const appSlice = createSlice({
         sidebarOpen:false,
         carts:[],
         load:Math.random(),
+        chatbots:[]
     },
     reducers: {
         setUser: (state, action) => {
@@ -21,9 +22,12 @@ export const appSlice = createSlice({
         setLoad: (state, action) => {
             state.load = action.payload;
         },
+        setChatBots: (state, action) => {
+            state.chatbots = action.payload;
+        },
     },
 });
-export const { setUser,setSidebarOpen,setCarts,setLoad } =
+export const { setUser,setSidebarOpen,setCarts,setLoad,setChatBots } =
     appSlice.actions;
 
 export default appSlice.reducer;

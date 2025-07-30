@@ -2,7 +2,7 @@ import axios from "axios"
 
 export function get_stats_service() {
     try {
-        const result = axios.get('/api/get_stats')
+        const result = axios.get('/api/get_stats'+window.location.search)
         return result
     } catch (error) {
 

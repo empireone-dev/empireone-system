@@ -9,3 +9,15 @@ export async function ticketing_prompt_stats_service(prompt) {
 
     }
 }
+
+
+export async function cocd_prompt_service(prompt) {
+    try {
+        const result =await axios.post('/api/cocd_prompt', { prompt })
+      
+        return result
+    } catch (error) {
+
+    }
+}
+

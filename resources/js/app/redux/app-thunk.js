@@ -1,3 +1,12 @@
+import { cocd_prompt_service } from "../services/open-ai-service";
+import { appSlice } from "./app-slice";
+
+export function cocd_prompt_thunk(data) {
+    return async function (dispatch, getState) {
+        const res = await cocd_prompt_service(data.prompt);
+        dispatch(appSlice.actions.setChatBots(res.data));
+    };
+}
 
 
 export function get_user_thunk() {

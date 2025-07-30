@@ -13,7 +13,11 @@ export default function StatsFormSection() {
         handleSubmit,
         formState: { errors, isSubmitting },
         reset,
-    } = useForm({});
+    } = useForm({
+        defaultValues: {
+            date_range: [moment().subtract(30, "days"), moment()],
+        },
+    });
 
     async function submit_data(params) {
         try {
@@ -51,7 +55,6 @@ export default function StatsFormSection() {
                     SUBMIT
                 </Button>
             </form>
-
         </>
     );
 }

@@ -30,6 +30,7 @@ Route::resource('accounts', AccountController::class);
 Route::resource('notes', NoteController::class);
 
 Route::post('/ticketing_prompt_stats', [OpenAIController::class, 'ticketing_prompt_stats']);
+Route::post('/cocd_prompt', [OpenAIController::class, 'cocd_prompt']);
 
 
 Route::get('get_account_by_department', [AccountController::class, 'get_account_by_department']);

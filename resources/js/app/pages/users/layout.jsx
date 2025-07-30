@@ -9,6 +9,7 @@ import {
     FcSupport,
     FcTemplate,
 } from "react-icons/fc";
+import FloatingButtonSection from "../_sections/floating-button-section";
 
 export default function Layout({ children }) {
 
@@ -66,8 +67,8 @@ export default function Layout({ children }) {
                 <TopbarSection userNavigation={userNavigation} />
 
                 <main className="p-3">
-                    <div>{children}</div>
-                    {/* <FloatingButtonSection /> */}
+                    <div className="px-5">{children}</div>
+                    <FloatingButtonSection />
                 </main>
             </div>
         </>

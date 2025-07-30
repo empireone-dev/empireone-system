@@ -13,7 +13,7 @@ import {
     FcTemplate,
     FcTimeline,
 } from "react-icons/fc";
-import FloatingButtonSection from "./_sections/floating-button-section";
+import FloatingButtonSection from "../_sections/floating-button-section";
 import { useEffect } from "react";
 import store from "@/app/store/store";
 import { get_user_thunk } from "@/app/redux/account-thunk";
@@ -151,7 +151,7 @@ export default function Layout({ children }) {
 
                 <main className="p-3">
                     <div>{children}</div>
-                    {/* <FloatingButtonSection /> */}
+                    <FloatingButtonSection />
                 </main>
             </div>
         </>

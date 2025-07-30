@@ -13,15 +13,40 @@ use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
 {
-
-    public function get_stats()
+    public function get_stats(Request $request)
     {
-        $users = User::with('assignees')
-            ->whereHas('assignees') 
-            ->get();
+        $query = User::query();
+
+        // Filter by location
+        if (!empty($request->location)) {
+            $query->where('location', $request->location);
+        }
+
+        // Filter by department
+        if (!empty($request->department)) {
+            $query->where('department', $request->department);
+        }
+
+        // Apply date filter on assignees if date range is provided
+        if (!empty($request->start_date) && !empty($request->end_date)) {
+            $query->whereHas('assignees', function ($q) use ($request) {
+                $q->where('status', 'Closed');
+                $q->whereBetween('created_at', [$request->start_date, $request->end_date]);
+            })->with(['assignees' => function ($q) use ($request) {
+                $q->where('status', 'Closed');
+                $q->whereBetween('created_at', [$request->start_date, $request->end_date]);
+            }]);
+        } else {
+            // Only include users who have assignees, but don't load them
+            $query->whereHas('assignees');
+        }
+
+        $users = $query->get();
 
         return response()->json($users, 200);
     }
+
+
 
     public function change_ticket_status(Request $request)
     {

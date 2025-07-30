@@ -9,6 +9,27 @@ use Illuminate\Support\Facades\Http;
 class OpenAIController extends Controller
 {
 
+    public function cocd_prompt(Request $request)
+    {
+        $userPrompt = $request->input('prompt');
+
+        $response = Http::withToken(env('OPENAI_API_KEY'))->post('https://api.openai.com/v1/chat/completions', [
+            'model' => 'gpt-4o',
+            'messages' => [
+                ['role' => 'system', 'content' => 'Respond with HTML suitable for WYSIWYG editors. Do not wrap in markdown or code fences.'],
+                ['role' => 'user', 'content' => $userPrompt],
+            ],
+            'temperature' => 0,
+        ]);
+
+        $rawOutput = trim($response['choices'][0]['message']['content']);
+
+        return response()->json([
+            'result' => $rawOutput, // Return full HTML content as-is
+        ]);
+    }
+
+
     public function ticketing_prompt_stats(Request $request)
     {
         $userPrompt = $request->input('prompt');
