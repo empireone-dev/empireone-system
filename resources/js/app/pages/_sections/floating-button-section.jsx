@@ -11,7 +11,10 @@ export default function ChatbotModal() {
     const [animateIn, setAnimateIn] = useState(false);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [messages, setMessages] = useState([
-        { from: "bot", text: "Hello! How can I assist you today regarding the Code of Conduct and Discipline document?" },
+        {
+            from: "bot",
+            text: "Hello! How can I assist you today regarding the Code of Conduct and Discipline document?",
+        },
     ]);
     const [input, setInput] = useState("");
 
@@ -78,11 +81,15 @@ export default function ChatbotModal() {
             {isOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm transition-opacity">
                     <div
-                        className={`bg-white w-full max-w-md rounded-2xl shadow-lg flex flex-col overflow-hidden transform transition-all duration-300 ${
-                            animateIn
-                                ? "scale-100 opacity-100 translate-y-0"
-                                : "scale-95 opacity-0 translate-y-4"
-                        }`}
+                        className={`bg-white h-screen w-screen max-w-none rounded-none 
+    md:h-[500px] md:w-[500px] md:max-w-md md:rounded-2xl
+    shadow-lg flex flex-col  justify-between overflow-hidden transform transition-all duration-300
+    ${
+        animateIn
+            ? "scale-100 opacity-100 translate-y-0"
+            : "scale-95 opacity-0 translate-y-4"
+    }
+  `}
                     >
                         {/* Header */}
                         <div className="flex items-center justify-between p-4 bg-blue-600 text-white">

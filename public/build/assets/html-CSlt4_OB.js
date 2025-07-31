@@ -1,0 +1,1 @@
+import{j as n}from"./app-D5UpoGXt.js";function e({html:t}){return n.jsx("div",{dangerouslySetInnerHTML:{__html:t}})}export{e as H};
