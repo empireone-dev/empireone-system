@@ -14,10 +14,15 @@ import { useSelector } from "react-redux";
 export default function CardSection({dashboard}) {
     
     return (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-9 lg:gap-8">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
             
           
-           
+            <Card
+                title="Internal Declined Tickets"
+                icon={<FcCancel className="text-5xl" />}
+                href="#"
+                count={dashboard.internal_declined ?? "0"}
+            />
             <Card
                 title="Internal Pending Tickets"
                 icon={<FcOvertime className="text-5xl" />}

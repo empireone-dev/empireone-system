@@ -64,6 +64,11 @@ class DashboardController extends Controller
                         ['department', $deptValue]
                     ])->count();
 
+                    $internal_declined = Ticket::where([
+                        ['location', $location],
+                        ['status', 'Declined'],
+                        ['department', $deptValue]
+                    ])->count();
                     $internal_closed = Ticket::where([
                         ['location', $location],
                         ['status', 'Closed'],
@@ -78,6 +83,7 @@ class DashboardController extends Controller
                     // Append result
                     $departmentStats[] = [
                         'department' => $deptValue,
+                        'internal_declined' => $internal_declined,
                         'internal_pending' => $internal_pending,
                         'internal_closed' => $internal_closed,
                         'internal_overall' => $internal_overall,
