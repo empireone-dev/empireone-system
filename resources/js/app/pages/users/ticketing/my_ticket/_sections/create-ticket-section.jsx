@@ -39,7 +39,7 @@ export default function CreateTicketSection() {
         defaultValues: {
             description: "",
             files: [],
-            date_range: [dayjs(), dayjs().add(3, 'day')],
+            date_range: [dayjs(), dayjs().add(3, "day")],
         },
     });
 
@@ -199,7 +199,10 @@ export default function CreateTicketSection() {
                                             showTime
                                             onChange={field.onChange}
                                             value={field.value}
-                                            disabledDate={(current) => current && current < dayjs().startOf('day')}
+                                            disabledDate={(current) =>
+                                                current &&
+                                                current < dayjs().startOf("day")
+                                            }
                                         />
                                     )}
                                 />

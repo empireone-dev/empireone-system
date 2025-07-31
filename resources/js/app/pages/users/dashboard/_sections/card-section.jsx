@@ -10,17 +10,15 @@ import {
     FcOvertime,
 } from "react-icons/fc";
 import { useSelector } from "react-redux";
+import CreateTicketSection from "../../ticketing/my_ticket/_sections/create-ticket-section";
 
 export default function CardSection() {
     const { dashboard } = useSelector((state) => state.dashboards);
     return (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
-            <Card
-                // title="Created Ticket"
-                icon={<FcAddDatabase className="text-5xl" />}
-                href="#"
-                count="Create Ticket"
-            />
+            <div className="flex h-full flex-col rounded-lg items-center justify-center border  hover:bg-zinc-50/50 active:border-purple-200 lg:col-span-3">
+                <CreateTicketSection />
+            </div>
             <Card
                 title="My Ticket Pendings "
                 icon={<FcOvertime className="text-5xl" />}
