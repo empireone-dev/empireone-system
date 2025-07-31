@@ -6,14 +6,87 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
+
+
 class DashboardController extends Controller
 {
-    public function index()
+    public function departments()
+    {
+        $departments = [
+            [
+                "label" => "IT Department",
+                "value" => "IT Department",
+            ],
+            [
+                "label" => "HR Department",
+                "value" => "HR Department",
+            ],
+            [
+                "label" => "QA Department",
+                "value" => "QA Department",
+            ],
+            [
+                "label" => "Operations Department",
+                "value" => "Operations Department",
+            ],
+            [
+                "label" => "Compliance Department",
+                "value" => "Compliance Department",
+            ],
+            [
+                "label" => "Accounting Department",
+                "value" => "Accounting Department",
+            ],
+            [
+                "label" => "Engagement Department",
+                "value" => "Engagement Department",
+            ],
+        ];
+        return $departments;
+    }
+    public function index(Request $request)
     {
         // This method can be used to return a view or data for the dashboard
         $user = Auth::user();
         if ($user->account_type == '1') {
-            # code...
+            if ($request->location) {
+                $location = ucfirst($request->location);
+
+                $departmentStats = [];
+
+                foreach ($this->departments() as $department) {
+                    $deptValue = trim($department['value']); // Clean value
+
+                    $internal_pending = Ticket::where([
+                        ['location', $location],
+                        ['status', 'Pending'],
+                        ['department', $deptValue]
+                    ])->count();
+
+                    $internal_closed = Ticket::where([
+                        ['location', $location],
+                        ['status', 'Closed'],
+                        ['department', $deptValue]
+                    ])->count();
+
+                    $internal_overall = Ticket::where([
+                        ['location', $location],
+                        ['department', $deptValue]
+                    ])->count();
+
+                    // Append result
+                    $departmentStats[] = [
+                        'department' => $deptValue,
+                        'internal_pending' => $internal_pending,
+                        'internal_closed' => $internal_closed,
+                        'internal_overall' => $internal_overall,
+                    ];
+                }
+
+                // Return as JSON response
+                return response()->json($departmentStats);
+            }
         } else if ($user->account_type == '2') {
             $my_pending = Ticket::where([
                 ['user_id', $user->id],
