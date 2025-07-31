@@ -104,7 +104,7 @@ export default function ChatbotModal() {
                         {/* Chat Messages */}
                         <div
                             ref={scrollRef}
-                            className="flex-1 p-4 space-y-2 overflow-y-auto max-h-[400px]"
+                            className="flex-1 p-4 space-y-2 overflow-y-auto max-h-[600px]"
                         >
                             {messages.map((msg, idx) => (
                                 <div
