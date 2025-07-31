@@ -5,6 +5,7 @@ function capitalizeWords(str) {
 const queryParams = new URLSearchParams(window.location.search);
 export const search = queryParams.get("search")??'';
 export const page = queryParams.get("page")??'';
+export const status = queryParams.get("status")??'';
 
 export function department_slug(params) {
     return window.location.pathname

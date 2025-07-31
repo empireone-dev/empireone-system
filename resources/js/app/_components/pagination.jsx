@@ -3,7 +3,7 @@ import {
     ArrowLongRightIcon,
 } from "@heroicons/react/20/solid";
 import { Link } from "@inertiajs/react";
-import { search } from "../lib/search-lib";
+import { search, status } from "../lib/search-lib";
 
 export default function Pagination({ data }) {
     const currentPage = data?.current_page;
@@ -50,7 +50,9 @@ export default function Pagination({ data }) {
             <div className="-mt-px flex w-0 flex-1">
                 {currentPage > 1 && (
                     <Link
-                        href={`?page=${currentPage - 1}&search=${search}`}
+                        href={`?page=${
+                            currentPage - 1
+                        }&search=${search}&status=${status}`}
                         className="inline-flex items-center  border-transparent bg-blue-500 p-2 text-white rounded-md text-sm font-medium"
                     >
                         <ArrowLongLeftIcon
@@ -67,7 +69,7 @@ export default function Pagination({ data }) {
                         key={index}
                         href={
                             typeof page === "number"
-                                ? `?page=${page}&search=${search}`
+                                ? `?page=${page}&search=${search}&status=${status}`
                                 : "#"
                         }
                         className={`inline-flex items-center  rounded-md text-center px-4 p-2 text-sm font-medium ${
@@ -83,7 +85,7 @@ export default function Pagination({ data }) {
             <div className="-mt-px flex  flex-1 justify-end w-full">
                 {currentPage < lastPage && (
                     <Link
-                        href={`?page=${currentPage + 1}&search=${search}`}
+                        href={`?page=${currentPage + 1}&search=${search}&status=${status}`}
                         className="inline-flex items-center  border-transparent bg-blue-500 p-2 text-white rounded-md text-sm font-medium  "
                     >
                         Next

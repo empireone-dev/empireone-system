@@ -97,6 +97,7 @@ class TicketController extends Controller
     {
         $user = Auth::user();
         $search = $request->query('search');
+        $status = $request->query('status');
 
         $tickets = Ticket::where([
             // ['site_id', $user->site_id],
@@ -104,7 +105,15 @@ class TicketController extends Controller
             ['department', $user->department],
         ])
             ->when($search, function ($query, $search) {
-                $query->where('ticket_id', 'like', "%{$search}%");
+                $query->where('ticket_id', '=', $search);
+            })
+            ->when($status, function ($query, $status) {
+                $user = Auth::user();
+                if ($status == 'Assigned') {
+                    $query->where('assigned_to', '=', $user->id);
+                } else {
+                    $query->where('status', '=', $status);
+                }
             })
             ->with(['assigned_to', 'category', 'site', 'user'])
             ->orderBy('id', 'desc')
@@ -117,10 +126,14 @@ class TicketController extends Controller
     {
         $user = Auth::user();
         $search = $request->query('search');
+        $status = $request->query('status');
 
         $tickets = Ticket::where('user_id', $user->id)
             ->when($search, function ($query, $search) {
-                $query->where('ticket_id', 'like', "%{$search}%");
+                $query->where('ticket_id',  '=', $search);
+            })
+            ->when($status, function ($query, $status) {
+                $query->where('status', '=', $status);
             })
             ->orderBy('id', 'desc')
             ->with(['assigned_to', 'category', 'site', 'user'])

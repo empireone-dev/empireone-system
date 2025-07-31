@@ -11,6 +11,7 @@ import {
 } from "react-icons/fc";
 import { useSelector } from "react-redux";
 import CreateTicketSection from "../../ticketing/my_ticket/_sections/create-ticket-section";
+import { router } from "@inertiajs/react";
 
 export default function CardSection() {
     const { dashboard } = useSelector((state) => state.dashboards);
@@ -24,42 +25,63 @@ export default function CardSection() {
                 icon={<FcOvertime className="text-5xl" />}
                 href="#"
                 count={dashboard.my_pending ?? "0"}
+                onClick={() => {
+                    router.visit(`/users/ticketing/my_ticket?status=Pending`);
+                }}
             />
             <Card
                 title="My Tickets Closed "
                 icon={<FcApproval className="text-5xl" />}
                 href="#"
                 count={dashboard.my_closed ?? "0"}
+                onClick={() => {
+                    router.visit(`/users/ticketing/my_ticket?status=Closed`);
+                }}
             />
             <Card
                 title="My Overall Tickets"
                 icon={<FcBarChart className="text-5xl" />}
                 href="#"
                 count={dashboard.my_overall ?? "0"}
+                onClick={() => {
+                    router.visit(`/users/ticketing/my_ticket`);
+                }}
             />
             <Card
                 title="Total Tickets Assigned"
                 icon={<FcFeedback className="text-5xl" />}
                 href="#"
                 count={dashboard.ticket_assigned ?? "0"}
+                onClick={() => {
+                    router.visit(`/users/ticketing/internal_request?status=Assigned`);
+                }}
             />
             <Card
                 title="Internal Pending Tickets"
                 icon={<FcOvertime className="text-5xl" />}
                 href="#"
                 count={dashboard.internal_pending ?? "0"}
+                onClick={() => {
+                    router.visit(`/users/ticketing/internal_request?status=Pending`);
+                }}
             />
             <Card
                 title="Internal Tickets Closed"
                 icon={<FcApproval className="text-5xl" />}
                 href="#"
                 count={dashboard.internal_closed ?? "0"}
+                 onClick={() => {
+                    router.visit(`/users/ticketing/internal_request?status=Closed`);
+                }}
             />
             <Card
                 title="Internal Overall Tickets"
                 icon={<FcBarChart className="text-5xl" />}
                 href="#"
                 count={dashboard.internal_overall ?? "0"}
+                 onClick={() => {
+                    router.visit(`/users/ticketing/internal_request`);
+                }}
             />
         </div>
     );

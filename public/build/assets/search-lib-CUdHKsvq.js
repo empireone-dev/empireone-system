@@ -1,1 +1,0 @@
-const a=new URLSearchParams(window.location.search),e=a.get("search")??"",n=a.get("page")??"";function s(t){return window.location.pathname.split("/")[3].replace("_"," ")}function r(t){return window.location.pathname.split("/")[4]}export{s as d,n as p,e as s,r as t};
