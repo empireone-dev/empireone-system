@@ -3,13 +3,15 @@ import {
     ArrowLongRightIcon,
 } from "@heroicons/react/20/solid";
 import { Link } from "@inertiajs/react";
-import { search, status } from "../lib/search-lib";
+import { search } from "../lib/search-lib";
 
 export default function Pagination({ data }) {
+    const queryParams = new URLSearchParams(window.location.search);
     const currentPage = data?.current_page;
     const lastPage = data?.last_page;
     const maxVisiblePages = 5; // Maximum number of pages to show
-
+    const status = queryParams.get("status") ?? "";
+    
     const getPageNumbers = () => {
         const pages = [];
 
@@ -85,7 +87,9 @@ export default function Pagination({ data }) {
             <div className="-mt-px flex  flex-1 justify-end w-full">
                 {currentPage < lastPage && (
                     <Link
-                        href={`?page=${currentPage + 1}&search=${search}&status=${status}`}
+                        href={`?page=${
+                            currentPage + 1
+                        }&search=${search}&status=${status}`}
                         className="inline-flex items-center  border-transparent bg-blue-500 p-2 text-white rounded-md text-sm font-medium  "
                     >
                         Next
