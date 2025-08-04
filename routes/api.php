@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AccountingExpensesController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NoteController;
@@ -28,6 +29,7 @@ Route::resource('dashboard', DashboardController::class);
 Route::resource('sites', SiteController::class);
 Route::resource('accounts', AccountController::class);
 Route::resource('notes', NoteController::class);
+Route::resource('accounting_expenses', AccountingExpensesController::class);
 
 Route::post('/ticketing_prompt_stats', [OpenAIController::class, 'ticketing_prompt_stats']);
 Route::post('/cocd_prompt', [OpenAIController::class, 'cocd_prompt']);

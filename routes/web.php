@@ -83,6 +83,17 @@ Route::middleware(['auth:sanctum', 'account_type:2'])->prefix('users')->group(fu
             return Inertia::render('users/ticketing/details/page');
         });
     });
+    Route::prefix('accounting')->group(function () {
+        Route::get('my_fund_requests', function () {
+            return Inertia::render('users/accounting/my_fund_requests/page');
+        });
+        Route::get('pending_request', function () {
+            return Inertia::render('users/accounting/pending_request/page');
+        });
+        Route::get('expense_reports', function () {
+            return Inertia::render('users/accounting/expense_reports/page');
+        });
+    });
     Route::get('settings', function () {
         return Inertia::render('users/settings/page');
     });
