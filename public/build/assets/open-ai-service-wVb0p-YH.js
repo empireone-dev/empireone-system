@@ -1,0 +1,1 @@
+import{a as c}from"./app-CveY-weV.js";async function a(r){try{return await c.post("/api/scan_receipt",r)}catch{}}async function e(r){try{return await c.post("/api/cocd_prompt",{prompt:r})}catch{}}export{e as c,a as s};
