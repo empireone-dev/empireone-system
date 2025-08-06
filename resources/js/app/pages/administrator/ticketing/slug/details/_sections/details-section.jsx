@@ -58,6 +58,7 @@ export default function DetailsSection() {
                                         {ticket?.user?.name}
                                     </td>
                                 </tr>
+
                                 <tr className="border-b border-gray-100">
                                     <td className="max-w-0 px-0 py-5 align-top">
                                         <div className="truncate font-medium text-gray-900">
@@ -68,6 +69,19 @@ export default function DetailsSection() {
                                         {ticket?.site?.name ?? "N/A"}
                                     </td>
                                 </tr>
+
+                                <tr className="border-b border-gray-100">
+                                    <td className="max-w-0 px-0 py-5 align-top">
+                                        <div className="truncate font-medium text-gray-900">
+                                            Station / Room etc.:
+                                        </div>
+                                    </td>
+                                    <td className="hidden py-5 pr-0 pl-8 text-left align-top text-gray-700 tabular-nums sm:table-cell">
+                                        {ticket?.station ?? "N/A"}
+                                    </td>
+                                </tr>
+
+                                
                                 <tr className="border-b border-gray-100">
                                     <td className="max-w-0 px-0 py-5 align-top">
                                         <div className="truncate font-medium text-gray-900">

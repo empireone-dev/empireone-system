@@ -11,6 +11,48 @@ use Smalot\PdfParser\Parser;
 class OpenAIController extends Controller
 {
 
+    public function scan_receipt(Request $request)
+    {
+        $file = $request->file('receipt');
+        if (!$file) {
+            return response()->json(['error' => 'No file uploaded'], 400);
+        }
+
+        // Read the file content
+        $fileContent = file_get_contents($file->getRealPath());
+        // Gpt-4o-mini
+        // GPT-3.5
+        // Send to OpenAI API
+        $response = Http::withToken(env('OPENAI_API_KEY'))->post('https://api.openai.com/v1/chat/completions', [
+            'model' => 'gpt-4o-mini',
+            'messages' => [
+                [
+                    'role' => 'system',
+                    'content' => 'Get the date,receipt_number,amount. You are an assistant that extracts text from receipts. provide the text in clean HTML format suitable for WYSIWYG editors. Do not use markdown or code fences.',
+                ],
+                [
+                    'role' => 'user',
+                    'content' => base64_encode($fileContent),
+                ],
+            ],
+            'temperature' => 0,
+            'max_tokens' => 1024,
+        ]);
+        // dd($response);
+        if ($response->status() == 200) {
+
+            $rawOutput = trim($response['choices'][0]['message']['content']);
+
+            return response()->json([
+                'result' => $rawOutput,
+            ]);
+        } else {
+            return response()->json([
+                'result' => trim($response),
+            ]);
+        }
+    }
+
     public function cocd_prompt(Request $request)
     {
         $userPrompt = $request->input('prompt');
@@ -29,7 +71,7 @@ class OpenAIController extends Controller
         $fullPrompt = $userPrompt . "\n\nReference Document:\n" . $pdfText;
 
         $response = Http::withToken(env('OPENAI_API_KEY'))->post('https://api.openai.com/v1/chat/completions', [
-            'model' => 'gpt-4o',
+            'model' => 'gpt-4o-mini',
             'messages' => [
                 [
                     'role' => 'system',
@@ -42,14 +84,21 @@ class OpenAIController extends Controller
                 ],
             ],
             'temperature' => 0,
+            'max_tokens' => 1024,
         ]);
 
+        if ($response->status() == 200) {
 
-        $rawOutput = trim($response['choices'][0]['message']['content']);
+            $rawOutput = trim($response['choices'][0]['message']['content']);
 
-        return response()->json([
-            'result' => $rawOutput,
-        ]);
+            return response()->json([
+                'result' => $rawOutput,
+            ]);
+        } else {
+            return response()->json([
+                'result' => trim($response),
+            ]);
+        }
     }
 
     public function ticketing_prompt_stats(Request $request)
@@ -74,7 +123,7 @@ User prompt: "{$userPrompt}"
 EOT;
 
         $response = Http::withToken(env('OPENAI_API_KEY'))->post('https://api.openai.com/v1/chat/completions', [
-            'model' => 'gpt-4o',
+            'model' => 'gpt-4o-mini',
             'messages' => [
                 ['role' => 'system', 'content' => 'You are a helpful assistant that returns only SQL queries.'],
                 ['role' => 'user', 'content' => $aiQueryPrompt],

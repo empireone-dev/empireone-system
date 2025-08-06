@@ -33,7 +33,7 @@ Route::resource('accounting_expenses', AccountingExpensesController::class);
 
 Route::post('/ticketing_prompt_stats', [OpenAIController::class, 'ticketing_prompt_stats']);
 Route::post('/cocd_prompt', [OpenAIController::class, 'cocd_prompt']);
-
+Route::post('/scan_receipt', [OpenAIController::class, 'scan_receipt']);
 
 Route::get('get_account_by_department', [AccountController::class, 'get_account_by_department']);
 

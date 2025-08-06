@@ -104,6 +104,7 @@ export default function Layout({ children }) {
     //         type:"low"
     //     })
     // },[]);
+    
     return (
         <>
             <SidebarSection navigation={navigation} />
@@ -112,7 +113,7 @@ export default function Layout({ children }) {
 
                 <main className="p-3">
                     <div className="px-5">{children}</div>
-                    {/* <FloatingButtonSection /> */}
+                    <FloatingButtonSection />
                 </main>
             </div>
         </>
