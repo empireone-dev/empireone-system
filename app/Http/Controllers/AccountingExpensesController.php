@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\AccountingExpenses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AccountingExpensesController extends Controller
 {
@@ -17,8 +19,27 @@ class AccountingExpensesController extends Controller
     // Store a new transaction
     public function store(Request $request)
     {
-        $transaction = AccountingExpenses::create($request->all());
-        return response()->json($transaction, 201);
+        $user = Auth::user();
+        if ($request->hasFile('file')) {
+            $path = $request->file('file')->store(date("Y"), 's3');
+            $url = Storage::disk('s3')->url($path);
+        }
+        $account_expenses = AccountingExpenses::create([
+            'date' => $request->date,
+            'site' => $user->site_id,
+            'user_id' => $user->id,
+            'description' => $request->description,
+            // 'category' => $request->input('date'),
+            'receipt_number' => $request->receipt_number,
+            'amount' => $request->amount,
+            'total' => $request->amount,
+            // 'credit' => $request->input('date'),
+            // 'debit' => $request->input('debit'),
+            // 'balance' => $request->input('balance'),
+            'files' => $url ?? null,
+            'status' => 'Pending',
+        ]);
+        return response()->json($account_expenses, 200);
     }
 
     // Show a single transaction

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AccountingExpenses extends Model
 {
     protected $fillable = [
+        'user_id',
         'date',
         'site',
         'quantity',
@@ -19,6 +20,6 @@ class AccountingExpenses extends Model
         'debit',
         'balance',
         'files',
-        'status'
+        'status',
     ];
 }

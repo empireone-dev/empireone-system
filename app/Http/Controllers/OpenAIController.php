@@ -14,44 +14,63 @@ class OpenAIController extends Controller
     public function scan_receipt(Request $request)
     {
         $file = $request->file('receipt');
+
         if (!$file) {
             return response()->json(['error' => 'No file uploaded'], 400);
         }
 
-        // Read the file content
+        // Convert image to base64
         $fileContent = file_get_contents($file->getRealPath());
-        // Gpt-4o-mini
-        // GPT-3.5
-        // Send to OpenAI API
-        $response = Http::withToken(env('OPENAI_API_KEY'))->post('https://api.openai.com/v1/chat/completions', [
-            'model' => 'gpt-4o-mini',
-            'messages' => [
-                [
-                    'role' => 'system',
-                    'content' => 'Get the date,receipt_number,amount. You are an assistant that extracts text from receipts. provide the text in clean HTML format suitable for WYSIWYG editors. Do not use markdown or code fences.',
-                ],
-                [
-                    'role' => 'user',
-                    'content' => base64_encode($fileContent),
-                ],
-            ],
-            'temperature' => 0,
-            'max_tokens' => 1024,
-        ]);
-        // dd($response);
-        if ($response->status() == 200) {
+        $mimeType = $file->getMimeType();
+        $base64Image = 'data:' . $mimeType . ';base64,' . base64_encode($fileContent);
 
+        // Prepare the OpenAI request
+        $response = Http::withToken(env('OPENAI_API_KEY'))
+            ->withHeaders([
+                'Content-Type' => 'application/json',
+            ])
+            ->post('https://api.openai.com/v1/chat/completions', [
+                'model' => 'gpt-4o', // ✅ Correct model name
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => 'Extract the date, receipt_number, description, and amount from this receipt image. Return the result strictly in JSON format with keys: date, receipt_number, description, amount. No explanations, no markdown.',
+                    ],
+                    [
+                        'role' => 'user',
+                        'content' => [
+                            [
+                                'type' => 'image_url',
+                                'image_url' => [
+                                    'url' => $base64Image,
+                                ],
+                            ]
+                        ],
+                    ],
+                ],
+                'max_tokens' => 1000,
+            ]);
+
+        // Handle OpenAI response
+        if ($response->successful()) {
             $rawOutput = trim($response['choices'][0]['message']['content']);
 
+            // Clean up possible markdown
+            $cleaned = preg_replace('/^```json|```$/m', '', trim($rawOutput));
+            $data = json_decode($cleaned, true);
+
             return response()->json([
-                'result' => $rawOutput,
+                'result' => $data,
             ]);
         } else {
             return response()->json([
-                'result' => trim($response),
-            ]);
+                'error' => 'Failed to process image',
+                'message' => $response->json() ?? $response->body(),
+            ], $response->status());
         }
     }
+
+
 
     public function cocd_prompt(Request $request)
     {

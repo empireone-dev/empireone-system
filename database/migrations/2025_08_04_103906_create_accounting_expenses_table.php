@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('accounting_expenses', function (Blueprint $table) {
             $table->id();
             $table->string('site')->nullable();
+            $table->string('user_id')->nullable();
             $table->integer('quantity')->nullable();
             $table->text('description')->nullable();
             $table->string('category')->nullable();
