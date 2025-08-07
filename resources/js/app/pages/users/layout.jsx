@@ -68,7 +68,7 @@ export default function Layout({ children }) {
 
                 <main className="p-3">
                     <div className="px-5">{children}</div>
-                    <FloatingButtonSection />
+                    {/* <FloatingButtonSection /> */}
                 </main>
             </div>
         </>

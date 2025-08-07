@@ -1,1 +1,0 @@
-import{a as c}from"./app-C11SRzzF.js";async function a(r){try{return await c.post("/api/scan_receipt",r)}catch{}}async function e(r){try{return await c.post("/api/cocd_prompt",{prompt:r})}catch{}}export{e as c,a as s};
