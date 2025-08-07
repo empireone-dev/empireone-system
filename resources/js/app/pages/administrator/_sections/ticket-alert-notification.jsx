@@ -105,7 +105,7 @@ export default function TicketAlertNotification() {
                 }
             } else if (
                 user?.account_type != "1" &&
-                ticket.department == user.department &&
+                ticket?.user?.department == user.department &&
                 user?.id != user_id &&
                 ticket.location == user.location
             ) {

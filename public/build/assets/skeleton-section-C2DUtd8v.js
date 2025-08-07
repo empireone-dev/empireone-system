@@ -1,0 +1,1 @@
+import{j as t}from"./app-xvdgOpLE.js";import{S as e}from"./skeleton-bsa_m0Im.js";function r(){return t.jsxs(t.Fragment,{children:[t.jsx(e,{}),t.jsx(e,{}),t.jsx(e,{}),t.jsx(e,{})]})}export{r as default};
