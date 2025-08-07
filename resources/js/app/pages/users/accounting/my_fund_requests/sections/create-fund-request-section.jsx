@@ -11,6 +11,8 @@ import Button from "@/app/_components/button";
 import Modal from "@/app/_components/modal";
 import Input from "@/app/_components/input";
 import { accounting_expenses_service } from "@/app/services/accounting-expenses-service";
+import store from "@/app/store/store";
+import { get_my_fund_request_thunk } from "@/app/redux/accounting-thunk";
 
 const { Dragger } = Upload;
 
@@ -55,6 +57,7 @@ export default function CreateFundRequestSection() {
 
         try {
             await accounting_expenses_service(formData);
+            await store.dispatch(get_my_fund_request_thunk());
             setIsUploaded(false);
             await SwalAlert({ type: "success" });
             reset();
@@ -108,7 +111,7 @@ export default function CreateFundRequestSection() {
     }, [open]);
     return (
         <>
-            <Button onClick={() => setOpen(true)}>Create Fund Request</Button>
+            <Button onClick={() => setOpen(true)}>Request Refund</Button>
 
             <Modal
                 width="max-w-xl"

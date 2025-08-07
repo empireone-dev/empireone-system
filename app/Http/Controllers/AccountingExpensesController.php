@@ -9,10 +9,34 @@ use Illuminate\Support\Facades\Storage;
 
 class AccountingExpensesController extends Controller
 {
-    // List all transactions
-    public function index()
+
+    public function request_change_status(Request $request)
     {
-        $transactions = AccountingExpenses::all();
+        $user=Auth::user();
+        $transaction = AccountingExpenses::find($request->id);
+        if ($transaction) {
+            $transaction->update([
+                'status' => $request->status,
+                'assigned_to' => $user->id,
+                'description' => $request->description,
+                'receipt_number' => $request->receipt_number,
+                'amount' => $request->amount,
+                'category' => $request->category,
+            ]);
+            return response()->json(['message' => 'Status updated successfully'], 200);
+        }
+        return response()->json(['message' => 'Transaction not found'], 404);
+    }
+
+    public function my_fund_request()
+    {
+        $user = Auth::user();
+        $transactions = AccountingExpenses::where('user_id', $user->id)->with(['user'])->orderBy('id', 'desc')->paginate();
+        return response()->json($transactions, 200);
+    }
+    public function index(Request $request)
+    {
+        $transactions = AccountingExpenses::where('status', $request->status)->orderBy('date', 'asc')->with(['user'])->paginate();
         return response()->json($transactions);
     }
 

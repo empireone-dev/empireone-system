@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('site')->nullable();
             $table->string('user_id')->nullable();
+            $table->string('assigned_to')->nullable();
             $table->integer('quantity')->nullable();
             $table->text('description')->nullable();
             $table->string('category')->nullable();

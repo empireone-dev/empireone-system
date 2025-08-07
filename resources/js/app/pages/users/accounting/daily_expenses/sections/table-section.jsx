@@ -15,7 +15,7 @@ export default function TableSection() {
         { header: "Receipt Date", accessor: "date" },
         { header: "Receipt", accessor: "receipt" },
         { header: "Status", accessor: "status" },
-        { header: "Delete", accessor: "action" },
+        { header: "Amount", accessor: "amount" },
     ];
     console.log("expensesss", expenses.data);
     function limitString(str, maxLength = 20) {
@@ -39,6 +39,7 @@ export default function TableSection() {
                         </a>
                     ),
                     receipt_number: res.receipt_number,
+                    amount: res.amount,
                     status: (
                         <Tag
                             color={

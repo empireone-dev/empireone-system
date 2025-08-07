@@ -4,6 +4,8 @@ import moment from "moment";
 import React from "react";
 import { FcImageFile } from "react-icons/fc";
 import { useSelector } from "react-redux";
+import ApprovedSection from "./approved-section";
+import DeclinedSection from "./declined-section";
 
 export default function TableSection() {
     const { expenses } = useSelector((state) => state.accounting);
@@ -15,7 +17,7 @@ export default function TableSection() {
         { header: "Receipt Date", accessor: "date" },
         { header: "Receipt", accessor: "receipt" },
         { header: "Status", accessor: "status" },
-        { header: "Delete", accessor: "action" },
+        { header: "Action", accessor: "action" },
     ];
     console.log("expensesss", expenses.data);
     function limitString(str, maxLength = 20) {
@@ -53,18 +55,12 @@ export default function TableSection() {
                             {res.status}
                         </Tag>
                     ),
-                    // action: (
-                    //     <Link
-                    //         href={`/users/ticketing/${department_slug().replace(
-                    //             " ",
-                    //             "_"
-                    //         )}/${res.ticket_id}/details?${
-                    //             page ? `page=${page}` : ""
-                    //         }`}
-                    //     >
-                    //         <FcFinePrint className="h-6 w-6" />
-                    //     </Link>
-                    // ),
+                    action: (
+                        <div className="flex items-center justify-center gap-3">
+                            <ApprovedSection data={res} />
+                            <DeclinedSection data={res} />
+                        </div>
+                    ),
                 }))}
             />
         </>

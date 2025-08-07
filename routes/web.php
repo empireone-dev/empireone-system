@@ -90,6 +90,9 @@ Route::middleware(['auth:sanctum', 'account_type:2'])->prefix('users')->group(fu
         Route::get('pending_request', function () {
             return Inertia::render('users/accounting/pending_request/page');
         });
+        Route::get('daily_expenses', function () {
+            return Inertia::render('users/accounting/daily_expenses/page');
+        });
         Route::get('expense_reports', function () {
             return Inertia::render('users/accounting/expense_reports/page');
         });

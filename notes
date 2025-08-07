@@ -1,1 +1,4 @@
-ALTER TABLE old_table_name RENAME TO new_table_name;
+in accounting expenses remove the FF.
+- quantity
+- total
+- balance

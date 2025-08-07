@@ -5,6 +5,8 @@ export const accountingSlice = createSlice({
     initialState: {
         expense: {},
         expenses: [],
+        cash_flow:{},
+        cash_flows: [],
     },
     reducers: {
         setExpense: (state, action) => {
@@ -12,6 +14,12 @@ export const accountingSlice = createSlice({
         },
         setExpenses: (state, action) => {
             state.expenses = action.payload;
+        },
+        setCashFlow: (state, action) => {
+            state.cash_flow = action.payload;
+        },
+        setCashFlows: (state, action) => {
+            state.cash_flows = action.payload;
         }
     },
 });

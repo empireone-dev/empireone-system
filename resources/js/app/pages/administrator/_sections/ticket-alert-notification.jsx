@@ -104,6 +104,23 @@ export default function TicketAlertNotification() {
                     );
                 }
             } else if (
+                ticket.department == user.department &&
+                user?.id != user_id &&
+                ticket.location == user.location
+            ) {
+                browser_notification(
+                    "New Message",
+                    {
+                        body: `You have a new message from ${ticket.ticket_id}`,
+                        icon: "/images/logs.png",
+                    },
+                    () => {
+                        const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
+                        router.visit(path);
+                    },
+                    `/users/ticketing/internal_request/${ticket.ticket_id}/details`
+                );
+            } else if (
                 user?.account_type == "1" &&
                 ticket.location == user.location &&
                 user?.id != user_id
