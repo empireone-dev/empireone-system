@@ -4,20 +4,27 @@ import { get_user_thunk } from "@/app/redux/account-thunk";
 import store from "@/app/store/store";
 import { useEffect } from "react";
 import {
+    FcCalculator,
+    FcClock,
     FcCollaboration,
+    FcCurrencyExchange,
+    FcMoneyTransfer,
     FcOnlineSupport,
     FcSupport,
     FcTemplate,
 } from "react-icons/fc";
 import FloatingButtonSection from "../_sections/floating-button-section";
+import { useSelector } from "react-redux";
 
 export default function Layout({ children }) {
-
+    const { user } = useSelector((state) => state.accounts);
     useEffect(() => {
-        store.dispatch(get_user_thunk())
+        store.dispatch(get_user_thunk());
     }, []);
     const isCurrentMain = window.location.pathname.split("/")[2];
     const isCurrentSub = window.location.pathname.split("/")[3];
+
+    console.log("useruser", user);
     const navigation = [
         {
             name: "Dashboard",
@@ -25,7 +32,6 @@ export default function Layout({ children }) {
             icon: <FcTemplate className="h-6 w-6" />,
             current: isCurrentMain == "dashboard",
         },
-
         {
             name: "Ticketing",
             href: "/users/ticketing",
@@ -46,20 +52,58 @@ export default function Layout({ children }) {
                 },
             ],
         },
-       
+        ...(user.department === "Accounting Department"
+            ? [
+                  {
+                      name: "Accounting",
+                      href: "/users/accounting",
+                      icon: <FcCalculator className="h-6 w-6" />,
+                      current: isCurrentMain == "accounting",
+                      children: [
+                          {
+                              name: "My Fund Requests",
+                              href: "/users/accounting/my_fund_requests",
+                              icon: <FcOnlineSupport className="h-6 w-6" />,
+                              current: isCurrentSub == "my_fund_requests",
+                          },
+                          {
+                              name: "Pending Requests",
+                              href: "/users/accounting/pending_request",
+                              icon: <FcClock className="h-6 w-6" />,
+                              current: isCurrentSub == "pending_request",
+                          },
+                          {
+                              name: "Daily Expenses",
+                              href: "/users/accounting/daily_expenses",
+                              icon: <FcCurrencyExchange className="h-6 w-6" />,
+                              current: isCurrentSub == "daily_expenses",
+                          },
+                          {
+                              name: "Expense Reports",
+                              href: "/users/accounting/expense_reports",
+                              icon: <FcMoneyTransfer className="h-6 w-6" />,
+                              current: isCurrentSub == "expense_reports",
+                          },
+                      ],
+                  },
+              ]
+            : []),
+        ...(user.department !== "Accounting Department"
+            ? [
+                  {
+                      name: "Accounting",
+                      href: "/users/accounting/my_fund_requests",
+                      icon: <FcCalculator className="h-6 w-6" />,
+                      current: isCurrentMain == "accounting",
+                  },
+              ]
+            : []),
     ];
 
     const userNavigation = [
         { name: "Your profile", href: "#" },
         { name: "Sign out", href: "#" },
     ];
-
-    // useEffect(()=>{
-    //     TicketNotificationSection({
-    //         url:"/gif/low.gif",
-    //         type:"low"
-    //     })
-    // },[]);
     return (
         <>
             <SidebarSection navigation={navigation} />

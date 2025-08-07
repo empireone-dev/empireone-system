@@ -1,6 +1,0 @@
-import{j as e}from"./app-CveY-weV.js";import{h as d}from"./moment-G82_0lEo.js";import{c as i}from"./createLucideIcon-Cian3lKi.js";/**
- * @license lucide-react v0.534.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const n=[["path",{d:"M12 3v18",key:"108xh3"}],["rect",{width:"18",height:"18",x:"3",y:"3",rx:"2",key:"afitv7"}],["path",{d:"M3 9h18",key:"1pudct"}],["path",{d:"M3 15h18",key:"5xshup"}]],r=i("table",n);function p(){var a;const s=[{header:"Name of Requestor",accessor:"requestor"},{header:"Ticket No.",accessor:"ticket_no"},{header:"Location",accessor:"location"},{header:"Assigned To",accessor:"assigned_to"},{header:"Status",accessor:"status"},{header:"Date Created",accessor:"date_created"},{header:"Action",accessor:"action"}];return e.jsx(e.Fragment,{children:e.jsx(r,{columns:s,data:(a=tickets==null?void 0:tickets.data)==null?void 0:a.map(t=>{var o,c;return{requestor:((o=t==null?void 0:t.user)==null?void 0:o.name)??"NONE",location:t.location,date_created:d(t.created_at).format("LLL"),assigned_to:((c=t==null?void 0:t.assigned_to)==null?void 0:c.name)??"NONE",ticket_no:t.ticket_id,status:t.status}})})})}export{p as default};
