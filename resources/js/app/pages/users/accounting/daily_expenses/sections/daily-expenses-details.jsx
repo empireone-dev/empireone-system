@@ -68,7 +68,7 @@ export default function DailyExpensesDetails() {
                             <span className="font-medium text-gray-900">
                                 TOTAL AMOUNT OF ITEM:
                             </span>
-                            <br />₱ {totalAmount?.toFixed(2)}
+                            <br /> {peso_value(totalAmount)}
                         </dd>
                     </div>
                 </dl>

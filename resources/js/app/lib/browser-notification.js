@@ -10,7 +10,7 @@ export default function browser_notification(title, options = {}, onClick = null
         // Always open the app in a new tab when notification is clicked
         notification.onclick = (event) => {
             event.preventDefault();
-            window.open(path, "MsgWindow", "width=1280,height=800");
+            // window.open(path, "MsgWindow", "width=1280,height=800");
             if (typeof onClick === "function") {
                 onClick(event);
             }

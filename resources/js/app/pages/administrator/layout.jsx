@@ -151,7 +151,7 @@ export default function Layout({ children }) {
 
                 <main className="p-3">
                     <div>{children}</div>
-                    {/* <FloatingButtonSection /> */}
+                    <FloatingButtonSection />
                 </main>
             </div>
         </>
