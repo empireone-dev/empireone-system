@@ -75,8 +75,12 @@ export default function TicketAlertNotification() {
             console.log("sssss4", user?.id);
             console.log("sssss5", user_id);
             console.log("sssss6", ticket);
-            if (ticket.department == user.department && user?.id != user_id) {
-                if (ticket.location == user.location) {
+            if (user?.account_type != "1") {
+                if (
+                    ticket.location == "Carcar" &&
+                    ticket.department == user?.department &&
+                    user?.id != user_id
+                ) {
                     browser_notification(
                         "New Message",
                         {
@@ -89,7 +93,11 @@ export default function TicketAlertNotification() {
                         },
                         `/users/ticketing/internal_request/${ticket.ticket_id}/details`
                     );
-                } else if (ticket?.user?.location != ticket.location) {
+                } else if (
+                    ticket.location == "San Carlos" &&
+                    ticket.department == user?.department &&
+                    user?.id != user_id
+                ) {
                     browser_notification(
                         "New Message",
                         {
@@ -103,24 +111,6 @@ export default function TicketAlertNotification() {
                         `/users/ticketing/internal_request/${ticket.ticket_id}/details`
                     );
                 }
-            } else if (
-                user?.account_type != "1" &&
-                ticket?.user?.department == user.department &&
-                user?.id != user_id &&
-                ticket.location == user.location
-            ) {
-                browser_notification(
-                    "New Message",
-                    {
-                        body: `You have a new message from ${ticket.ticket_id}`,
-                        icon: "/images/logs.png",
-                    },
-                    () => {
-                        const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
-                        router.visit(path);
-                    },
-                    `/users/ticketing/internal_request/${ticket.ticket_id}/details`
-                );
             } else if (
                 user?.account_type == "1" &&
                 ticket.location == user.location &&
