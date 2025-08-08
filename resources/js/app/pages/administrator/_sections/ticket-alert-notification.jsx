@@ -76,71 +76,35 @@ export default function TicketAlertNotification() {
             console.log("sssss5", user_id);
             console.log("sssss6", ticket);
             if (user?.account_type != "1") {
-                if (ticket.location == "Carcar" && user?.id != user_id) {
-                    if (ticket?.user?.department == user?.department) {
-                        browser_notification(
-                            "New Message",
-                            {
-                                body: `You have a new message from ${ticket.ticket_id}`,
-                                icon: "/images/logs.png",
-                            },
-                            () => {
-                                const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
-                                router.visit(path);
-                            },
-                            `/users/ticketing/internal_request/${ticket.ticket_id}/details`
-                        );
-                    } else if (ticket?.department == user?.department) {
-                        browser_notification(
-                            "New Message",
-                            {
-                                body: `You have a new message from ${ticket.ticket_id}`,
-                                icon: "/images/logs.png",
-                            },
-                            () => {
-                                const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
-                                router.visit(path);
-                            },
-                            `/users/ticketing/internal_request/${ticket.ticket_id}/details`
-                        );
-                    }
-                } else if (
-                    ticket.location == "San Carlos" &&
-                    user?.id != user_id
-                ) {
-                    if (ticket?.user?.department == user?.department) {
-                        browser_notification(
-                            "New Message",
-                            {
-                                body: `You have a new message from ${ticket.ticket_id}`,
-                                icon: "/images/logs.png",
-                            },
-                            () => {
-                                const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
-                                router.visit(path);
-                            },
-                            `/users/ticketing/internal_request/${ticket.ticket_id}/details`
-                        );
-                    } else if (ticket?.department == user?.department) {
-                        browser_notification(
-                            "New Message",
-                            {
-                                body: `You have a new message from ${ticket.ticket_id}`,
-                                icon: "/images/logs.png",
-                            },
-                            () => {
-                                const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
-                                router.visit(path);
-                            },
-                            `/users/ticketing/internal_request/${ticket.ticket_id}/details`
-                        );
-                    }
-                }
             } else if (
                 user?.account_type == "1" &&
                 ticket.location == user.location &&
                 user?.id != user_id
             ) {
+                const locations = ["Carcar", "San Carlos"];
+
+                if (
+                    locations.includes(ticket.location) &&
+                    user?.id !== user_id
+                ) {
+                    const sameDepartment =
+                        ticket?.user?.department === user?.department ||
+                        ticket?.department === user?.department;
+
+                    if (sameDepartment) {
+                        const detailsPath = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
+                        browser_notification(
+                            "New Message",
+                            {
+                                body: `You have a new message from ${ticket.ticket_id}`,
+                                icon: "/images/logs.png",
+                            },
+                            () => router.visit(detailsPath),
+                            detailsPath
+                        );
+                    }
+                }
+
                 browser_notification(
                     "New Message",
                     {
