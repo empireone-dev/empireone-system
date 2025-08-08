@@ -76,40 +76,65 @@ export default function TicketAlertNotification() {
             console.log("sssss5", user_id);
             console.log("sssss6", ticket);
             if (user?.account_type != "1") {
-                if (
-                    ticket.location == "Carcar" &&
-                    ticket.department == user?.department &&
-                    user?.id != user_id
-                ) {
-                    browser_notification(
-                        "New Message",
-                        {
-                            body: `You have a new message from ${ticket.ticket_id}`,
-                            icon: "/images/logs.png",
-                        },
-                        () => {
-                            const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
-                            router.visit(path);
-                        },
-                        `/users/ticketing/internal_request/${ticket.ticket_id}/details`
-                    );
+                if (ticket.location == "Carcar" && user?.id != user_id) {
+                    if (ticket?.user?.department == user?.department) {
+                        browser_notification(
+                            "New Message",
+                            {
+                                body: `You have a new message from ${ticket.ticket_id}`,
+                                icon: "/images/logs.png",
+                            },
+                            () => {
+                                const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
+                                router.visit(path);
+                            },
+                            `/users/ticketing/internal_request/${ticket.ticket_id}/details`
+                        );
+                    } else if (ticket?.department == user?.department) {
+                        browser_notification(
+                            "New Message",
+                            {
+                                body: `You have a new message from ${ticket.ticket_id}`,
+                                icon: "/images/logs.png",
+                            },
+                            () => {
+                                const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
+                                router.visit(path);
+                            },
+                            `/users/ticketing/internal_request/${ticket.ticket_id}/details`
+                        );
+                    }
                 } else if (
                     ticket.location == "San Carlos" &&
-                    ticket.department == user?.department &&
                     user?.id != user_id
                 ) {
-                    browser_notification(
-                        "New Message",
-                        {
-                            body: `You have a new message from ${ticket.ticket_id}`,
-                            icon: "/images/logs.png",
-                        },
-                        () => {
-                            const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
-                            router.visit(path);
-                        },
-                        `/users/ticketing/internal_request/${ticket.ticket_id}/details`
-                    );
+                    if (ticket?.user?.department == user?.department) {
+                        browser_notification(
+                            "New Message",
+                            {
+                                body: `You have a new message from ${ticket.ticket_id}`,
+                                icon: "/images/logs.png",
+                            },
+                            () => {
+                                const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
+                                router.visit(path);
+                            },
+                            `/users/ticketing/internal_request/${ticket.ticket_id}/details`
+                        );
+                    } else if (ticket?.department == user?.department) {
+                        browser_notification(
+                            "New Message",
+                            {
+                                body: `You have a new message from ${ticket.ticket_id}`,
+                                icon: "/images/logs.png",
+                            },
+                            () => {
+                                const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
+                                router.visit(path);
+                            },
+                            `/users/ticketing/internal_request/${ticket.ticket_id}/details`
+                        );
+                    }
                 }
             } else if (
                 user?.account_type == "1" &&
