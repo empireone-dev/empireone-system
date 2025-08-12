@@ -109,8 +109,8 @@ export default function CreateTicketSection() {
                     onSubmit={handleSubmit(submit_data)}
                     className="flex flex-col gap-4"
                 >
-                    <div className="flex gap-4">
-                        <div className="flex-1 flex flex-col gap-4">
+                    <div className="flex flex-1 gap-4">
+                        <div className="w-5/12 flex flex-col gap-4">
                             <Select
                                 label="Department"
                                 name="department"
@@ -212,23 +212,6 @@ export default function CreateTicketSection() {
                                     </p>
                                 )}
                             </div>
-                        </div>
-
-                        <div className="flex-1 flex flex-col">
-                            <Controller
-                                name="details"
-                                control={control}
-                                rules={{ required: "Details is required" }}
-                                render={({ field }) => (
-                                    <Wysiwyg
-                                        label="Details Request"
-                                        value={field.value}
-                                        onChange={field.onChange}
-                                        error={errors?.details?.message}
-                                    />
-                                )}
-                            />
-
                             <div className="overflow-auto">
                                 <Controller
                                     name="files"
@@ -262,6 +245,22 @@ export default function CreateTicketSection() {
                                     </p>
                                 )}
                             </div>
+                        </div>
+
+                        <div className="flex-1 flex flex-col">
+                            <Controller
+                                name="details"
+                                control={control}
+                                rules={{ required: "Details is required" }}
+                                render={({ field }) => (
+                                    <Wysiwyg
+                                        label="Details Request"
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        error={errors?.details?.message}
+                                    />
+                                )}
+                            />
                         </div>
                     </div>
 

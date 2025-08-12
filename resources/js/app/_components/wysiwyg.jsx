@@ -25,7 +25,7 @@ export default function Wysiwyg({ label, name, value, onChange, error }) {
             <Editor
                 editorState={editorState}
                 wrapperClassName="border rounded"
-                editorClassName="p-2 min-h-[150px] max-h-[150px] overflow-y-auto custom-rtl-editor"
+                editorClassName="p-2 min-h-[375px] max-h-[300px] overflow-y-auto custom-rtl-editor"
                 onEditorStateChange={onEditorStateChange}
             />
 
