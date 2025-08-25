@@ -35,9 +35,9 @@ export default function ExpensesDetailsSection() {
                     </div>
                     <div className="mt-2 sm:mt-0 sm:pl-4">
                         <dd className="inline text-gray-900">
-                            <time dateTime="2023-31-01">
+                            {/* <time dateTime="2023-31-01">
                                 Accounting Department
-                            </time>
+                            </time> */}
                         </dd>
                     </div>
                     <div className="mt-8 sm:mt-6 sm:border-t sm:border-gray-900/5 sm:pt-6 sm:pl-4">
