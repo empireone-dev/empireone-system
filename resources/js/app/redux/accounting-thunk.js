@@ -1,11 +1,18 @@
 import { get_accounting_cash_flows_service } from "../services/accounting-cash-flows";
-import { get_accounting_expenses_service, get_my_fund_request_service } from "../services/accounting-expenses-service";
+import { get_accounting_expenses_service, get_daily_expenses_service, get_expenses_report_service, get_my_fund_request_service } from "../services/accounting-expenses-service";
 import { accountingSlice } from "./accounting-slice";
 
 export function get_accounting_cash_flows_thunk() {
     return async function (dispatch, getState) {
         const res = await get_accounting_cash_flows_service();
         dispatch(accountingSlice.actions.setCashFlow(res.data));
+    };
+}
+
+export function get_expenses_report_thunk() {
+    return async function (dispatch, getState) {
+        const res = await get_expenses_report_service();
+        dispatch(accountingSlice.actions.setExpensesReports(res.data));
     };
 }
 
@@ -16,6 +23,13 @@ export function get_accounting_expenses_thunk(data) {
         dispatch(accountingSlice.actions.setExpenses(res.data));
     };
 }
+export function get_daily_expenses_thunk() {
+    return async function (dispatch, getState) {
+        const res = await get_daily_expenses_service();
+        dispatch(accountingSlice.actions.setDailyExpenses(res.data));
+    };
+}
+
 
 
 export function get_my_fund_request_thunk() {

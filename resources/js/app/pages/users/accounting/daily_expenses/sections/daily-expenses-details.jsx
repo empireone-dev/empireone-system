@@ -2,11 +2,14 @@ import { peso_value } from "@/app/lib/peso-value";
 import moment from "moment";
 import React from "react";
 import { useSelector } from "react-redux";
+import EditCashflowSection from "./edit-cashflow-section";
 
 export default function DailyExpensesDetails() {
-    const { expenses, cash_flow } = useSelector((state) => state.accounting);
+    const { daily_expenses, cash_flow } = useSelector(
+        (state) => state.accounting
+    );
     const { user } = useSelector((state) => state.accounts);
-    const totalAmount = expenses?.data?.reduce(
+    const totalAmount = daily_expenses?.reduce(
         (sum, item) => sum + Number(item.amount),
         0
     );
@@ -14,9 +17,13 @@ export default function DailyExpensesDetails() {
     return (
         <>
             <div className=" rounded-t-lg px-4 py-8 shadow-xs ring-1 ring-gray-300 sm:mx-0  sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-8 xl:pt-8 xl:pb-20">
-                <h2 className="text-base font-semibold text-gray-900">
-                    DAILY EXPENSES REPORT
-                </h2>
+                <div className="flex items-center justify-between">
+                    <h2 className="text-base font-semibold text-gray-900">
+                        DAILY EXPENSES REPORT
+                    </h2>
+
+                    <EditCashflowSection />
+                </div>
                 <dl className="mt-6 grid grid-cols-1 text-sm/6 sm:grid-cols-2">
                     <div className="sm:pr-4">
                         <dt className="inline text-gray-900">Date:</dt>{" "}
@@ -45,11 +52,11 @@ export default function DailyExpensesDetails() {
                             </span>
 
                             <span className="font-medium text-gray-900">
-                                Total: {" "}{peso_value(cash_flow?.total)}
+                                Total: {peso_value(cash_flow?.total)}
                             </span>
 
                             <span className="font-medium text-gray-900">
-                                Balance:{" "}
+                                Remaining Balance:{" "}
                                 {peso_value(
                                     Number(cash_flow?.total) - totalAmount
                                 )}

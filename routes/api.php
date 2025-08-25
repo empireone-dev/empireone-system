@@ -33,10 +33,11 @@ Route::resource('notes', NoteController::class);
 
 
 Route::resource('accounting_expenses', AccountingExpensesController::class);
+Route::get('/get_daily_expenses', [AccountingExpensesController::class, 'get_daily_expenses']);
 Route::get('/my_fund_request', [AccountingExpensesController::class, 'my_fund_request']);
 Route::post('/request_change_status', [AccountingExpensesController::class, 'request_change_status']);
 Route::resource('accounting_cash_flows', AccountingCashFlowController::class);
-
+Route::get('/get_expenses_report', [AccountingExpensesController::class, 'get_expenses_report']);
 
 Route::post('/ticketing_prompt_stats', [OpenAIController::class, 'ticketing_prompt_stats']);
 Route::post('/cocd_prompt', [OpenAIController::class, 'cocd_prompt']);

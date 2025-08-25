@@ -46,3 +46,22 @@ export async function get_accounting_expenses_service(data) {
 
     }
 }
+
+export async function get_daily_expenses_service() {
+    try {
+        const result =await axios.get('/api/get_daily_expenses')    
+        return result
+    } catch (error) {
+
+    }
+}
+
+export async function get_expenses_report_service() {
+    try {
+        const result =await axios.get('/api/get_expenses_report'+window.location.search)    
+        return result
+    } catch (error) {
+
+    }
+}
+

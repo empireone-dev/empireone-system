@@ -6,7 +6,7 @@ import { FcImageFile } from "react-icons/fc";
 import { useSelector } from "react-redux";
 
 export default function TableSection() {
-    const { expenses } = useSelector((state) => state.accounting);
+    const { daily_expenses } = useSelector((state) => state.accounting);
 
     const columns = [
         { header: "Name of Requestor", accessor: "requestor" },
@@ -17,7 +17,7 @@ export default function TableSection() {
         { header: "Status", accessor: "status" },
         { header: "Amount", accessor: "amount" },
     ];
-    console.log("expensesss", expenses.data);
+    console.log("daily_expensesss", daily_expenses);
     function limitString(str, maxLength = 20) {
         return str.length > maxLength ? str.slice(0, maxLength) + "..." : str;
     }
@@ -25,7 +25,7 @@ export default function TableSection() {
         <>
             <Table
                 columns={columns}
-                data={expenses?.data?.map((res, i) => ({
+                data={daily_expenses?.map((res, i) => ({
                     requestor: res?.user?.name ?? "NONE",
                     description: limitString(res.description),
                     date: moment(res.date).format("LLL"),

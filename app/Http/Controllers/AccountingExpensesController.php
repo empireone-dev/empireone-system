@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountingCashFlow;
 use App\Models\AccountingExpenses;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -10,9 +12,49 @@ use Illuminate\Support\Facades\Storage;
 class AccountingExpensesController extends Controller
 {
 
+    public function get_expenses_report(Request $request)
+    {
+        $month = $request->month ?? now()->format('m');
+        $year = $request->year ?? now()->format('Y');
+
+        // First and last day of given month
+        $startDate = Carbon::createFromDate($year, $month, 1)->startOfDay();
+        $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth()->endOfDay();
+
+
+        $transactions = AccountingExpenses::whereRaw(
+            "STR_TO_DATE(`date`, '%M %e, %Y %l:%i %p') BETWEEN ? AND ?",
+            [$startDate, $endDate]
+        )
+            ->where('status', 'Approved')
+            ->orderByRaw("STR_TO_DATE(`date`, '%M %e, %Y %l:%i %p') asc")
+            ->with(['user'])
+            ->get();
+
+        return response()->json($transactions, 200);
+    }
+
+
+
+    public function get_daily_expenses()
+    {
+        $today = Carbon::today()->toDateString();
+
+        $transactions = AccountingExpenses::where('status', 'Approved')
+            ->orderBy('date', 'asc')
+            ->with(['user'])
+            ->get()
+            ->filter(function ($expense) use ($today) {
+                $parsedDate = Carbon::parse($expense->date)->toDateString();
+                return $parsedDate == $today;
+            })
+            ->values(); // reset array keys
+
+        return response()->json($transactions, 200);
+    }
     public function request_change_status(Request $request)
     {
-        $user=Auth::user();
+        $user = Auth::user();
         $transaction = AccountingExpenses::find($request->id);
         if ($transaction) {
             $transaction->update([
@@ -23,6 +65,13 @@ class AccountingExpensesController extends Controller
                 'amount' => $request->amount,
                 'category' => $request->category,
             ]);
+
+            $cash_flow =  AccountingCashFlow::where('id', 1)->first();
+            if ($cash_flow) {
+                $cash_flow->update([
+                    'total' => $cash_flow->total - $request->amount,
+                ]);
+            }
             return response()->json(['message' => 'Status updated successfully'], 200);
         }
         return response()->json(['message' => 'Transaction not found'], 404);
@@ -37,7 +86,7 @@ class AccountingExpensesController extends Controller
     public function index(Request $request)
     {
         $transactions = AccountingExpenses::where('status', $request->status)->orderBy('date', 'asc')->with(['user'])->paginate();
-        return response()->json($transactions);
+        return response()->json($transactions, 200);
     }
 
     // Store a new transaction
@@ -61,8 +110,16 @@ class AccountingExpensesController extends Controller
             // 'debit' => $request->input('debit'),
             // 'balance' => $request->input('balance'),
             'files' => $url ?? null,
-            'status' => 'Pending',
+            'status' => $user->department == 'Accounting Department' ? 'Pending' : 'Approved',
         ]);
+        if ($user->department == 'Accounting Department') {
+            $cash_flow =  AccountingCashFlow::where('id', 1)->first();
+            if ($cash_flow) {
+                $cash_flow->update([
+                    'total' => $cash_flow->total - $request->amount,
+                ]);
+            }
+        }
         return response()->json($account_expenses, 200);
     }
 

@@ -8,3 +8,10 @@ export async function get_accounting_cash_flows_service() {
 
     }
 }
+
+export function update_accounting_cash_flows_service(data) {
+    try {
+        const result = axios.put(`/api/accounting_cash_flows/${data.id}`, data);
+        return result;
+    } catch (error) {}
+}

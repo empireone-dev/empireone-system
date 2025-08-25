@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { set } from "react-hook-form";
 
 export const accountingSlice = createSlice({
     name: "accounting",
@@ -7,6 +8,8 @@ export const accountingSlice = createSlice({
         expenses: [],
         cash_flow:{},
         cash_flows: [],
+        daily_expenses: [],
+        expenses_reports: [],
     },
     reducers: {
         setExpense: (state, action) => {
@@ -20,10 +23,16 @@ export const accountingSlice = createSlice({
         },
         setCashFlows: (state, action) => {
             state.cash_flows = action.payload;
-        }
+        },
+        setDailyExpenses: (state, action) => {
+            state.daily_expenses = action.payload;
+        },
+        setExpensesReports: (state, action) => {
+            state.expenses_reports = action.payload;
+        },
     },
 });
-export const { setExpense,setExpenses } =
+export const { setExpense,setExpenses,setDailyExpenses,setExpensesReports } =
     accountingSlice.actions;
 
 export default accountingSlice.reducer;
