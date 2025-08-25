@@ -110,7 +110,7 @@ export default function CreateTicketSection() {
                     className="flex flex-col gap-4"
                 >
                     <div className="flex gap-4">
-                        <div className="flex-1 flex flex-col gap-4">
+                        <div className="w-5/12 flex flex-col gap-4">
                             <Select
                                 label="Department"
                                 name="department"
