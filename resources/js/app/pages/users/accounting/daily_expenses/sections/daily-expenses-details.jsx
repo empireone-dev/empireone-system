@@ -52,14 +52,16 @@ export default function DailyExpensesDetails() {
                             </span>
 
                             <span className="font-medium text-gray-900">
-                                Total: {peso_value(cash_flow?.total)}
+                                Total:
+                                {peso_value(
+                                    Number(cash_flow?.starting_balance) +
+                                        Number(cash_flow?.cash_withdrawn)
+                                )}
                             </span>
 
                             <span className="font-medium text-gray-900">
                                 Remaining Balance:{" "}
-                                {peso_value(
-                                    Number(cash_flow?.total) - totalAmount
-                                )}
+                                {peso_value(cash_flow?.total)}
                             </span>
                         </dd>
                     </div>

@@ -67,7 +67,7 @@ class AccountingExpensesController extends Controller
             ]);
 
             $cash_flow =  AccountingCashFlow::where('id', 1)->first();
-            if ($cash_flow) {
+            if ($request->status == 'Approved' && $cash_flow) {
                 $cash_flow->update([
                     'total' => $cash_flow->total - $request->amount,
                 ]);
@@ -110,16 +110,9 @@ class AccountingExpensesController extends Controller
             // 'debit' => $request->input('debit'),
             // 'balance' => $request->input('balance'),
             'files' => $url ?? null,
-            'status' => $user->department == 'Accounting Department' ? 'Pending' : 'Approved',
+            'status' => 'Pending',
         ]);
-        if ($user->department == 'Accounting Department') {
-            $cash_flow =  AccountingCashFlow::where('id', 1)->first();
-            if ($cash_flow) {
-                $cash_flow->update([
-                    'total' => $cash_flow->total - $request->amount,
-                ]);
-            }
-        }
+
         return response()->json($account_expenses, 200);
     }
 

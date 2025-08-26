@@ -27,7 +27,7 @@ return new class extends Migration
             $table->decimal('balance', 15, 2)->nullable();
             $table->string('files')->nullable();
             $table->string('status')->nullable();
-            $table->date('date')->nullable();
+            $table->string('date')->nullable();
             $table->timestamps();
         });
     }
