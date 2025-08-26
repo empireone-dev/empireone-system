@@ -34,7 +34,7 @@ class OpenAIController extends Controller
                 'messages' => [
                     [
                         'role' => 'system',
-                        'content' => 'Extract the date, receipt_number, description, and amount from this receipt image. Return the result strictly in JSON format with keys: date, receipt_number, description, amount. No explanations, no markdown.',
+                        'content' => 'Extract the date, receipt_number, description,TIN, and amount from this receipt image. Return the result strictly in JSON format with keys: date, receipt_number, description,tin, amount. No explanations, no markdown.',
                     ],
                     [
                         'role' => 'user',

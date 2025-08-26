@@ -18,9 +18,7 @@ class AccountingExpenses extends Model
         'receipt_number',
         'amount',
         'total',
-        'credit',
-        'debit',
-        'balance',
+        'tin',
         'files',
         'status',
     ];

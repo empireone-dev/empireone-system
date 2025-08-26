@@ -33,6 +33,7 @@ export default function CreateFundRequestSection() {
             receipt_number: "",
             amount: "",
             balance: "",
+            tin: "",
             files: [],
             date: dayjs(), // single date (can change to array for range)
         },
@@ -80,13 +81,14 @@ export default function CreateFundRequestSection() {
 
         try {
             const res = await scan_receipt_service(fd);
-            const { receipt_number, amount, date, description } =
+            const { receipt_number, amount, date, description, tin } =
                 res.data.result;
 
             // Populate fields from scan
             if (receipt_number) setValue("receipt_number", receipt_number);
             if (amount) setValue("amount", amount);
             if (description) setValue("description", description);
+            if (tin) setValue("tin", tin);
             if (date) {
                 const parsedDate = dayjs(date, ["MM/DD/YYYY", "YYYY-MM-DD"]);
                 if (parsedDate.isValid()) {
@@ -179,6 +181,15 @@ export default function CreateFundRequestSection() {
                                         name="amount"
                                         error={errors?.amount?.message}
                                         register={register("amount", {
+                                            required: "This field is required",
+                                        })}
+                                    />
+                                    <Input
+                                        label="Tin #"
+                                        type="text"
+                                        name="tin"
+                                        error={errors?.tin?.message}
+                                        register={register("tin", {
                                             required: "This field is required",
                                         })}
                                     />

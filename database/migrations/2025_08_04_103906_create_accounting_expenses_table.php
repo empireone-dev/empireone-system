@@ -17,14 +17,12 @@ return new class extends Migration
             $table->string('user_id')->nullable();
             $table->string('assigned_to')->nullable();
             $table->integer('quantity')->nullable();
+            $table->string('tin')->nullable();
             $table->text('description')->nullable();
             $table->string('category')->nullable();
             $table->string('receipt_number')->nullable();
             $table->decimal('amount', 15, 2)->nullable();
             $table->decimal('total', 15, 2)->nullable();
-            $table->decimal('credit', 15, 2)->nullable();
-            $table->decimal('debit', 15, 2)->nullable();
-            $table->decimal('balance', 15, 2)->nullable();
             $table->string('files')->nullable();
             $table->string('status')->nullable();
             $table->string('date')->nullable();
