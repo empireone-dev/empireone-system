@@ -13,6 +13,7 @@ export default function TableSection() {
         { header: "Description", accessor: "description" },
         { header: "Receipt Number", accessor: "receipt_number" },
         { header: "Receipt Date", accessor: "date" },
+        { header: "TIN #", accessor: "tin" },
         { header: "Receipt", accessor: "receipt" },
         { header: "Status", accessor: "status" },
         { header: "Amount", accessor: "amount" },
@@ -38,6 +39,7 @@ export default function TableSection() {
                             <FcImageFile className="h-6 w-6" />
                         </a>
                     ),
+                    tin: res.tin,
                     receipt_number: res.receipt_number,
                     amount: res.amount,
                     status: (
