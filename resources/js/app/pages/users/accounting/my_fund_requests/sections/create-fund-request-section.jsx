@@ -253,7 +253,7 @@ export default function CreateFundRequestSection() {
                     <Button
                         type="submit"
                         loading={isSubmitting || loading}
-                        disabled={isSubmitting || loading}
+                        disabled={isSubmitting || loading || !isUploaded}
                     >
                         SUBMIT REFUND
                     </Button>

@@ -1,0 +1,1 @@
+import{j as t}from"./app-CeQlfo_T.js";import{S as e}from"./skeleton-y2Qth-eD.js";function r(){return t.jsxs(t.Fragment,{children:[t.jsx(e,{}),t.jsx(e,{}),t.jsx(e,{}),t.jsx(e,{})]})}export{r as default};

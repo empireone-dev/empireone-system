@@ -1,1 +1,0 @@
-import{j as t}from"./app-B_dQT952.js";import{S as e}from"./skeleton-wZWB-Udc.js";function r(){return t.jsxs(t.Fragment,{children:[t.jsx(e,{}),t.jsx(e,{}),t.jsx(e,{}),t.jsx(e,{})]})}export{r as default};
