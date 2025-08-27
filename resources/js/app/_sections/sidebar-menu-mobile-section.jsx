@@ -33,8 +33,8 @@ export default function SidebarMobileSection({
                                                 href={item.href}
                                                 className={classNames(
                                                     item.current
-                                                        ? "bg-red-500 text-white"
-                                                        : "text-gray-700 hover:bg-gray-50 hover:text-red-500",
+                                                        ? "bg-blue-500 text-white"
+                                                        : "text-gray-700 hover:bg-gray-50 hover:text-blue-500",
                                                     "group flex gap-x-3 rounded-md p-2 py-3 text-sm/6 font-semibold"
                                                 )}
                                             >
@@ -43,7 +43,7 @@ export default function SidebarMobileSection({
                                                     className={classNames(
                                                         item.current
                                                             ? "text-white"
-                                                            : "text-gray-700 group-hover:text-red-500",
+                                                            : "text-gray-700 group-hover:text-blue-500",
                                                         "size-6 shrink-0"
                                                     )}
                                                 /> */}

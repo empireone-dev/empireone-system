@@ -27,30 +27,30 @@ export default function TableSection() {
                 columns={columns}
                 data={expenses?.data?.map((res, i) => ({
                     requestor: res?.user?.name ?? "NONE",
-                    description: limitString(res.description),
-                    date: moment(res.date).format("LLL"),
+                    description: limitString(res?.description),
+                    date: moment(res?.date).format("LLL"),
                     receipt: (
                         <a
-                            href={res.files}
+                            href={res?.files}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
                             <FcImageFile className="h-6 w-6" />
                         </a>
                     ),
-                    receipt_number: res.receipt_number,
+                    receipt_number: res?.receipt_number,
                     status: (
                         <Tag
                             color={
-                                res.status == "Declined"
+                                res?.status == "Declined"
                                     ? "red"
-                                    : res.status == "Pending"
+                                    : res?.status == "Pending"
                                     ? "orange"
                                     : "green"
                             }
                             key={i}
                         >
-                            {res.status}
+                            {res?.status}
                         </Tag>
                     ),
                     // action: (
@@ -58,7 +58,7 @@ export default function TableSection() {
                     //         href={`/users/ticketing/${department_slug().replace(
                     //             " ",
                     //             "_"
-                    //         )}/${res.ticket_id}/details?${
+                    //         )}/${res?.ticket_id}/details?${
                     //             page ? `page=${page}` : ""
                     //         }`}
                     //     >

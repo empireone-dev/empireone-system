@@ -35,6 +35,7 @@ export default function Input({
                     type={type}
                     id={name}
                     name={name}
+                    step={type === "number" ? "any" : undefined}
                     className={`peer text-black placeholder-transparent w-full py-2.5 px-5 border bg-white rounded-md focus:outline-none transition-all
             ${iconLeft ? "pl-10" : ""}
             ${iconRight ? "pr-10" : ""}
