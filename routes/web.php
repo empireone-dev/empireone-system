@@ -83,19 +83,33 @@ Route::middleware(['auth:sanctum', 'account_type:2'])->prefix('users')->group(fu
             return Inertia::render('users/ticketing/details/page');
         });
     });
-    Route::prefix('accounting')->group(function () {
+    Route::prefix('accounting/expenses')->group(function () {
         Route::get('my_fund_requests', function () {
-            return Inertia::render('users/accounting/my_fund_requests/page');
+            return Inertia::render('users/accounting/expenses/my_fund_requests/page');
         });
         Route::get('pending_request', function () {
-            return Inertia::render('users/accounting/pending_request/page');
+            return Inertia::render('users/accounting/expenses/pending_request/page');
         });
         Route::get('daily_expenses', function () {
-            return Inertia::render('users/accounting/daily_expenses/page');
+            return Inertia::render('users/accounting/expenses/daily_expenses/page');
         });
-        Route::get('expense_reports', function () {
-            return Inertia::render('users/accounting/expense_reports/page');
+        Route::get('expenses_report', function () {
+            return Inertia::render('users/accounting/expenses/expenses_report/page');
         });
+    });
+     Route::prefix('accounting/purchase_request')->group(function () {
+        Route::get('create_purchase_request', function () {
+            return Inertia::render('users/accounting/purchase_request/create_purchase_request/page');
+        });
+        Route::get('pending_purchase_request', function () {
+            return Inertia::render('users/accounting/purchase_request/pending_purchase_request/page');
+        });
+        // Route::get('daily_expenses', function () {
+        //     return Inertia::render('users/accounting/purchase_request/daily_expenses/page');
+        // });
+        // Route::get('expenses_report', function () {
+        //     return Inertia::render('users/accounting/purchase_request/expenses_report/page');
+        // });
     });
     Route::get('settings', function () {
         return Inertia::render('users/settings/page');

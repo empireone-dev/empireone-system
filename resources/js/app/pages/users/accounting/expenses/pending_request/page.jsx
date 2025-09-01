@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import Layout from "../../layout";
+import Layout from "../../../layout";
 import TableSection from "./sections/table-section";
 import store from "@/app/store/store";
 import { get_accounting_expenses_thunk } from "@/app/redux/accounting-thunk";
+import ExpensesLayout from "../layout";
 
 export default function Page() {
     useEffect(() => {
@@ -10,7 +11,9 @@ export default function Page() {
     }, []);
     return (
         <Layout>
-            <TableSection />
+            <ExpensesLayout>
+                <TableSection />
+            </ExpensesLayout>
         </Layout>
     );
 }

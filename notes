@@ -1,4 +1,12 @@
-in accounting expenses remove the FF.
-- quantity
-- total
-- balance
+Purchase Request(Employee, Manager,Operations and Admin)
+	->requestor_id
+	->description
+	->quantity
+->manager approval
+->account department will make Purchase Order
+->Attorney approval
+->Treasury Report
+->Back to Accounting Department.
+->Upload Invoice. before close.
+->Received Report.
+->Go to Inventory.

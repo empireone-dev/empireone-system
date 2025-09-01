@@ -11,6 +11,7 @@ import {
     FcMoneyTransfer,
     FcOnlineSupport,
     FcSupport,
+    FcSurvey,
     FcTemplate,
 } from "react-icons/fc";
 import FloatingButtonSection from "../_sections/floating-button-section";
@@ -24,7 +25,6 @@ export default function Layout({ children }) {
     const isCurrentMain = window.location.pathname.split("/")[2];
     const isCurrentSub = window.location.pathname.split("/")[3];
 
-    console.log("useruser", user);
     const navigation = [
         {
             name: "Dashboard",
@@ -61,29 +61,29 @@ export default function Layout({ children }) {
                       current: isCurrentMain == "accounting",
                       children: [
                           {
-                              name: "My Fund Requests",
-                              href: "/users/accounting/my_fund_requests",
-                              icon: <FcOnlineSupport className="h-6 w-6" />,
-                              current: isCurrentSub == "my_fund_requests",
-                          },
-                          {
-                              name: "Pending Requests",
-                              href: "/users/accounting/pending_request",
-                              icon: <FcClock className="h-6 w-6" />,
-                              current: isCurrentSub == "pending_request",
-                          },
-                          {
-                              name: "Daily Expenses",
-                              href: "/users/accounting/daily_expenses",
-                              icon: <FcCurrencyExchange className="h-6 w-6" />,
-                              current: isCurrentSub == "daily_expenses",
-                          },
-                          {
-                              name: "Expense Reports",
-                              href: "/users/accounting/expense_reports",
+                              name: "Refund Request",
+                              href: "/users/accounting/expenses/my_fund_requests",
                               icon: <FcMoneyTransfer className="h-6 w-6" />,
-                              current: isCurrentSub == "expense_reports",
+                              current: isCurrentSub == "expenses",
                           },
+                          {
+                              name: "Purchase Request",
+                              href: "/users/accounting/purchase_request/create_purchase_request",
+                              icon: <FcSurvey className="h-6 w-6" />,
+                              current: isCurrentSub == "purchase_request",
+                          },
+                          //   {
+                          //       name: "Daily Expenses",
+                          //       href: "/users/accounting/expenses/daily_expenses",
+                          //       icon: <FcCurrencyExchange className="h-6 w-6" />,
+                          //       current: isCurrentSub == "daily_expenses",
+                          //   },
+                          //   {
+                          //       name: "Expense Reports",
+                          //       href: "/users/accounting/expenses/expense_reports",
+                          //       icon: <FcMoneyTransfer className="h-6 w-6" />,
+                          //       current: isCurrentSub == "expense_reports",
+                          //   },
                       ],
                   },
               ]
@@ -92,7 +92,7 @@ export default function Layout({ children }) {
             ? [
                   {
                       name: "Accounting",
-                      href: "/users/accounting/my_fund_requests",
+                      href: "/users/accounting/expenses/my_fund_requests",
                       icon: <FcCalculator className="h-6 w-6" />,
                       current: isCurrentMain == "accounting",
                   },

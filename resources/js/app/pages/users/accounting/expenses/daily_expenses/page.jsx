@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Layout from "../../layout";
+import Layout from "../../../layout";
 import store from "@/app/store/store";
 import {
     get_accounting_cash_flows_thunk,
@@ -8,6 +8,7 @@ import {
 } from "@/app/redux/accounting-thunk";
 import TableSection from "./sections/table-section";
 import DailyExpensesDetails from "./sections/daily-expenses-details";
+import ExpensesLayout from "../layout";
 
 export default function Page() {
     useEffect(() => {
@@ -16,8 +17,10 @@ export default function Page() {
     }, []);
     return (
         <Layout>
-            <DailyExpensesDetails />
-            <TableSection />
+            <ExpensesLayout>
+                <DailyExpensesDetails />
+                <TableSection />
+            </ExpensesLayout>
         </Layout>
     );
 }
