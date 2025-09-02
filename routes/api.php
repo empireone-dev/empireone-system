@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountingCashFlowController;
 use App\Http\Controllers\AccountingExpensesController;
+use App\Http\Controllers\CallController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NoteController;
@@ -15,6 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+
+//caller
+Route::post('/call', [CallController::class, 'makeCall']);
+Route::post('/twilio/voice', [CallController::class, 'voiceResponse'])->name('twilio.voice');
+
 
 
 Route::resource('tickets', TicketController::class);
