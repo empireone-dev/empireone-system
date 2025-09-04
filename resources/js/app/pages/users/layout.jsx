@@ -52,52 +52,74 @@ export default function Layout({ children }) {
                 },
             ],
         },
-        ...(user.department === "Accounting Department"
-            ? [
-                  {
-                      name: "Accounting",
-                      href: "/users/accounting",
-                      icon: <FcCalculator className="h-6 w-6" />,
-                      current: isCurrentMain == "accounting",
-                      children: [
-                          {
-                              name: "Refund Request",
-                              href: "/users/accounting/expenses/my_fund_requests",
-                              icon: <FcMoneyTransfer className="h-6 w-6" />,
-                              current: isCurrentSub == "expenses",
-                          },
-                          {
-                              name: "Purchase Request",
-                              href: "/users/accounting/purchase_request/create_purchase_request",
-                              icon: <FcSurvey className="h-6 w-6" />,
-                              current: isCurrentSub == "purchase_request",
-                          },
-                          //   {
-                          //       name: "Daily Expenses",
-                          //       href: "/users/accounting/expenses/daily_expenses",
-                          //       icon: <FcCurrencyExchange className="h-6 w-6" />,
-                          //       current: isCurrentSub == "daily_expenses",
-                          //   },
-                          //   {
-                          //       name: "Expense Reports",
-                          //       href: "/users/accounting/expenses/expense_reports",
-                          //       icon: <FcMoneyTransfer className="h-6 w-6" />,
-                          //       current: isCurrentSub == "expense_reports",
-                          //   },
-                      ],
-                  },
-              ]
-            : []),
-        ...(user.department !== "Accounting Department"
-            ? [
-                  {
-                      name: "Accounting",
-                      href: "/users/accounting/expenses/my_fund_requests",
-                      icon: <FcCalculator className="h-6 w-6" />,
-                      current: isCurrentMain == "accounting",
-                  },
-              ]
-            : []),
+        {
+            name: "Accounting",
+            href: "/users/accounting",
+            icon: <FcCalculator className="h-6 w-6" />,
+            current: isCurrentMain == "accounting",
+            children: [
+                {
+                    name: "Refund Request",
+                    href: "/users/accounting/expenses/my_fund_requests",
+                    icon: <FcMoneyTransfer className="h-6 w-6" />,
+                    current: isCurrentSub == "expenses",
+                },
+                {
+                    name: "Purchase Request",
+                    href: "/users/accounting/purchase_request/create_purchase_request",
+                    icon: <FcSurvey className="h-6 w-6" />,
+                    current: isCurrentSub == "purchase_request",
+                },
+                //   {
+                //       name: "Daily Expenses",
+                //       href: "/users/accounting/expenses/daily_expenses",
+                //       icon: <FcCurrencyExchange className="h-6 w-6" />,
+                //       current: isCurrentSub == "daily_expenses",
+                //   },
+                //   {
+                //       name: "Expense Reports",
+                //       href: "/users/accounting/expenses/expense_reports",
+                //       icon: <FcMoneyTransfer className="h-6 w-6" />,
+                //       current: isCurrentSub == "expense_reports",
+                //   },
+            ],
+        },
+        // ...(user.department !== "Accounting Department"
+        //     ? [
+        //           {
+        //               name: "Accounting",
+        //               href: "/users/accounting",
+        //               icon: <FcCalculator className="h-6 w-6" />,
+        //               current: isCurrentMain == "accounting",
+        //               children: [
+        //                   {
+        //                       name: "Refund Request",
+        //                       href: "/users/accounting/expenses/my_fund_requests",
+        //                       icon: <FcMoneyTransfer className="h-6 w-6" />,
+        //                       current: isCurrentSub == "expenses",
+        //                   },
+        //                   {
+        //                       name: "Purchase Request",
+        //                       href: "/users/accounting/purchase_request/create_purchase_request",
+        //                       icon: <FcSurvey className="h-6 w-6" />,
+        //                       current: isCurrentSub == "purchase_request",
+        //                   },
+        //                   //   {
+        //                   //       name: "Daily Expenses",
+        //                   //       href: "/users/accounting/expenses/daily_expenses",
+        //                   //       icon: <FcCurrencyExchange className="h-6 w-6" />,
+        //                   //       current: isCurrentSub == "daily_expenses",
+        //                   //   },
+        //                   //   {
+        //                   //       name: "Expense Reports",
+        //                   //       href: "/users/accounting/expenses/expense_reports",
+        //                   //       icon: <FcMoneyTransfer className="h-6 w-6" />,
+        //                   //       current: isCurrentSub == "expense_reports",
+        //                   //   },
+        //               ],
+        //           },
+        //       ]
+        //     : []),
     ];
 
     const userNavigation = [

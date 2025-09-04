@@ -5,6 +5,7 @@ import {
     FcBusinesswoman,
     FcCalendar,
     FcOvertime,
+    FcRules,
 } from "react-icons/fc";
 import { useSelector } from "react-redux";
 
@@ -29,6 +30,17 @@ export default function PurchaseRequestTabsSection() {
                       href: "/users/accounting/purchase_request/pending_purchase_request",
                       icon: FcOvertime,
                       current: isCurrentSub == "pending_purchase_request",
+                  },
+              ]
+            : []),
+
+        ...(user.department === "Accounting Department"
+            ? [
+                  {
+                      name: "Purchase Order",
+                      href: "/users/accounting/purchase_request/purchase_order",
+                      icon: FcRules,
+                      current: isCurrentSub == "purchase_order",
                   },
               ]
             : []),

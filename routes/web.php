@@ -97,19 +97,19 @@ Route::middleware(['auth:sanctum', 'account_type:2'])->prefix('users')->group(fu
             return Inertia::render('users/accounting/expenses/expenses_report/page');
         });
     });
-     Route::prefix('accounting/purchase_request')->group(function () {
+    Route::prefix('accounting/purchase_request')->group(function () {
         Route::get('create_purchase_request', function () {
             return Inertia::render('users/accounting/purchase_request/create_purchase_request/page');
         });
         Route::get('pending_purchase_request', function () {
             return Inertia::render('users/accounting/purchase_request/pending_purchase_request/page');
         });
-        // Route::get('daily_expenses', function () {
-        //     return Inertia::render('users/accounting/purchase_request/daily_expenses/page');
-        // });
-        // Route::get('expenses_report', function () {
-        //     return Inertia::render('users/accounting/purchase_request/expenses_report/page');
-        // });
+        Route::get('purchase_order', function () {
+            return Inertia::render('users/accounting/purchase_request/purchase_order/page');
+        });
+        Route::get('{id}', function () {
+            return Inertia::render('users/accounting/purchase_request/id/page');
+        });
     });
     Route::get('settings', function () {
         return Inertia::render('users/settings/page');
