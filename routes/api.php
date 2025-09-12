@@ -24,6 +24,7 @@ Route::post('/twilio/voice', [CallController::class, 'voiceResponse'])->name('tw
 
 
 
+Route::post('/auth/login', [AccountController::class, 'login']);
 Route::resource('tickets', TicketController::class);
 Route::get('get_tickets_by_user', [TicketController::class, 'get_tickets_by_user']);
 Route::get('get_tickets_by_internal', [TicketController::class, 'get_tickets_by_internal']);
