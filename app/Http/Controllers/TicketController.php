@@ -176,12 +176,14 @@ class TicketController extends Controller
     }
 
 
-    public function send_auto_email()
+    public function send_auto_email(Request $request)
     {
         $query = User::query();
+
         if (!empty($request->location)) {
             $query->where('location', $request->location);
         }
+
         if (!empty($request->department)) {
             $query->where('department', "IT Department");
         }
@@ -196,47 +198,60 @@ class TicketController extends Controller
             $q->where('status', 'Closed');
             $q->whereBetween('created_at', [$startDate, $endDate]);
         }]);
+
         $users = $query->get();
 
+        // Convert users collection to JSON
+        $ticketsJson = $users->toJson(JSON_PRETTY_PRINT);
 
-
-          $response = Http::withToken(env('OPENAI_API_KEY'))
+        $response = Http::withToken(env('OPENAI_API_KEY'))
             ->withHeaders([
                 'Content-Type' => 'application/json',
             ])
             ->post('https://api.openai.com/v1/chat/completions', [
-                'model' => 'gpt-4o', // ✅ Correct model name
+                'model' => 'gpt-4o',
                 'messages' => [
                     [
                         'role' => 'system',
-                        'content' => '',
+                        'content' => "You are an IT operations analyst. Analyze the given tickets and return a structured JSON report."
                     ],
-                      [
+                    [
                         'role' => 'user',
-                        'content' =>  $users,
+                        'content' => "Here are the tickets closed in the last 15 days:\n\n$ticketsJson\n\n
+                    Please provide:
+                    1. Average closing time per person.
+                    2. Breakdown by category (especially Network Issues).
+                    3. Most common concerns.
+                    4. Review IT resolutions and compare them to ticket details.
+                    
+                    Return the result in JSON format with fields: average_time_per_person, categories, common_concerns, resolution_review."
                     ],
                 ],
                 'max_tokens' => 1000,
             ]);
 
-        // Handle OpenAI response
         if ($response->successful()) {
-            $rawOutput = trim($response['choices'][0]['message']['content']);
+            $rawOutput = trim($response['choices'][0]['message']['content'] ?? '');
 
-            // Clean up possible markdown
-            $cleaned = preg_replace('/^```json|```$/m', '', trim($rawOutput));
-            $data = json_decode($cleaned, true);
+            // Try to decode JSON
+            $data = json_decode($rawOutput, true);
 
-            return response()->json([
-                'result' => $data,
-            ]);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                return response()->json([
+                    'result' => $data,
+                ]);
+            } else {
+                // fallback: return raw text if JSON decoding fails
+                return response()->json([
+                    'result' => $rawOutput,
+                ]);
+            }
         } else {
             return response()->json([
-                'error' => 'Failed to process image',
+                'error' => 'Failed to process OpenAI request',
                 'message' => $response->json() ?? $response->body(),
             ], $response->status());
         }
-        // return response()->json($users, 200);
     }
 
     public function store(Request $request)
