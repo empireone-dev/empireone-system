@@ -31,6 +31,7 @@ Route::get('get_tickets_by_internal', [TicketController::class, 'get_tickets_by_
 Route::post('assign_ticket', [TicketController::class, 'assign_ticket']);
 Route::post('change_ticket_status', [TicketController::class, 'change_ticket_status']);
 Route::get('get_stats', [TicketController::class, 'get_stats']);
+Route::get('send_auto_email', [TicketController::class, 'send_auto_email']);
 
 
 Route::resource('categories', CategoryController::class);

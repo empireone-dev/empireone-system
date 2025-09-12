@@ -13,7 +13,7 @@ const { RangePicker } = DatePicker;
 export default function StatsSearchSection() {
     // Parse query params from URL
     const params = new URLSearchParams(window.location.search);
-
+    const isDashboard = window.location.pathname.includes("dashboard");
     const start_date = params.get("start_date");
     const end_date = params.get("end_date");
 
@@ -44,11 +44,19 @@ export default function StatsSearchSection() {
 
         delete formattedData.date_range;
 
-        router.visit("/administrator/ticketing/slug/stats", {
-            method: "get",
-            data: formattedData,
-            preserveState: true,
-        });
+        if (isDashboard) {
+            router.visit("/administrator/dashboard", {
+                method: "get",
+                data: formattedData,
+                preserveState: true,
+            });
+        } else {
+            router.visit("/administrator/ticketing/slug/stats", {
+                method: "get",
+                data: formattedData,
+                preserveState: true,
+            });
+        }
     }
 
     return (

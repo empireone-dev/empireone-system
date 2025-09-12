@@ -7,8 +7,10 @@ use App\Models\Activity;
 use App\Models\File;
 use App\Models\Ticket;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
@@ -159,12 +161,82 @@ class TicketController extends Controller
                 $query->where(function ($q) use ($search) {
                     $q->where('ticket_id', 'like', "%{$search}%");
                     $q->orWhere('status', 'like', "%{$search}%");
+                    $q->orWhereHas('user', function ($q2) use ($search) {
+                        $q2->where('name', 'like', "%{$search}%");
+                    });
+                    $q->orWhereHas('assigned_to', function ($q2) use ($search) {
+                        $q2->where('name', 'like', "%{$search}%");
+                    });
                 });
             })
             ->orderBy('id', 'desc')
             ->paginate(10);
 
         return response()->json($tickets, 200);
+    }
+
+
+    public function send_auto_email()
+    {
+        $query = User::query();
+        if (!empty($request->location)) {
+            $query->where('location', $request->location);
+        }
+        if (!empty($request->department)) {
+            $query->where('department', "IT Department");
+        }
+
+        $startDate = Carbon::now()->subDays(15)->startOfDay();
+        $endDate = Carbon::now()->endOfDay();
+
+        $query->whereHas('assignees', function ($q) use ($startDate, $endDate) {
+            $q->where('status', 'Closed');
+            $q->whereBetween('created_at', [$startDate, $endDate]);
+        })->with(['assignees' => function ($q) use ($startDate, $endDate) {
+            $q->where('status', 'Closed');
+            $q->whereBetween('created_at', [$startDate, $endDate]);
+        }]);
+        $users = $query->get();
+
+
+
+          $response = Http::withToken(env('OPENAI_API_KEY'))
+            ->withHeaders([
+                'Content-Type' => 'application/json',
+            ])
+            ->post('https://api.openai.com/v1/chat/completions', [
+                'model' => 'gpt-4o', // ✅ Correct model name
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => '',
+                    ],
+                      [
+                        'role' => 'user',
+                        'content' =>  $users,
+                    ],
+                ],
+                'max_tokens' => 1000,
+            ]);
+
+        // Handle OpenAI response
+        if ($response->successful()) {
+            $rawOutput = trim($response['choices'][0]['message']['content']);
+
+            // Clean up possible markdown
+            $cleaned = preg_replace('/^```json|```$/m', '', trim($rawOutput));
+            $data = json_decode($cleaned, true);
+
+            return response()->json([
+                'result' => $data,
+            ]);
+        } else {
+            return response()->json([
+                'error' => 'Failed to process image',
+                'message' => $response->json() ?? $response->body(),
+            ], $response->status());
+        }
+        // return response()->json($users, 200);
     }
 
     public function store(Request $request)

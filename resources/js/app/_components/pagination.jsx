@@ -3,7 +3,6 @@ import {
     ArrowLongRightIcon,
 } from "@heroicons/react/20/solid";
 import { Link } from "@inertiajs/react";
-import { search } from "../lib/search-lib";
 
 export default function Pagination({ data }) {
     const queryParams = new URLSearchParams(window.location.search);
@@ -11,7 +10,7 @@ export default function Pagination({ data }) {
     const lastPage = data?.last_page;
     const maxVisiblePages = 5; // Maximum number of pages to show
     const status = queryParams.get("status") ?? "";
-    
+    const search = queryParams.get("search") ?? "";
     const getPageNumbers = () => {
         const pages = [];
 
