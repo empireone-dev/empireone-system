@@ -1,25 +1,27 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Button from '@/app/_components/button';
-import Input from '@/app/_components/input';
-import Select from '@/app/_components/select';
-import Modal from '@/app/_components/modal';
-import { useForm, useFieldArray } from 'react-hook-form';
-import { X } from 'lucide-react';
+import React, { useState } from "react";
+import Button from "@/app/_components/button";
+import Input from "@/app/_components/input";
+import Select from "@/app/_components/select";
+import Modal from "@/app/_components/modal";
+import { useForm, useFieldArray } from "react-hook-form";
+import { X } from "lucide-react";
+import axios from "axios";
+import { create_accounting_purchase_request_service } from "@/app/services/accounting-purchase-request";
 
 export default function CreateButtonSection() {
     const [open, setOpen] = useState(false);
 
     const department_data = [
-        { value: 'finance', label: 'Finance' },
-        { value: 'it', label: 'IT' },
-        { value: 'hr', label: 'Human Resources' },
+        { value: "finance", label: "Finance" },
+        { value: "it", label: "IT" },
+        { value: "hr", label: "Human Resources" },
     ];
 
     const accounting_data = [
-        { value: 'accounts_payable', label: 'Accounts Payable' },
-        { value: 'accounts_receivable', label: 'Accounts Receivable' },
+        { value: "accounts_payable", label: "Accounts Payable" },
+        { value: "accounts_receivable", label: "Accounts Receivable" },
     ];
 
     const {
@@ -32,18 +34,18 @@ export default function CreateButtonSection() {
         reset,
     } = useForm({
         defaultValues: {
-            department: '',
-            accounting: '',
-            request_no: '',
-            date: '',
+            department: "",
+            accounting: "",
+            request_no: "", // ✅ renamed to match backend
+            date: "",
             items: [
                 {
-                    stock_no: '',
-                    unit: '',
-                    description: '',
-                    quantity: '',
-                    unit_cost: '',
-                    total_cost: '',
+                    stock_no: "",
+                    unit: "",
+                    description: "",
+                    quantity: "",
+                    unit_cost: "",
+                    total_cost: "",
                 },
             ],
         },
@@ -51,15 +53,22 @@ export default function CreateButtonSection() {
 
     const { fields, append, remove } = useFieldArray({
         control,
-        name: 'items',
+        name: "items",
     });
 
-    const items = watch('items');
+    const items = watch("items");
 
-    const onSubmit = (data) => {
-        console.log('Form Submitted:', data);
-        reset();
-        setOpen(false);
+    const onSubmit = async (data) => {
+        try {
+            await create_accounting_purchase_request_service(data);
+            reset();
+            setOpen(false);
+        } catch (error) {
+            console.error(
+                "Error saving:",
+                error.response?.data || error.message
+            );
+        }
     };
 
     return (
@@ -76,7 +85,7 @@ export default function CreateButtonSection() {
                 width="max-w-5xl"
                 isOpen={open}
                 onClose={setOpen}
-                title="Create Ticket"
+                title="Create Purchase Request"
             >
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <Select
@@ -84,8 +93,8 @@ export default function CreateButtonSection() {
                         name="department"
                         options={department_data}
                         error={errors?.department?.message}
-                        register={register('department', {
-                            required: 'This field is required',
+                        register={register("department", {
+                            required: "This field is required",
                         })}
                     />
 
@@ -94,18 +103,18 @@ export default function CreateButtonSection() {
                         name="accounting"
                         options={accounting_data}
                         error={errors?.accounting?.message}
-                        register={register('accounting', {
-                            required: 'This field is required',
+                        register={register("accounting", {
+                            required: "This field is required",
                         })}
                     />
 
                     <Input
                         label="Purchase Request No."
                         type="text"
+                        name="request_no"
                         error={errors?.request_no?.message}
-                        name="purchase_no"
-                        register={register('purchase_no', {
-                            required: 'This field is required',
+                        register={register("request_no", {
+                            required: "This field is required",
                         })}
                     />
 
@@ -114,8 +123,8 @@ export default function CreateButtonSection() {
                         type="date"
                         name="date"
                         error={errors?.date?.message}
-                        register={register('date', {
-                            required: 'This field is required',
+                        register={register("date", {
+                            required: "This field is required",
                         })}
                     />
 
@@ -131,43 +140,65 @@ export default function CreateButtonSection() {
                         }
 
                         return (
-                            <div key={field.id} className="flex gap-2 items-center py-3">
-                               
+                            <div
+                                key={field.id}
+                                className="flex gap-2 items-center py-3"
+                            >
                                 <Input
                                     label="Unit"
                                     type="text"
-                                    name={`items.${index}.unit`}field
-                                    error={errors?.items?.[index]?.unit?.message}
+                                    name={`items.${index}.unit`}
+                                    error={
+                                        errors?.items?.[index]?.unit?.message
+                                    }
                                     register={register(`items.${index}.unit`, {
-                                        required: 'This field is required',
+                                        required: "This field is required",
                                     })}
                                 />
                                 <Input
                                     label="Description"
                                     type="text"
                                     name={`items.${index}.description`}
-                                    error={errors?.items?.[index]?.description?.message}
-                                    register={register(`items.${index}.description`, {
-                                        required: 'This field is required',
-                                    })}
+                                    error={
+                                        errors?.items?.[index]?.description
+                                            ?.message
+                                    }
+                                    register={register(
+                                        `items.${index}.description`,
+                                        {
+                                            required: "This field is required",
+                                        }
+                                    )}
                                 />
                                 <Input
                                     label="Quantity"
                                     type="number"
                                     name={`items.${index}.quantity`}
-                                    error={errors?.items?.[index]?.quantity?.message}
-                                    register={register(`items.${index}.quantity`, {
-                                        required: 'This field is required',
-                                    })}
+                                    error={
+                                        errors?.items?.[index]?.quantity
+                                            ?.message
+                                    }
+                                    register={register(
+                                        `items.${index}.quantity`,
+                                        {
+                                            required: "This field is required",
+                                        }
+                                    )}
                                 />
                                 <Input
                                     label="Unit Cost"
                                     type="number"
                                     name={`items.${index}.unit_cost`}
-                                    error={errors?.items?.[index]?.unit_cost?.message}
-                                    register={register(`items.${index}.unit_cost`, {
-                                        required: 'This field is required',
-                                    })}
+                                    error={
+                                        errors?.items?.[index]?.unit_cost
+                                            ?.message
+                                    }
+                                    register={register(
+                                        `items.${index}.unit_cost`,
+                                        {
+                                            required: "This field is required",
+                                        }
+                                    )}
                                 />
                                 <Input
                                     label="Total Cost"
@@ -175,7 +206,9 @@ export default function CreateButtonSection() {
                                     name={`items.${index}.total_cost`}
                                     value={totalCost}
                                     readOnly
-                                    register={register(`items.${index}.total_cost`)}
+                                    register={register(
+                                        `items.${index}.total_cost`
+                                    )}
                                 />
                                 <button
                                     type="button"
@@ -192,12 +225,12 @@ export default function CreateButtonSection() {
                         type="button"
                         onClick={() =>
                             append({
-                                stock_no: '',
-                                unit: '',
-                                description: '',
-                                quantity: '',
-                                unit_cost: '',
-                                total_cost: '',
+                                stock_no: "",
+                                unit: "",
+                                description: "",
+                                quantity: "",
+                                unit_cost: "",
+                                total_cost: "",
                             })
                         }
                         className="mt-2 rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white hover:bg-green-500"

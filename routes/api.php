@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountingCashFlowController;
 use App\Http\Controllers\AccountingExpensesController;
+use App\Http\Controllers\AccountingPurchaseRequestController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
@@ -49,6 +50,9 @@ Route::get('/get_expenses_report', [AccountingExpensesController::class, 'get_ex
 Route::post('/ticketing_prompt_stats', [OpenAIController::class, 'ticketing_prompt_stats']);
 Route::post('/cocd_prompt', [OpenAIController::class, 'cocd_prompt']);
 Route::post('/scan_receipt', [OpenAIController::class, 'scan_receipt']);
+
+
+Route::post('/accounting_purchase_requests', [AccountingPurchaseRequestController::class, 'store']);
 
 Route::get('get_account_by_department', [AccountController::class, 'get_account_by_department']);
 
