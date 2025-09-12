@@ -56,6 +56,6 @@ class User extends Authenticatable
 
       public function assignees(): HasMany
     {
-        return $this->hasMany(Ticket::class, 'assigned_to', 'id')->with('user');
+        return $this->hasMany(Ticket::class, 'assigned_to', 'id')->with(['user','activities']);
     }
 }

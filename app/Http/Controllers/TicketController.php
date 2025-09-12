@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\TicketNotification;
+use App\Mail\TicketAnalysisReport;
 use App\Models\Activity;
 use App\Models\File;
 use App\Models\Ticket;
@@ -11,7 +12,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class TicketController extends Controller
 {
@@ -176,6 +179,7 @@ class TicketController extends Controller
     }
 
 
+
     public function send_auto_email(Request $request)
     {
         $query = User::query();
@@ -188,7 +192,7 @@ class TicketController extends Controller
             $query->where('department', "IT Department");
         }
 
-        $startDate = Carbon::now()->subDays(15)->startOfDay();
+        $startDate = Carbon::now()->subDays(7)->startOfDay();
         $endDate = Carbon::now()->endOfDay();
 
         $query->whereHas('assignees', function ($q) use ($startDate, $endDate) {
@@ -201,58 +205,85 @@ class TicketController extends Controller
 
         $users = $query->get();
 
-        // Convert users collection to JSON
-        $ticketsJson = $users->toJson(JSON_PRETTY_PRINT);
+        $tickets = $users->map(function ($user) {
+            return [
+                'user' => $user->name,
+                'department' => $user->department,
+                'tickets' => $user->assignees->map(function ($ticket) {
+                    return [
+                        'id' => $ticket->id,
+                        'category' => $ticket->category ?? 'Uncategorized',
+                        'created_at' => $ticket->created_at->toDateTimeString(),
+                        'closed_at' => $ticket->updated_at->toDateTimeString(),
+                        // 'resolution' =>$ticket->activities,
+                        'resolution' => $ticket->activities->take(2)->map(function ($note) {
+                            return Str::limit($note->message ?? '', 200);
+                        })->implode("; "),
+                    ];
+                }),
+            ];
+        });
 
-        $response = Http::withToken(env('OPENAI_API_KEY'))
-            ->withHeaders([
-                'Content-Type' => 'application/json',
-            ])
-            ->post('https://api.openai.com/v1/chat/completions', [
-                'model' => 'gpt-4o',
-                'messages' => [
-                    [
-                        'role' => 'system',
-                        'content' => "You are an IT operations analyst. Analyze the given tickets and return a structured JSON report."
+        $ticketsArray = $tickets->toArray();
+        // return response()->json([
+        //     'status' => 'Email sent successfully',
+        //     'report' => $ticketsArray,
+        // ]);
+        $chunks = array_chunk($ticketsArray, 30);
+        $results = [];
+
+        foreach ($chunks as $chunk) {
+            $ticketsJson = json_encode($chunk, JSON_PRETTY_PRINT);
+
+            $response = Http::timeout(120) // ⏱ prevent timeout
+                ->withToken(env('OPENAI_API_KEY'))
+                ->withHeaders([
+                    'Content-Type' => 'application/json',
+                ])
+                ->post('https://api.openai.com/v1/chat/completions', [
+                    'model' => 'gpt-4o',
+                    'messages' => [
+                        [
+                            'role' => 'system',
+                            'content' => "You are an IT operations analyst. Provide a professional WYSIWYG-style HTML report."
+                        ],
+                        [
+                            'role' => 'user',
+                            'content' => "Here are the tickets closed in the last 7 days:\n\n$ticketsJson\n\n
+                        Please provide a formatted HTML report with:
+                        1. Average closing time per person.
+                        2. Breakdown by category.
+                        3. Most common concerns with the details like monitor issues, mouse issues.
+                        4. Review the content/details of the ticket to check what is the most common concern that we have and other things that needs to be checked.
+                        5. Check the closed/resolution of the IT on each ticket. I want to know how well they are doing on each ticket. How they cater it. and compare it to ticket content/details.
+                        Use <h2>, <table>, <ul>, <p>, etc. No <html>/<body>."
+                        ],
                     ],
-                    [
-                        'role' => 'user',
-                        'content' => "Here are the tickets closed in the last 15 days:\n\n$ticketsJson\n\n
-                    Please provide:
-                    1. Average closing time per person.
-                    2. Breakdown by category (especially Network Issues).
-                    3. Most common concerns.
-                    4. Review IT resolutions and compare them to ticket details.
-                    
-                    Return the result in JSON format with fields: average_time_per_person, categories, common_concerns, resolution_review."
-                    ],
-                ],
-                'max_tokens' => 1000,
-            ]);
-
-        if ($response->successful()) {
-            $rawOutput = trim($response['choices'][0]['message']['content'] ?? '');
-
-            // Try to decode JSON
-            $data = json_decode($rawOutput, true);
-
-            if (json_last_error() === JSON_ERROR_NONE) {
-                return response()->json([
-                    'result' => $data,
                 ]);
+
+            if ($response->successful()) {
+                $htmlReport = trim($response['choices'][0]['message']['content'] ?? '');
+                $results[] = $htmlReport;
             } else {
-                // fallback: return raw text if JSON decoding fails
                 return response()->json([
-                    'result' => $rawOutput,
-                ]);
+                    'error' => 'Failed to process OpenAI request',
+                    'message' => $response->json() ?? $response->body(),
+                ], $response->status());
             }
-        } else {
-            return response()->json([
-                'error' => 'Failed to process OpenAI request',
-                'message' => $response->json() ?? $response->body(),
-            ], $response->status());
         }
+
+        $finalReport = implode("<hr/>", $results);
+
+        // ✅ Send email
+        $recipient = 'webdev@empireonegroup.com'; // fallback recipient
+        Mail::to($recipient)->send(new TicketAnalysisReport($finalReport));
+
+        return response()->json([
+            'status' => 'Email sent successfully',
+            'report' => $finalReport,
+        ]);
     }
+
 
     public function store(Request $request)
     {
