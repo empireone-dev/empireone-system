@@ -4,6 +4,10 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountingCashFlowController;
 use App\Http\Controllers\AccountingExpensesController;
 use App\Http\Controllers\AccountingPurchaseRequestController;
+<<<<<<< HEAD
+=======
+use App\Http\Controllers\AccountingPurchaseRequestItemController;
+>>>>>>> a1ff6f28 ( Purchase Request Data Implemented)
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
@@ -48,6 +52,9 @@ Route::get('/my_fund_request', [AccountingExpensesController::class, 'my_fund_re
 Route::post('/request_change_status', [AccountingExpensesController::class, 'request_change_status']);
 Route::resource('accounting_cash_flows', AccountingCashFlowController::class);
 Route::get('/get_expenses_report', [AccountingExpensesController::class, 'get_expenses_report']);
+
+Route::post('/accounting-purchase-request', [AccountingPurchaseRequestController::class, 'store']);
+Route::post('/accounting_purchase_request_items', [AccountingPurchaseRequestItemController::class, 'store']);
 
 Route::post('/ticketing_prompt_stats', [OpenAIController::class, 'ticketing_prompt_stats']);
 Route::post('/cocd_prompt', [OpenAIController::class, 'cocd_prompt']);
