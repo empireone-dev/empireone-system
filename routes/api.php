@@ -50,15 +50,14 @@ Route::post('/request_change_status', [AccountingExpensesController::class, 'req
 Route::resource('accounting_cash_flows', AccountingCashFlowController::class);
 Route::get('/get_expenses_report', [AccountingExpensesController::class, 'get_expenses_report']);
 
-Route::post('/accounting-purchase-request', [AccountingPurchaseRequestController::class, 'store']);
-Route::post('/accounting_purchase_request_items', [AccountingPurchaseRequestItemController::class, 'store']);
+
+Route::resource('accounting_purchase_request', AccountingPurchaseRequestController::class);
+Route::resource('accounting_purchase_request_items', AccountingPurchaseRequestItemController::class);
 
 Route::post('/ticketing_prompt_stats', [OpenAIController::class, 'ticketing_prompt_stats']);
 Route::post('/cocd_prompt', [OpenAIController::class, 'cocd_prompt']);
 Route::post('/scan_receipt', [OpenAIController::class, 'scan_receipt']);
 
-
-Route::post('/accounting_purchase_requests', [AccountingPurchaseRequestController::class, 'store']);
 
 Route::get('get_account_by_department', [AccountController::class, 'get_account_by_department']);
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccountingPurchaseRequest;
+use App\Models\AccountingPurchaseRequestItem;
 use Illuminate\Http\Request;
 
 class AccountingPurchaseRequestController extends Controller
@@ -10,6 +11,16 @@ class AccountingPurchaseRequestController extends Controller
     public function store(Request $request)
     {
         AccountingPurchaseRequest::create($request->all());
+        foreach ($request->items as $key => $value) {
+            AccountingPurchaseRequestItem::create([
+                "description" => $value['description'],
+                "quantity" => $value['quantity'],
+                "stock_no" => $value['stock_no'],
+                "total_cost" => $value['total_cost'],
+                "unit" => $value['unit'],
+                "unit_cost" => $value['unit_cost'],
+            ]);
+        }
         return response()->json(['message' => 'Created successfully'], 200);
     }
     public function index()

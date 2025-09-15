@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
@@ -7,8 +5,8 @@ import Select from "@/app/_components/select";
 import Modal from "@/app/_components/modal";
 import { useForm, useFieldArray } from "react-hook-form";
 import { X } from "lucide-react";
-import axios from "axios";
 import { create_accounting_purchase_request_service } from "@/app/services/accounting-purchase-request";
+import SwalAlert from "@/app/_components/swal";
 
 export default function CreateButtonSection() {
     const [open, setOpen] = useState(false);
@@ -19,18 +17,13 @@ export default function CreateButtonSection() {
         { value: "hr", label: "Human Resources" },
     ];
 
-    const accounting_data = [
-        { value: "accounts_payable", label: "Accounts Payable" },
-        { value: "accounts_receivable", label: "Accounts Receivable" },
-    ];
-
     const {
         register,
         handleSubmit,
         control,
         watch,
         setValue,
-        formState: { errors },
+        formState: { errors, isSubmitting },
         reset,
     } = useForm({
         defaultValues: {
@@ -61,6 +54,9 @@ export default function CreateButtonSection() {
     const onSubmit = async (data) => {
         try {
             await create_accounting_purchase_request_service(data);
+            await SwalAlert({
+                            type: "success",
+                        });
             reset();
             setOpen(false);
         } catch (error) {
@@ -70,7 +66,6 @@ export default function CreateButtonSection() {
             );
         }
     };
-
     return (
         <>
             <Button
@@ -97,11 +92,10 @@ export default function CreateButtonSection() {
                             required: "This field is required",
                         })}
                     />
-
-                    <Select
+                    <Input
                         label="Accounting"
+                        type="text"
                         name="accounting"
-                        options={accounting_data}
                         error={errors?.accounting?.message}
                         register={register("accounting", {
                             required: "This field is required",
@@ -249,6 +243,7 @@ export default function CreateButtonSection() {
                         <Button
                             type="submit"
                             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+                            loading={isSubmitting}
                         >
                             Submit
                         </Button>
