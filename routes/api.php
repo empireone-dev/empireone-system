@@ -4,10 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountingCashFlowController;
 use App\Http\Controllers\AccountingExpensesController;
 use App\Http\Controllers\AccountingPurchaseRequestController;
-<<<<<<< HEAD
-=======
 use App\Http\Controllers\AccountingPurchaseRequestItemController;
->>>>>>> a1ff6f28 ( Purchase Request Data Implemented)
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
