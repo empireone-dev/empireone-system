@@ -4,15 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\AccountingPurchaseRequest;
 use App\Models\AccountingPurchaseRequestItem;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AccountingPurchaseRequestController extends Controller
 {
     public function store(Request $request)
     {
-        AccountingPurchaseRequest::create($request->all());
+        $auth = Auth::user();
+        $ap = AccountingPurchaseRequest::create([
+            ...$request->all(),
+            'requestor_id' => $auth->id,
+            'status' => 'Pending'
+        ]);
         foreach ($request->items as $key => $value) {
             AccountingPurchaseRequestItem::create([
+                "accounting_purchase_requests_id" => $ap->id,
                 "description" => $value['description'],
                 "quantity" => $value['quantity'],
                 "stock_no" => $value['stock_no'],
@@ -25,8 +33,9 @@ class AccountingPurchaseRequestController extends Controller
     }
     public function index()
     {
-        $cflow = AccountingPurchaseRequest::first(); // Get the first record from the model
-        return response()->json($cflow, 200); // Return it as a JSON response with 200 OK
+        $auth = Auth::user();
+        $purchase_request = AccountingPurchaseRequest::where('requestor_id', $auth->id)->with(['requestor','items'])->paginate(); // Get the first record from the model
+        return response()->json($purchase_request, 200); // Return it as a JSON response with 200 OK
     }
 
     // public function update(Request $request, $id)

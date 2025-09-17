@@ -1,59 +1,53 @@
 import Button from "@/app/_components/button";
 import { Link } from "@inertiajs/react";
 import CreateButtonSection from "./create-button-section";
+import { useSelector } from "react-redux";
+import { peso_value } from "@/app/lib/peso-value";
+import moment from "moment";
 
 const people = [
     {
-        name: "Lindsay Walton",
-        description: "Front-end Developer",
-        quantity: "10",
-        is_manager_approved: "Member",
-        is_admin_approved: "Member",
-        status: "Active",
+        request_no: "PR#-091725-01",
+        department: "IT",
+        requester: "Wacky Hojilla",
+        total_cost: "$1,200",
+        priority: "High",
+        date: "2025-09-17",
+        status: "Pending",
     },
     {
-        name: "Courtney Henry",
-        description: "Designer",
-        quantity: "20",
-        is_manager_approved: "Admin",
-        is_admin_approved: "Member",
-        status: "Active",
+        request_no: "PR#-091725-02",
+        department: "IT",
+        requester: "Mark Harvey Leduna",
+        total_cost: "$1,200",
+        priority: "Low",
+        date: "2025-09-17",
+        status: "Approved",
     },
     {
-        name: "Tom Cook",
-        description: "Director of Product",
-        quantity: "5",
-        is_manager_approved: "Member",
-        is_admin_approved: "Member",
-        status: "Active",
+        request_no: "PR#-091725-03",
+        department: "IT",
+        requester: "Marlou Pepito",
+        total_cost: "$1,200",
+        priority: "Medium",
+        date: "2025-09-17",
+        status: "Purchased",
     },
     {
-        name: "Whitney Francis",
-        description: "Copywriter",
-        quantity: "30",
-        is_manager_approved: "Admin",
-        is_admin_approved: "Member",
-        status: "Active",
-    },
-    {
-        name: "Leonard Krasner",
-        description: "Senior Designer",
-        quantity: "8",
-        is_manager_approved: "Owner",
-        is_admin_approved: "Member",
-        status: "Active",
-    },
-    {
-        name: "Floyd Miles",
-        description: "Principal Designer",
-        quantity: "9",
-        is_manager_approved: "Member",
-        is_admin_approved: "Member",
-        status: "Active",
+        request_no: "PR#-091725-04",
+        department: "IT",
+        requester: "Quicky ",
+        total_cost: "$1,200",
+        priority: "High",
+        date: "2025-09-17",
+        status: "Completed",
     },
 ];
 
 export default function PurchaseRequestTable() {
+    const { purchase_requests } = useSelector((store) => store.accounting);
+    console.log("purchase_requests", purchase_requests.data);
+
     return (
         <div className="px-4 sm:px-6 lg:px-8">
             <div className="sm:flex sm:items-center">
@@ -68,103 +62,108 @@ export default function PurchaseRequestTable() {
                     </p>
                 </div>
                 <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                    <CreateButtonSection/>  
+                    <CreateButtonSection />
                 </div>
             </div>
             <div className="-mx-4 mt-8 sm:-mx-0">
                 <table className="min-w-full divide-y divide-gray-300 ">
                     <thead>
                         <tr>
-                            <th
-                                scope="col"
-                                className="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                            >
-                                Name of Requestor
+                            <th className="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                                PR No.
                             </th>
-                            <th
-                                scope="col"
-                                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
-                            >
-                                Description
+                            <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                Department
                             </th>
-                            <th
-                                scope="col"
-                                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
-                            >
-                                Quantity
+                            <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                Requester
                             </th>
-                            <th
-                                scope="col"
-                                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                            >
-                                Is Manager Approved?
+                            <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                Total Cost
                             </th>
-                            <th
-                                scope="col"
-                                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                            >
-                                Is Admin Approved?
+                            <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                Priority
                             </th>
-                            <th
-                                scope="col"
-                                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                            >
+                            <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                Date
+                            </th>
+                            <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                 Status
                             </th>
-                            <th
-                                scope="col"
-                                className="py-3.5 pr-4 pl-3 sm:pr-0"
-                            >
+                            <th className="py-3.5 pr-4 pl-3 sm:pr-0">
                                 <span className="sr-only">Edit</span>
                             </th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white ">
-                        {people.map((person, i) => (
-                            <tr key={i}>
-                                <td className="w-full max-w-0 py-4 pr-3 pl-4 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-0">
-                                    {person.name}
-                                    <dl className="font-normal lg:hidden">
-                                        <dt className="sr-only">Description</dt>
-                                        <dd className="mt-1 truncate text-gray-700">
-                                            {person.description}
-                                        </dd>
-                                        <dt className="sr-only sm:hidden">
-                                            Quantity
-                                        </dt>
-                                        <dd className="mt-1 truncate text-gray-500 sm:hidden">
-                                            {person.quantity}
-                                        </dd>
-                                    </dl>
-                                </td>
-                                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell ">
-                                    {person.description}
-                                </td>
-                                <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell ">
-                                    {person.quantity}
-                                </td>
-                                <td className="px-3 py-4 text-sm text-gray-500 ">
-                                    {person.is_manager_approved}
-                                </td>
-                                <td className="px-3 py-4 text-sm text-gray-500 ">
-                                    {person.is_admin_approved}
-                                </td>
-                                <td className="px-3 py-4 text-sm text-gray-500 ">
-                                    {person.status}
-                                </td>
-                                <td className="py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-0">
-                                    <Link
-                                        href={`/users/accounting/purchase_request/${i}`}
-                                        className="text-indigo-600 hover:text-indigo-900 "
-                                    >
-                                        Show Details
-                                        <span className="sr-only">
-                                            , {person.name}
-                                        </span>
-                                    </Link>
-                                </td>
-                            </tr>
-                        ))}
+                        {purchase_requests?.data?.map((person, i) => {
+                            const total_cost = person?.items?.reduce((sum, item) => sum + Number(item.total_cost), 0);
+                            return (
+                                <tr key={i}>
+                                    <td className="w-full max-w-0 py-4 pr-3 pl-4 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-0">
+                                        {person.request_no}
+                                    </td>
+                                    <td className="px-3 py-4 text-sm text-gray-500">
+                                        {person?.requestor?.department}
+                                    </td>
+                                    <td className="px-3 py-4 text-sm text-gray-500">
+                                        {person?.requestor?.name}
+                                    </td>
+                                    <td className="px-3 py-4 text-sm text-gray-500">
+                                      {peso_value(total_cost)}
+                                    </td>
+                                    <td className="px-3 py-4 text-sm">
+                                        {person.priority === "high" ? (
+                                            <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-sm border border-red-400">
+                                                High
+                                            </span>
+                                        ) : person.priority === "medium" ? (
+                                            <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-sm border border-yellow-300">
+                                                Medium
+                                            </span>
+                                        ) : person.priority === "low" ? (
+                                            <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-sm border border-green-400">
+                                                Low
+                                            </span>
+                                        ) : null}
+                                    </td>
+                                    <td className="px-3 py-4 text-sm text-gray-500">
+                                        {moment(person.date).format('LL')}
+                                    </td>
+                                    <td className="px-3 py-4 text-sm">
+                                        {person.status === "Pending" ? (
+                                            <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-yellow-300">
+                                                Pending
+                                            </span>
+                                        ) : person.status === "Approved" ? (
+                                            <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-blue-300">
+                                                Approved
+                                            </span>
+                                        ) : person.status === "Purchased" ? (
+                                            <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-purple-300">
+                                                Purchased
+                                            </span>
+                                        ) : person.status === "Completed" ? (
+                                            <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-green-300">
+                                                Completed
+                                            </span>
+                                        ) : null}
+                                    </td>
+
+                                    <td className="py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-0">
+                                        <Link
+                                            href={`/users/accounting/purchase_request/${i}`}
+                                            className="text-indigo-600 hover:text-indigo-900 "
+                                        >
+                                            Show Details
+                                            <span className="sr-only">
+                                                , {person.request_no}
+                                            </span>
+                                        </Link>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>

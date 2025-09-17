@@ -8,6 +8,7 @@ import  accountSlice from "../redux/account-slice";
 import  dashboardsSlice  from "../redux/dashboard-slice";
 import  accountingSlice  from "../redux/accounting-slice";
 
+
 const store = configureStore({
     reducer: {
         app: appSlice,
@@ -18,6 +19,8 @@ const store = configureStore({
         accounts:accountSlice,
         dashboards:dashboardsSlice,
         accounting:accountingSlice
+        
+
     },
 });
 

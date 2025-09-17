@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('accounting_purchase_request_items', function (Blueprint $table) {
             $table->id();
              $table->string('stock_no')->nullable();
+            $table->string('accounting_purchase_requests_id')->nullable();
             $table->string('unit')->nullable();
             $table->string('description')->nullable();
             $table->string('quantity')->nullable();

@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AccountingPurchaseRequestItem extends Model
 {
     protected $fillable = [
-
-
+        'accounting_purchase_requests_id',
         'stock_no',
         'unit',
         'description',

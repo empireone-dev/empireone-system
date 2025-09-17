@@ -50,8 +50,6 @@ onClose();
 
 php artisan make:model --controller --migration NameOfTableModelController
 
-<<<<<<< HEAD
-=======
 php artisan migrate:fresh --seed
 
 php artisan migrate - To migrate the database
@@ -88,7 +86,6 @@ onClose();
 };
 
 
->>>>>>> a1ff6f28 ( Purchase Request Data Implemented)
 
 ---how to show Data from the database---
 

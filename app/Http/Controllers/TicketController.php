@@ -274,9 +274,12 @@ class TicketController extends Controller
 
         $finalReport = implode("<hr/>", $results);
 
-        // ✅ Send email
-        $recipient = 'webdev@empireonegroup.com'; // fallback recipient
-        Mail::to($recipient)->send(new TicketAnalysisReport($finalReport));
+        $recipients = [
+            'harvey@empireonegroup.com',
+            'archie@empireonegroup.com'
+        ];
+
+        Mail::to($recipients)->send(new TicketAnalysisReport($finalReport));
 
         return response()->json([
             'status' => 'Email sent successfully',

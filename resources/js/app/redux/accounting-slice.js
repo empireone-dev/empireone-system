@@ -10,6 +10,7 @@ export const accountingSlice = createSlice({
         cash_flows: [],
         daily_expenses: [],
         expenses_reports: [],
+        purchase_requests:[]
     },
     reducers: {
         setExpense: (state, action) => {
@@ -30,6 +31,9 @@ export const accountingSlice = createSlice({
         setExpensesReports: (state, action) => {
             state.expenses_reports = action.payload;
         },
+        setPurchaseRequests: (state, action) => {
+            state.purchase_requests = action.payload;
+        }
     },
 });
 export const { setExpense,setExpenses,setDailyExpenses,setExpensesReports } =

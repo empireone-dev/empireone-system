@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
 import Select from "@/app/_components/select";
@@ -7,6 +7,9 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { X } from "lucide-react";
 import { create_accounting_purchase_request_service } from "@/app/services/accounting-purchase-request";
 import SwalAlert from "@/app/_components/swal";
+import moment from "moment";
+import store from "@/app/store/store";
+import { get_purchase_request_thunk } from "@/app/redux/accounting-thunk";
 
 export default function CreateButtonSection() {
     const [open, setOpen] = useState(false);
@@ -15,6 +18,15 @@ export default function CreateButtonSection() {
         { value: "finance", label: "Finance" },
         { value: "it", label: "IT" },
         { value: "hr", label: "Human Resources" },
+    ];
+    const priority_data = [
+        { value: "high", label: "High", color: "text-red-600 bg-red-100" },
+        {
+            value: "medium",
+            label: "Medium",
+            color: "text-yellow-600 bg-yellow-100",
+        },
+        { value: "low", label: "Low", color: "text-green-600 bg-green-100" },
     ];
 
     const {
@@ -29,7 +41,8 @@ export default function CreateButtonSection() {
         defaultValues: {
             department: "",
             accounting: "",
-            request_no: "", // ✅ renamed to match backend
+            priority: "",
+            request_no: "",
             date: "",
             items: [
                 {
@@ -51,12 +64,30 @@ export default function CreateButtonSection() {
 
     const items = watch("items");
 
+    // ✅ Auto-generate Purchase Request No.
+    let counter = 0;
+
+    const generateRequestNo = () => {
+        counter++;
+        return (
+            "PR#-" +
+            moment().format("MMDDYY") +
+            "-" +
+            counter.toString().padStart(2, "0")
+        );
+    };
+
+    useEffect(() => {
+        if (open) {
+            setValue("request_no", generateRequestNo());
+        }
+    }, [open, setValue]);
+
     const onSubmit = async (data) => {
         try {
             await create_accounting_purchase_request_service(data);
-            await SwalAlert({
-                            type: "success",
-                        });
+            await store.dispatch(get_purchase_request_thunk());
+            await SwalAlert({ type: "success" });
             reset();
             setOpen(false);
         } catch (error) {
@@ -66,12 +97,13 @@ export default function CreateButtonSection() {
             );
         }
     };
+
     return (
         <>
             <Button
                 type="button"
                 onClick={() => setOpen(true)}
-                className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500"
             >
                 Create Purchase Request
             </Button>
@@ -83,6 +115,17 @@ export default function CreateButtonSection() {
                 title="Create Purchase Request"
             >
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                    <Input
+                        label="Purchase Request No."
+                        type="text"
+                        name="request_no"
+                        readOnly
+                        error={errors?.request_no?.message}
+                        register={register("request_no", {
+                            required: "This field is required",
+                        })}
+                    />
+
                     <Select
                         label="Department"
                         name="department"
@@ -92,22 +135,13 @@ export default function CreateButtonSection() {
                             required: "This field is required",
                         })}
                     />
-                    <Input
-                        label="Accounting"
-                        type="text"
-                        name="accounting"
-                        error={errors?.accounting?.message}
-                        register={register("accounting", {
-                            required: "This field is required",
-                        })}
-                    />
 
-                    <Input
-                        label="Purchase Request No."
-                        type="text"
-                        name="request_no"
-                        error={errors?.request_no?.message}
-                        register={register("request_no", {
+                    <Select
+                        label="Priority"
+                        name="priority"
+                        options={priority_data}
+                        error={errors?.priority?.message}
+                        register={register("priority", {
                             required: "This field is required",
                         })}
                     />
@@ -128,7 +162,6 @@ export default function CreateButtonSection() {
                         const unitCost = Number(items?.[index]?.unit_cost || 0);
                         const totalCost = quantity * unitCost;
 
-                        // Keep form state updated
                         if (items?.[index]?.total_cost !== totalCost) {
                             setValue(`items.${index}.total_cost`, totalCost);
                         }
@@ -178,6 +211,7 @@ export default function CreateButtonSection() {
                                             required: "This field is required",
                                         }
                                     )}
+                                    onWheel={(e) => e.preventDefault()}
                                 />
                                 <Input
                                     label="Unit Cost"
@@ -193,6 +227,7 @@ export default function CreateButtonSection() {
                                             required: "This field is required",
                                         }
                                     )}
+                                    onWheel={(e) => e.preventDefault()}
                                 />
                                 <Input
                                     label="Total Cost"
