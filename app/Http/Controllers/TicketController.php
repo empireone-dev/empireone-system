@@ -24,7 +24,7 @@ class TicketController extends Controller
         $count = $request->query('count', 10);
         $search = $request->query('search');
         $status = $request->query('status');
-
+       
         $tickets = Ticket::where('department', $user->department)
             ->orWhere('user_id', $user->id)
             ->when($search, function ($query, $search) {
