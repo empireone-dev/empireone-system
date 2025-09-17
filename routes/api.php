@@ -36,6 +36,9 @@ Route::get('get_stats', [TicketController::class, 'get_stats']);
 Route::get('send_auto_email', [TicketController::class, 'send_auto_email']);
 
 
+Route::get('get_account_tickets', [TicketController::class, 'get_account_tickets']);
+
+
 Route::resource('categories', CategoryController::class);
 Route::resource('dashboard', DashboardController::class);
 Route::resource('sites', SiteController::class);

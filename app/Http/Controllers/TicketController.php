@@ -18,6 +18,26 @@ use Illuminate\Support\Str;
 
 class TicketController extends Controller
 {
+    public function get_account_tickets(Request $request)
+    {
+        $user = Auth::user();
+        $count = $request->query('count', 10);
+        $search = $request->query('search');
+        $status = $request->query('status');
+
+        $tickets = Ticket::where('location', $user->location)
+            ->when($search, function ($query, $search) {
+                $query->where('ticket_id',  '=', $search);
+            })
+            ->when($status, function ($query, $status) {
+                $query->where('status', '=', $status);
+            })
+            ->orderBy('id', 'desc')
+            ->with(['assigned_to', 'category', 'site', 'user', 'files', 'notes'])
+            ->get($count);
+
+        return response()->json($tickets, 200);
+    }
     public function get_stats(Request $request)
     {
         $query = User::query();
