@@ -20,51 +20,50 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-//caller
+
 Route::post('/call', [CallController::class, 'makeCall']);
 Route::post('/twilio/voice', [CallController::class, 'voiceResponse'])->name('twilio.voice');
 
-
-
 Route::post('/auth/login', [AccountController::class, 'login']);
-Route::resource('tickets', TicketController::class);
-Route::get('get_tickets_by_user', [TicketController::class, 'get_tickets_by_user']);
-Route::get('get_tickets_by_internal', [TicketController::class, 'get_tickets_by_internal']);
-Route::post('assign_ticket', [TicketController::class, 'assign_ticket']);
-Route::post('change_ticket_status', [TicketController::class, 'change_ticket_status']);
-Route::get('get_stats', [TicketController::class, 'get_stats']);
-Route::get('send_auto_email', [TicketController::class, 'send_auto_email']);
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::resource('tickets', TicketController::class);
+    Route::get('get_tickets_by_user', [TicketController::class, 'get_tickets_by_user']);
+    Route::get('get_tickets_by_internal', [TicketController::class, 'get_tickets_by_internal']);
+    Route::post('assign_ticket', [TicketController::class, 'assign_ticket']);
+    Route::post('change_ticket_status', [TicketController::class, 'change_ticket_status']);
+    Route::get('get_stats', [TicketController::class, 'get_stats']);
+    Route::get('send_auto_email', [TicketController::class, 'send_auto_email']);
 
 
-Route::get('get_account_tickets', [TicketController::class, 'get_account_tickets'])->middleware('auth:sanctum');;
+    Route::get('get_account_tickets', [TicketController::class, 'get_account_tickets']);
 
 
-Route::resource('categories', CategoryController::class);
-Route::resource('dashboard', DashboardController::class);
-Route::resource('sites', SiteController::class);
-Route::resource('accounts', AccountController::class);
-Route::resource('notes', NoteController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('dashboard', DashboardController::class);
+    Route::resource('sites', SiteController::class);
+    Route::resource('accounts', AccountController::class);
+    Route::resource('notes', NoteController::class);
 
 
-Route::resource('accounting_expenses', AccountingExpensesController::class);
-Route::get('/get_daily_expenses', [AccountingExpensesController::class, 'get_daily_expenses']);
-Route::get('/my_fund_request', [AccountingExpensesController::class, 'my_fund_request']);
-Route::post('/request_change_status', [AccountingExpensesController::class, 'request_change_status']);
-Route::resource('accounting_cash_flows', AccountingCashFlowController::class);
-Route::get('/get_expenses_report', [AccountingExpensesController::class, 'get_expenses_report']);
+    Route::resource('accounting_expenses', AccountingExpensesController::class);
+    Route::get('/get_daily_expenses', [AccountingExpensesController::class, 'get_daily_expenses']);
+    Route::get('/my_fund_request', [AccountingExpensesController::class, 'my_fund_request']);
+    Route::post('/request_change_status', [AccountingExpensesController::class, 'request_change_status']);
+    Route::resource('accounting_cash_flows', AccountingCashFlowController::class);
+    Route::get('/get_expenses_report', [AccountingExpensesController::class, 'get_expenses_report']);
 
 
-Route::resource('accounting_purchase_request', AccountingPurchaseRequestController::class);
-Route::resource('accounting_purchase_request_items', AccountingPurchaseRequestItemController::class);
+    Route::resource('accounting_purchase_request', AccountingPurchaseRequestController::class);
+    Route::resource('accounting_purchase_request_items', AccountingPurchaseRequestItemController::class);
 
-Route::post('/ticketing_prompt_stats', [OpenAIController::class, 'ticketing_prompt_stats']);
-Route::post('/cocd_prompt', [OpenAIController::class, 'cocd_prompt']);
-Route::post('/scan_receipt', [OpenAIController::class, 'scan_receipt']);
-
-
-Route::get('get_account_by_department', [AccountController::class, 'get_account_by_department']);
+    Route::post('/ticketing_prompt_stats', [OpenAIController::class, 'ticketing_prompt_stats']);
+    Route::post('/cocd_prompt', [OpenAIController::class, 'cocd_prompt']);
+    Route::post('/scan_receipt', [OpenAIController::class, 'scan_receipt']);
 
 
+    Route::get('get_account_by_department', [AccountController::class, 'get_account_by_department']);
+});
 // Route::post('/chat', function (Request $request) {
 //     $client = new \GuzzleHttp\Client();
 
