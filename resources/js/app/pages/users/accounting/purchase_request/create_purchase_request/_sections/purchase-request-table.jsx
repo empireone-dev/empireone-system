@@ -152,7 +152,7 @@ export default function PurchaseRequestTable() {
 
                                     <td className="py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-0">
                                         <Link
-                                            href={`/users/accounting/purchase_request/${i}`}
+                                            href={`/users/accounting/purchase_request/${person.id}`}
                                             className="text-indigo-600 hover:text-indigo-900 "
                                         >
                                             Show Details

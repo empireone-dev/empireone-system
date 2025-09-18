@@ -84,7 +84,7 @@ export default function StepperSection() {
                                 {stepIdx !== steps.length - 1 ? (
                                     <div
                                         aria-hidden="true"
-                                        className="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-blue-600 dark:bg-blue-500"
+                                        className="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-blue-600 "
                                     />
                                 ) : null}
                                 <a
@@ -92,7 +92,7 @@ export default function StepperSection() {
                                     className="group relative flex items-start"
                                 >
                                     <span className="flex h-9 items-center">
-                                        <span className="relative z-10 flex size-8 items-center justify-center rounded-full bg-blue-600 group-hover:bg-blue-800 dark:bg-blue-500 dark:group-hover:bg-blue-600">
+                                        <span className="relative z-10 flex size-8 items-center justify-center rounded-full bg-blue-600 group-hover:bg-blue-800  ">
                                             <CheckIcon
                                                 aria-hidden="true"
                                                 className="size-5 text-white"
@@ -100,10 +100,10 @@ export default function StepperSection() {
                                         </span>
                                     </span>
                                     <span className="ml-4 flex min-w-0 flex-col">
-                                        <span className="text-sm font-medium text-gray-900 dark:text-white">
+                                        <span className="text-sm font-medium text-gray-900 ">
                                             {step.name}
                                         </span>
-                                        <span className="text-sm text-gray-500 dark:text-gray-400">
+                                        <span className="text-sm text-gray-500 ">
                                             {step.description}
                                         </span>
                                     </span>
@@ -114,7 +114,7 @@ export default function StepperSection() {
                                 {stepIdx !== steps.length - 1 ? (
                                     <div
                                         aria-hidden="true"
-                                        className="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-gray-300 dark:bg-gray-700"
+                                        className="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-gray-300 "
                                     />
                                 ) : null}
                                 <a
@@ -126,15 +126,15 @@ export default function StepperSection() {
                                         aria-hidden="true"
                                         className="flex h-9 items-center"
                                     >
-                                        <span className="relative z-10 flex size-8 items-center justify-center rounded-full border-2 border-blue-600 bg-white dark:border-blue-500 dark:bg-gray-900">
-                                            <span className="size-2.5 rounded-full bg-blue-600 dark:bg-blue-500" />
+                                        <span className="relative z-10 flex size-8 items-center justify-center rounded-full border-2 border-blue-600 bg-white ">
+                                            <span className="size-2.5 rounded-full bg-blue-600 " />
                                         </span>
                                     </span>
                                     <span className="ml-4 flex min-w-0 flex-col">
-                                        <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                                        <span className="text-sm font-medium text-blue-600">
                                             {step.name}
                                         </span>
-                                        <span className="text-sm text-gray-500 dark:text-gray-400">
+                                        <span className="text-sm text-gray-500 ">
                                             {step.description}
                                         </span>
                                     </span>
@@ -145,7 +145,7 @@ export default function StepperSection() {
                                 {stepIdx !== steps.length - 1 ? (
                                     <div
                                         aria-hidden="true"
-                                        className="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-gray-300 dark:bg-white/15"
+                                        className="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-gray-300 "
                                     />
                                 ) : null}
                                 <a
@@ -156,15 +156,15 @@ export default function StepperSection() {
                                         aria-hidden="true"
                                         className="flex h-9 items-center"
                                     >
-                                        <span className="relative z-10 flex size-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white group-hover:border-gray-400 dark:border-white/15 dark:bg-gray-900 dark:group-hover:border-white/25">
+                                        <span className="relative z-10 flex size-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white group-hover:border-gray-400 ">
                                             <span className="size-2.5 rounded-full bg-transparent group-hover:bg-gray-300 dark:group-hover:bg-white/15" />
                                         </span>
                                     </span>
                                     <span className="ml-4 flex min-w-0 flex-col">
-                                        <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        <span className="text-sm font-medium text-gray-500 ">
                                             {step.name}
                                         </span>
-                                        <span className="text-sm text-gray-500 dark:text-gray-400">
+                                        <span className="text-sm text-gray-500 ">
                                             {step.description}
                                         </span>
                                     </span>

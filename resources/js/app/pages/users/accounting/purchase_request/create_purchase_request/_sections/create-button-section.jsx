@@ -64,14 +64,13 @@ export default function CreateButtonSection() {
 
     const items = watch("items");
 
-    // ✅ Auto-generate Purchase Request No.
-    let counter = 0;
+    let counter = 0; // define outside so it persists
 
     const generateRequestNo = () => {
         counter++;
         return (
             "PR#-" +
-            moment().format("MMDDYY") +
+            moment().format("MMDDYY-HHmmss") +
             "-" +
             counter.toString().padStart(2, "0")
         );
