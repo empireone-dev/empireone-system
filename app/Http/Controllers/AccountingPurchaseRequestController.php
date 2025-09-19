@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class AccountingPurchaseRequestController extends Controller
 {
+    public function show($id)
+    {
+        $pr = AccountingPurchaseRequest::where('id',$id)->with(['items','requestor'])->first();
+        return response()->json($pr, 200);
+    }
     public function store(Request $request)
     {
         $auth = Auth::user();
@@ -34,7 +39,7 @@ class AccountingPurchaseRequestController extends Controller
     public function index()
     {
         $auth = Auth::user();
-        $purchase_request = AccountingPurchaseRequest::where('requestor_id', $auth->id)->with(['requestor','items'])->paginate(); // Get the first record from the model
+        $purchase_request = AccountingPurchaseRequest::where('requestor_id', $auth->id)->with(['requestor', 'items'])->paginate(); // Get the first record from the model
         return response()->json($purchase_request, 200); // Return it as a JSON response with 200 OK
     }
 

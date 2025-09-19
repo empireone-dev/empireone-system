@@ -3,7 +3,7 @@ import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
 import Select from "@/app/_components/select";
 import Modal from "@/app/_components/modal";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { X } from "lucide-react";
 import { create_accounting_purchase_request_service } from "@/app/services/accounting-purchase-request";
 import SwalAlert from "@/app/_components/swal";
@@ -13,11 +13,22 @@ import { get_purchase_request_thunk } from "@/app/redux/accounting-thunk";
 
 export default function CreateButtonSection() {
     const [open, setOpen] = useState(false);
+    const [items, setItems] = useState([
+        {
+            stock_no: "",
+            unit: "",
+            description: "",
+            quantity: "",
+            unit_cost:"" ,
+            total_cost: "",
+        },
+    ]);
+    const [itemErrors, setItemErrors] = useState([]);
 
     const department_data = [
-        { value: "finance", label: "Finance" },
-        { value: "it", label: "IT" },
-        { value: "hr", label: "Human Resources" },
+        { value: "Finance", label: "Finance" },
+        { value: "IT", label: "IT" },
+        { value: "Human Resources", label: "Human Resources" },
     ];
     const priority_data = [
         { value: "high", label: "High", color: "text-red-600 bg-red-100" },
@@ -32,8 +43,6 @@ export default function CreateButtonSection() {
     const {
         register,
         handleSubmit,
-        control,
-        watch,
         setValue,
         formState: { errors, isSubmitting },
         reset,
@@ -44,7 +53,78 @@ export default function CreateButtonSection() {
             priority: "",
             request_no: "",
             date: "",
-            items: [
+        },
+    });
+
+    const generateRequestNo = () => {
+        return "PR#-" + moment().format("MMDDYY-HHmmss");
+    };
+
+    useEffect(() => {
+        if (open) {
+            setValue("request_no", generateRequestNo());
+            setValue("date", moment().format("YYYY-MM-DD"));
+        }
+    }, [open, setValue]);
+
+    const handleItemChange = (index, field, value) => {
+        const updated = [...items];
+        updated[index][field] =
+            field === "quantity" || field === "unit_cost"
+                ? Number(value)
+                : value;
+        updated[index].total_cost =
+            Number(updated[index].quantity) * Number(updated[index].unit_cost);
+        setItems(updated);
+    };
+
+    const handleAddItem = () => {
+        setItems([
+            ...items,
+            {
+                stock_no: "",
+                unit: "",
+                description: "",
+                quantity: "",
+                unit_cost: "",
+                total_cost: "",
+            },
+        ]);
+    };
+
+    const handleRemoveItem = (index) => {
+        const updated = [...items];
+        updated.splice(index, 1);
+        setItems(updated);
+    };
+
+    const validateItems = () => {
+        const errors = items.map((item) => {
+            const err = {};
+            if (!item.unit?.trim()) err.unit = "Unit is required";
+            if (!item.description?.trim())
+                err.description = "Description is required";
+            if (!item.quantity || item.quantity <= 0)
+                err.quantity = "Quantity must be greater than 0";
+            if (!item.unit_cost || item.unit_cost <= 0)
+                err.unit_cost = "Unit cost must be greater than 0";
+            return err;
+        });
+        setItemErrors(errors);
+        return errors.every((e) => Object.keys(e).length === 0);
+    };
+
+    const onSubmit = async (data) => {
+        if (!validateItems()) return; // block submission if invalid
+
+        try {
+            const payload = { ...data, items };
+            await create_accounting_purchase_request_service(payload);
+            await store.dispatch(get_purchase_request_thunk());
+            await SwalAlert({ type: "success" });
+
+            reset();
+            setItems([
                 {
                     stock_no: "",
                     unit: "",
@@ -53,41 +133,7 @@ export default function CreateButtonSection() {
                     unit_cost: "",
                     total_cost: "",
                 },
-            ],
-        },
-    });
-
-    const { fields, append, remove } = useFieldArray({
-        control,
-        name: "items",
-    });
-
-    const items = watch("items");
-
-    let counter = 0; // define outside so it persists
-
-    const generateRequestNo = () => {
-        counter++;
-        return (
-            "PR#-" +
-            moment().format("MMDDYY-HHmmss") +
-            "-" +
-            counter.toString().padStart(2, "0")
-        );
-    };
-
-    useEffect(() => {
-        if (open) {
-            setValue("request_no", generateRequestNo());
-        }
-    }, [open, setValue]);
-
-    const onSubmit = async (data) => {
-        try {
-            await create_accounting_purchase_request_service(data);
-            await store.dispatch(get_purchase_request_thunk());
-            await SwalAlert({ type: "success" });
-            reset();
+            ]);
             setOpen(false);
         } catch (error) {
             console.error(
@@ -96,7 +142,6 @@ export default function CreateButtonSection() {
             );
         }
     };
-
     return (
         <>
             <Button
@@ -117,7 +162,6 @@ export default function CreateButtonSection() {
                     <Input
                         label="Purchase Request No."
                         type="text"
-                        name="request_no"
                         readOnly
                         error={errors?.request_no?.message}
                         register={register("request_no", {
@@ -148,7 +192,6 @@ export default function CreateButtonSection() {
                     <Input
                         label="Date"
                         type="date"
-                        name="date"
                         error={errors?.date?.message}
                         register={register("date", {
                             required: "This field is required",
@@ -156,111 +199,115 @@ export default function CreateButtonSection() {
                     />
 
                     <div className="text-xl">Items</div>
-                    {fields.map((field, index) => {
-                        const quantity = Number(items?.[index]?.quantity || 0);
-                        const unitCost = Number(items?.[index]?.unit_cost || 0);
-                        const totalCost = quantity * unitCost;
-
-                        if (items?.[index]?.total_cost !== totalCost) {
-                            setValue(`items.${index}.total_cost`, totalCost);
-                        }
-
-                        return (
-                            <div
-                                key={field.id}
-                                className="flex gap-2 items-center py-3"
-                            >
+                    {items.map((item, index) => (
+                        <div
+                            key={index}
+                            className="flex gap-2 items-end py-3 border-b"
+                        >
+                            <div className="flex-1">
                                 <Input
                                     label="Unit"
                                     type="text"
-                                    name={`items.${index}.unit`}
-                                    error={
-                                        errors?.items?.[index]?.unit?.message
+                                    value={item.unit}
+                                    onChange={(e) =>
+                                        handleItemChange(
+                                            index,
+                                            "unit",
+                                            e.target.value
+                                        )
                                     }
-                                    register={register(`items.${index}.unit`, {
-                                        required: "This field is required",
-                                    })}
                                 />
+                                {itemErrors[index]?.unit && (
+                                    <p className="text-red-500 text-xs">
+                                        {itemErrors[index].unit}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="flex-1">
                                 <Input
                                     label="Description"
                                     type="text"
-                                    name={`items.${index}.description`}
-                                    error={
-                                        errors?.items?.[index]?.description
-                                            ?.message
+                                    value={item.description}
+                                    onChange={(e) =>
+                                        handleItemChange(
+                                            index,
+                                            "description",
+                                            e.target.value
+                                        )
                                     }
-                                    register={register(
-                                        `items.${index}.description`,
-                                        {
-                                            required: "This field is required",
-                                        }
-                                    )}
                                 />
+                                {itemErrors[index]?.description && (
+                                    <p className="text-red-500 text-xs">
+                                        {itemErrors[index].description}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="flex-1">
                                 <Input
                                     label="Quantity"
                                     type="number"
-                                    name={`items.${index}.quantity`}
-                                    error={
-                                        errors?.items?.[index]?.quantity
-                                            ?.message
+                                    value={item.quantity}
+                                    onChange={(e) =>
+                                        handleItemChange(
+                                            index,
+                                            "quantity",
+                                            e.target.value
+                                        )
                                     }
-                                    register={register(
-                                        `items.${index}.quantity`,
-                                        {
-                                            required: "This field is required",
-                                        }
-                                    )}
-                                    onWheel={(e) => e.preventDefault()}
+                                    onWheel={(e) => e.currentTarget.blur()}
                                 />
+                                {itemErrors[index]?.quantity && (
+                                    <p className="text-red-500 text-xs">
+                                        {itemErrors[index].quantity}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="flex-1">
                                 <Input
                                     label="Unit Cost"
                                     type="number"
-                                    name={`items.${index}.unit_cost`}
-                                    error={
-                                        errors?.items?.[index]?.unit_cost
-                                            ?.message
+                                    value={item.unit_cost}
+                                    onChange={(e) =>
+                                        handleItemChange(
+                                            index,
+                                            "unit_cost",
+                                            e.target.value
+                                        )
                                     }
-                                    register={register(
-                                        `items.${index}.unit_cost`,
-                                        {
-                                            required: "This field is required",
-                                        }
-                                    )}
-                                    onWheel={(e) => e.preventDefault()}
+                                    onWheel={(e) => e.currentTarget.blur()}
                                 />
-                                <Input
-                                    label="Total Cost"
-                                    type="number"
-                                    name={`items.${index}.total_cost`}
-                                    value={totalCost}
-                                    readOnly
-                                    register={register(
-                                        `items.${index}.total_cost`
-                                    )}
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => remove(index)}
-                                    className="p-2 text-red-500 hover:text-red-700"
-                                >
-                                    <X size={18} />
-                                </button>
+                                {itemErrors[index]?.unit_cost && (
+                                    <p className="text-red-500 text-xs">
+                                        {itemErrors[index].unit_cost}
+                                    </p>
+                                )}
                             </div>
-                        );
-                    })}
+
+                            <div className="flex flex-col w-28">
+                                <label className="text-sm font-medium">
+                                    Total Cost
+                                </label>
+                                <div className="mt-1 text-gray-900 font-semibold">
+                                    ₱ {item.total_cost.toLocaleString()}
+                                </div>
+                            </div>
+
+                            <button
+                                type="button"
+                                onClick={() => handleRemoveItem(index)}
+                                className="p-2 text-red-500 hover:text-red-700"
+                            >
+                                <X size={18} />
+                            </button>
+                        </div>
+                    ))}
 
                     <Button
                         type="button"
-                        onClick={() =>
-                            append({
-                                stock_no: "",
-                                unit: "",
-                                description: "",
-                                quantity: "",
-                                unit_cost: "",
-                                total_cost: "",
-                            })
-                        }
+                        onClick={handleAddItem}
                         className="mt-2 rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white hover:bg-green-500"
                     >
                         + Add Item

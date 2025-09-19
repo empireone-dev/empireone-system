@@ -16,21 +16,21 @@ export async function get_accounting_purchase_request_service() {
 
 export async function get_accounting_purchase_request_by_id_service(id) {
     const res = await axios.get(
-        "/api/accounting_purchase_requests/" +id
+        "/api/accounting_purchase_request/" +id
     );
     return res;
 }
 
 export async function delete_accounting_purchase_request_service(id) {
     try {
-        const result = axios.delete(`/api/accounting_purchase_requests/${id}`);
+        const result = axios.delete(`/api/accounting_purchase_request/${id}`);
         return result;
     } catch (error) {}
 }
 
 export function update_accounting_purchase_request_service(data) {
     try {
-        const result = axios.put(`/api/accounting_purchase_requests/${data.id}`, data);
+        const result = axios.put(`/api/accounting_purchase_request/${data.id}`, data);
         return result;
     } catch (error) {}
 }

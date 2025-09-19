@@ -1,44 +1,15 @@
+import { peso_value } from "@/app/lib/peso-value";
+import moment from "moment";
+import { useSelector } from "react-redux";
+
 export default function DescriptionSection() {
-    // Dummy data (replace later with backend API response)
+    const { purchase_request } = useSelector((store) => store.accounting);
+    console.log("purchase_request", purchase_request);
 
-    const requestInfo = {
-        request_no: "PR#-091825-012142-01",
-        requestor_id: "Wacky D. Hojilla",
-        department: "IT Department",
-        date: "September 19, 2025",
-    };
-
-    const items = [
-        {
-            unit: "PC",
-            description: "High-performance PC for development",
-            quantity: 2,
-            unit_cost: 100,
-            total_cost: 200,
-        },
-        {
-            unit: "System Unit",
-            description: "Custom-built system unit for office use",
-            quantity: 2,
-            unit_cost: 100,
-            total_cost: 200,
-        },
-        {
-            unit: "Lan Cable",
-            description: "Cat6 Ethernet cable 10m",
-            quantity: 1,
-            unit_cost: 1000,
-            total_cost: 1000,
-        },
-        {
-            unit: "Keyboard",
-            description: "Mechanical keyboard",
-            quantity: 20,
-            unit_cost: 50,
-            total_cost: 1000,
-        },
-    ];
-
+    const grand_total_cost = purchase_request?.items?.reduce(
+        (sum, item) => sum + Number(item.total_cost),
+        0
+    );
     return (
         <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
             <div className="px-4 py-6 sm:px-6">
@@ -57,7 +28,7 @@ export default function DescriptionSection() {
                             Purchase Request No.
                         </dt>
                         <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-                            {requestInfo.request_no}
+                            {purchase_request.request_no}
                         </dd>
                     </div>
 
@@ -66,7 +37,7 @@ export default function DescriptionSection() {
                             Full Name
                         </dt>
                         <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-                            {requestInfo.requestor_id}
+                            {purchase_request?.requestor?.name}
                         </dd>
                     </div>
 
@@ -75,7 +46,7 @@ export default function DescriptionSection() {
                             Department
                         </dt>
                         <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-                            {requestInfo.department}
+                            {purchase_request.department}
                         </dd>
                     </div>
 
@@ -84,7 +55,7 @@ export default function DescriptionSection() {
                             Date
                         </dt>
                         <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-                            {requestInfo.date}
+                            {moment(purchase_request.date).format("LL")}
                         </dd>
                     </div>
                 </dl>
@@ -105,7 +76,7 @@ export default function DescriptionSection() {
                             </tr>
                         </thead>
                         <tbody>
-                            {items.map((item, index) => (
+                            {purchase_request?.items?.map((item, index) => (
                                 <tr key={index}>
                                     <td className="px-3 py-2 border">
                                         {item.unit}
@@ -117,16 +88,33 @@ export default function DescriptionSection() {
                                         {item.quantity}
                                     </td>
                                     <td className="px-3 py-2 border">
-                                        ${item.unit_cost.toLocaleString()}
+                                        {peso_value(item.unit_cost)}
                                     </td>
                                     <td className="px-3 py-2 border">
-                                        ${item.total_cost.toLocaleString()}
+                                        {peso_value(item.total_cost)}
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
+
+                        {/* ✅ Overall Total row */}
+                        <tfoot className="bg-gray-50 font-bold">
+                            <tr>
+                                <td
+                                    colSpan={4}
+                                    className="px-3 py-2 border text-right"
+                                >
+                                    Overall:
+                                </td>
+                                <td className="px-3 py-2 border">
+                                    {peso_value(grand_total_cost)}
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
+
+              
             </div>
         </div>
     );
