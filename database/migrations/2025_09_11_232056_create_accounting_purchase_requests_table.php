@@ -16,6 +16,7 @@ return new class extends Migration
     $table->string('department')->nullable();
     $table->string('requestor_id')->nullable();
     $table->string('accounting')->nullable();
+    $table->string('purpose')->nullable();
     $table->string('request_no')->nullable(); // ✅ must match frontend
     $table->string('priority')->nullable(); // ✅ must match frontend
     $table->string(column: 'status')->nullable(); // ✅ must match frontend

@@ -7,6 +7,13 @@ export function create_accounting_purchase_request_service(data) {
     } catch (error) {}
 }
 
+export function submit_declined_service(data) {
+    try {
+        const result = axios.post("/api/submit_declined", data);
+        return result;
+    } catch (error) {}
+}
+
 export async function get_accounting_purchase_request_service() {
     try {
         const result = axios.get("/api/accounting_purchase_request"+window.location.search);

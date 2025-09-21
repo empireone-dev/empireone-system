@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountingPurchaseRequestController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -11,6 +12,12 @@ use Inertia\Inertia;
 
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
+
+Route::get('/api/purchase/{request_no}/approve', [AccountingPurchaseRequestController::class, 'approve'])
+    ->name('purchase.approve');
+Route::get('/api/purchase/{request_no}/decline', [AccountingPurchaseRequestController::class, 'decline'])
+    ->name('purchase.decline');
 
 Route::get('/', function () {
     $user = Auth::user();

@@ -25,6 +25,9 @@ Route::post('/call', [CallController::class, 'makeCall']);
 Route::post('/twilio/voice', [CallController::class, 'voiceResponse'])->name('twilio.voice');
 
 Route::post('/auth/login', [AccountController::class, 'login']);
+
+
+
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('tickets', TicketController::class);
@@ -55,6 +58,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::resource('accounting_purchase_request', AccountingPurchaseRequestController::class);
+    Route::post('/submit_declined', [AccountingPurchaseRequestController::class, 'submit_declined']);
+
     Route::resource('accounting_purchase_request_items', AccountingPurchaseRequestItemController::class);
 
     Route::post('/ticketing_prompt_stats', [OpenAIController::class, 'ticketing_prompt_stats']);

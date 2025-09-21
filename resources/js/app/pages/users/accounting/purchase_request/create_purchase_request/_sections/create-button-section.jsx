@@ -10,6 +10,7 @@ import SwalAlert from "@/app/_components/swal";
 import moment from "moment";
 import store from "@/app/store/store";
 import { get_purchase_request_thunk } from "@/app/redux/accounting-thunk";
+import TextArea from "@/app/_components/textarea";
 
 export default function CreateButtonSection() {
     const [open, setOpen] = useState(false);
@@ -57,7 +58,7 @@ export default function CreateButtonSection() {
     });
 
     const generateRequestNo = () => {
-        return "PR#-" + moment().format("MMDDYY-HHmmss");
+        return "PR-" + moment().format("MMDDYY-HHmmss");
     };
 
     useEffect(() => {
@@ -153,12 +154,12 @@ export default function CreateButtonSection() {
             </Button>
 
             <Modal
-                width="max-w-5xl"
+                width="max-w-5xl "
                 isOpen={open}
                 onClose={setOpen}
                 title="Create Purchase Request"
             >
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
                     <Input
                         label="Purchase Request No."
                         type="text"
@@ -198,6 +199,14 @@ export default function CreateButtonSection() {
                         })}
                     />
 
+
+                    <TextArea
+                        label="Purpose"
+                        error={errors?.purpose?.message}
+                        register={register("purpose", {
+                            required: "This field is required",
+                        })}
+                    />
                     <div className="text-xl">Items</div>
                     {items.map((item, index) => (
                         <div
@@ -208,6 +217,7 @@ export default function CreateButtonSection() {
                                 <Input
                                     label="Unit"
                                     type="text"
+                                    name={`items[${index}].unit`}
                                     value={item.unit}
                                     onChange={(e) =>
                                         handleItemChange(
@@ -228,6 +238,7 @@ export default function CreateButtonSection() {
                                 <Input
                                     label="Description"
                                     type="text"
+                                    name={`items[${index}].description`}
                                     value={item.description}
                                     onChange={(e) =>
                                         handleItemChange(
@@ -248,6 +259,7 @@ export default function CreateButtonSection() {
                                 <Input
                                     label="Quantity"
                                     type="number"
+                                    name={`items[${index}].quantity`}
                                     value={item.quantity}
                                     onChange={(e) =>
                                         handleItemChange(
@@ -269,6 +281,7 @@ export default function CreateButtonSection() {
                                 <Input
                                     label="Unit Cost"
                                     type="number"
+                                    name={`items[${index}].unit_cost`}
                                     value={item.unit_cost}
                                     onChange={(e) =>
                                         handleItemChange(

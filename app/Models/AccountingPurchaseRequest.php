@@ -10,13 +10,13 @@ class AccountingPurchaseRequest extends Model
 {
     protected $fillable = [
         'department',
+        'purpose',
         'accounting',
         'requestor_id',
         'request_no',
         'date',
         'priority',
         'status'
-
     ];
     public function user(): HasOne
     {
