@@ -17,14 +17,7 @@ class AccountingPurchaseRequestController extends Controller
 {
     public function email($number)
     {
-
-        if ($number == 1) {
-            return "webdev@empireonegroup.com";
-        } else if ($number == 2) {
-            return "webdev@empireonegroup.com";
-        } else if ($number == 3) {
-            return "webdev@empireonegroup.com";
-        }
+        return env("APPROVE_{$number}", null);
     }
 
     public function approve(Request $request, $request_no)

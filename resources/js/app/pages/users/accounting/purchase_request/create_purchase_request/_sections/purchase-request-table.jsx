@@ -97,7 +97,10 @@ export default function PurchaseRequestTable() {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white ">
                         {purchase_requests?.data?.map((person, i) => {
-                            const total_cost = person?.items?.reduce((sum, item) => sum + Number(item.total_cost), 0);
+                            const total_cost = person?.items?.reduce(
+                                (sum, item) => sum + Number(item.total_cost),
+                                0
+                            );
                             return (
                                 <tr key={i}>
                                     <td className="w-full max-w-0 py-4 pr-3 pl-4 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-0">
@@ -110,7 +113,7 @@ export default function PurchaseRequestTable() {
                                         {person?.requestor?.name}
                                     </td>
                                     <td className="px-3 py-4 text-sm text-gray-500">
-                                      {peso_value(total_cost)}
+                                        {peso_value(total_cost)}
                                     </td>
                                     <td className="px-3 py-4 text-sm">
                                         {person.priority === "high" ? (
@@ -128,26 +131,12 @@ export default function PurchaseRequestTable() {
                                         ) : null}
                                     </td>
                                     <td className="px-3 py-4 text-sm text-gray-500">
-                                        {moment(person.date).format('LL')}
+                                        {moment(person.date).format("LL")}
                                     </td>
                                     <td className="px-3 py-4 text-sm">
-                                        {person.status === "Pending" ? (
-                                            <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-yellow-300">
-                                                Pending
-                                            </span>
-                                        ) : person.status === "Approved" ? (
-                                            <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-blue-300">
-                                                Approved
-                                            </span>
-                                        ) : person.status === "Purchased" ? (
-                                            <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-purple-300">
-                                                Purchased
-                                            </span>
-                                        ) : person.status === "Completed" ? (
-                                            <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-green-300">
-                                                Completed
-                                            </span>
-                                        ) : null}
+                                        <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-yellow-300">
+                                            {person.status}
+                                        </span>
                                     </td>
 
                                     <td className="py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-0">
