@@ -50,7 +50,7 @@ class AccountingPurchaseRequestController extends Controller
         // Prevent re-approvals
         $hasExist = AccountingPurchaseRequestLog::where('accounting_purchase_requests_id', $pr->id)
             ->where('status', $request->status)
-            ->orderByDesc('id')
+            ->orderBy('id', 'desc')
             ->first();
 
         if ($hasExist) {
@@ -97,8 +97,10 @@ class AccountingPurchaseRequestController extends Controller
             'request_no' => $request_no,
             'status'     =>  $newPath
         ]);
-        $declineUrl = URL::signedRoute('purchase.decline', ['request_no' => $request_no]);
-
+        $declineUrl = URL::signedRoute('purchase.decline', [
+            'request_no' => $request_no,
+            'status' =>  $newPath
+        ]);
         // Mail data
         $mailData = [
             'items'      => $pr->items,
@@ -139,14 +141,25 @@ class AccountingPurchaseRequestController extends Controller
         $pr = AccountingPurchaseRequest::where('request_no', $request_no)->first();
         if (!$pr) {
             return response()->json(['message' => 'Record not found'], 404);
+        } else if ($pr->status === 'Declined') {
+            return Inertia::render('accounting_approval/declined', [
+                'message' => "Purchase request already {$pr->status}."
+            ]);
         }
-        if ($pr->status == 'Initial Approved' || $pr->status == 'Second Approved' || $pr->status == 'Final Approved') {
-            return Inertia::render('accounting_approval/approved', ['message' => 'Purchase request approved successfully.']);
-        } else if ($pr->status == 'Declined') {
-            return Inertia::render('accounting_approval/declined', ['message' => 'Purchase request declined successfully.']);
-        } else if ($pr->status == 'Pending') {
-            return Inertia::render('accounting_approval/declined_form', ['message' => 'Purchase request declined form']);
+
+
+        $hasExist = AccountingPurchaseRequestLog::where('accounting_purchase_requests_id', $pr->id)
+            ->where('status', $request->status)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if ($hasExist) {
+            return Inertia::render('accounting_approval/approved', [
+                'message' => "Purchase request already {$hasExist->status}."
+            ]);
         }
+
+        return Inertia::render('accounting_approval/declined_form', ['message' => "Purchase request {$pr->status} declined form"]);
     }
 
     public function submit_declined(Request $request)
@@ -192,18 +205,18 @@ class AccountingPurchaseRequestController extends Controller
                 "unit_cost" => $value['unit_cost'],
             ]);
         }
-        $approveUrl = URL::signedRoute(
-            'purchase.approve',
-            [
-                'request_no' => $ap['request_no'],
-                'status' => 'Initial Approved'  // include as query parameter here
-            ]
-        );
+        $approveUrl = URL::signedRoute('purchase.approve', [
+            'request_no' => $ap['request_no'],
+            'status' => 'Initial Approved'  // include as query parameter here
+        ]);
         AccountingPurchaseRequestLog::create([
             'accounting_purchase_requests_id' => $ap->id,
             'status' => 'Pending'
         ]);
-        $declineUrl = URL::signedRoute('purchase.decline', ['request_no' => $ap['request_no']]);
+        $declineUrl = URL::signedRoute('purchase.decline', [
+            'request_no' => $ap['request_no'],
+            'status' => 'Initial Approved'
+        ]);
 
 
         Mail::to($this->email(1))->send(new AccountingPurchaseRequestMail([
