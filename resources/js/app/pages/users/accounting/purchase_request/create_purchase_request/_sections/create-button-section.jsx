@@ -20,7 +20,7 @@ export default function CreateButtonSection() {
             unit: "",
             description: "",
             quantity: "",
-            unit_cost:"" ,
+            unit_cost: "",
             total_cost: "",
         },
     ]);
@@ -199,7 +199,6 @@ export default function CreateButtonSection() {
                         })}
                     />
 
-
                     <TextArea
                         label="Purpose"
                         error={errors?.purpose?.message}
@@ -321,7 +320,7 @@ export default function CreateButtonSection() {
                     <Button
                         type="button"
                         onClick={handleAddItem}
-                        className="mt-2 rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white hover:bg-green-500"
+                        variant="success"
                     >
                         + Add Item
                     </Button>
@@ -330,15 +329,11 @@ export default function CreateButtonSection() {
                         <Button
                             type="button"
                             onClick={() => setOpen(false)}
-                            className="rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-black hover:bg-gray-300"
+                            variant="danger"
                         >
                             Cancel
                         </Button>
-                        <Button
-                            type="submit"
-                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
-                            loading={isSubmitting}
-                        >
+                        <Button type="submit" loading={isSubmitting}>
                             Submit
                         </Button>
                     </div>

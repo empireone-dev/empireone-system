@@ -61,7 +61,7 @@ export default function Button({
         >
             {loading ? (
                 <div className="flex gap-1 py-2">
-                    {[0, 150, 300, 450, 600].map((delay,i) => (
+                    {[0, 150, 300, 450, 600].map((delay, i) => (
                         <span
                             key={delay}
                             style={{ animationDelay: `${delay}ms` }}
