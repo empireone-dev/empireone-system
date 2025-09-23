@@ -54,10 +54,10 @@ class AccountingPurchaseRequestController extends Controller
 
         // Define approval flow
         $statusFlow = [
-            'Pending'          => ['next' => 'Initial Approved', 'email_level' => 2],
-            'Initial Approved' => ['next' => 'Second Approved', 'email_level' => 3],
-            'Second Approved'  => ['next' => 'Final Approved',  'email_level' => 4],
-            'Final Approved'  => ['next' => 'Budget Released',  'email_level' => 5],
+            'Pending'          => ['next' => 'Initial Approved', 'email_level' => 1],
+            'Initial Approved' => ['next' => 'Second Approved', 'email_level' => 2],
+            'Second Approved'  => ['next' => 'Final Approved',  'email_level' => 3],
+            'Final Approved'  => ['next' => 'Budget Released',  'email_level' => 4],
         ];
 
         // Already fully approved
