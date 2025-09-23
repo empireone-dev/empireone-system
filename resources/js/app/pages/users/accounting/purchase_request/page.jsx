@@ -1,6 +1,6 @@
 import Layout from '@/app/pages/users/layout'
 import React, { useEffect } from 'react'
-import PurchaseRequestLayout from '../layout'
+import PurchaseRequestLayout from './layout'
 import PurchaseRequestTable from './_sections/purchase-request-table'
 import store from '@/app/store/store';
 import { get_purchase_request_thunk } from '@/app/redux/accounting-thunk';
@@ -11,9 +11,7 @@ export default function Page() {
     }, []);
   return (
     <Layout>
-        <PurchaseRequestLayout>
             <PurchaseRequestTable />
-        </PurchaseRequestLayout>
     </Layout>
   )
 }

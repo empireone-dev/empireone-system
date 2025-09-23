@@ -15,9 +15,9 @@ use Inertia\Inertia;
 
 class AccountingPurchaseRequestController extends Controller
 {
-    public function email($number)
+    public function email($number, $site)
     {
-        return env("APPROVE_{$number}", null);
+        return env("STAGE_{$number}_{$site}");
     }
 
     public function approve(Request $request, $request_no)
@@ -57,6 +57,7 @@ class AccountingPurchaseRequestController extends Controller
             'Pending'          => ['next' => 'Initial Approved', 'email_level' => 2],
             'Initial Approved' => ['next' => 'Second Approved', 'email_level' => 2],
             'Second Approved'  => ['next' => 'Final Approved',  'email_level' => 3],
+            'Final Approved'  => ['next' => 'Budget Released',  'email_level' => 4],
         ];
 
         // Already fully approved
@@ -80,7 +81,11 @@ class AccountingPurchaseRequestController extends Controller
         if ($newStatus == "Second Approved") {
             $newPath = 'Final Approved';
         }
-        $send_to  = $this->email($statusFlow[$pr->status]['email_level']);
+        if ($newStatus == "Final Approved") {
+            $newPath = 'Budget Released';
+        }
+        $site = $pr->requestor['location'] == 'San Carlos' ? 'SCC' : 'CARCAR';
+        $send_to  = $this->email($statusFlow[$pr->status]['email_level'], $site);
 
         // Update status
         $pr->update(['status' => $newStatus]);
@@ -177,7 +182,7 @@ class AccountingPurchaseRequestController extends Controller
     }
     public function show($id)
     {
-        $pr = AccountingPurchaseRequest::where('id', $id)->with(['items', 'requestor','logs'])->first();
+        $pr = AccountingPurchaseRequest::where('id', $id)->with(['items', 'requestor', 'logs'])->first();
         return response()->json($pr, 200);
     }
     public function store(Request $request)
@@ -213,7 +218,8 @@ class AccountingPurchaseRequestController extends Controller
         ]);
 
 
-        Mail::to($this->email(1))->send(new AccountingPurchaseRequestMail([
+        $site = $auth->location == 'San Carlos' ? 'SCC' : 'CARCAR';
+        Mail::to($this->email(1, $site))->send(new AccountingPurchaseRequestMail([
             ...$request->all(),
             'requestor' => $auth->name,
             'location' => $auth->location,
@@ -227,10 +233,10 @@ class AccountingPurchaseRequestController extends Controller
     public function index()
     {
         $auth = Auth::user();
-        $purchase_request = AccountingPurchaseRequest::where('requestor_id', $auth->id)->with(['requestor', 'items'])->paginate(); // Get the first record from the model
+        $purchase_request = AccountingPurchaseRequest::where('requestor_id', $auth->id)->with(['requestor', 'items'])->orderBy('id','desc')->paginate(); // Get the first record from the model
         return response()->json($purchase_request, 200); // Return it as a JSON response with 200 OK
     }
-    
+
 
     // public function update(Request $request, $id)
     // {

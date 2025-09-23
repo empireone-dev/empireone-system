@@ -104,17 +104,13 @@ Route::middleware(['auth:sanctum', 'account_type:2'])->prefix('users')->group(fu
             return Inertia::render('users/accounting/expenses/expenses_report/page');
         });
     });
-    Route::prefix('accounting/purchase_request')->group(function () {
-        Route::get('create_purchase_request', function () {
-            return Inertia::render('users/accounting/purchase_request/create_purchase_request/page');
+
+    Route::prefix('accounting')->group(function () {
+        Route::get('/purchase_request', function () {
+            return Inertia::render('users/accounting/purchase_request/page');
         });
-        Route::get('pending_purchase_request', function () {
-            return Inertia::render('users/accounting/purchase_request/pending_purchase_request/page');
-        });
-        Route::get('purchase_order', function () {
-            return Inertia::render('users/accounting/purchase_request/purchase_order/page');
-        });
-        Route::get('{id}', function () {
+
+        Route::get('/purchase_request/{id}', function () {
             return Inertia::render('users/accounting/purchase_request/id/page');
         });
     });

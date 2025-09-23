@@ -141,11 +141,7 @@ export default function CreateButtonSection() {
     };
     return (
         <>
-            <Button
-                type="button"
-                onClick={() => setOpen(true)}
-                className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500"
-            >
+            <Button type="button" onClick={() => setOpen(true)}>
                 Create Purchase Request
             </Button>
 

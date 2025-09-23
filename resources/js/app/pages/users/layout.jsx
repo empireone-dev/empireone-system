@@ -66,7 +66,7 @@ export default function Layout({ children }) {
                 },
                 {
                     name: "Purchase Request",
-                    href: "/users/accounting/purchase_request/create_purchase_request",
+                    href: "/users/accounting/purchase_request",
                     icon: <FcSurvey className="h-6 w-6" />,
                     current: isCurrentSub == "purchase_request",
                 },
