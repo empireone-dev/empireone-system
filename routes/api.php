@@ -27,8 +27,6 @@ Route::post('/twilio/voice', [CallController::class, 'voiceResponse'])->name('tw
 Route::post('/auth/login', [AccountController::class, 'login']);
 Route::post('/submit_declined', [AccountingPurchaseRequestController::class, 'submit_declined']);
 
-
-
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('tickets', TicketController::class);

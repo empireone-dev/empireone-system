@@ -11,6 +11,7 @@ import moment from "moment";
 import store from "@/app/store/store";
 import { get_purchase_request_thunk } from "@/app/redux/accounting-thunk";
 import TextArea from "@/app/_components/textarea";
+import { department_data } from "@/app/lib/department-lib";
 
 export default function CreateButtonSection() {
     const [open, setOpen] = useState(false);
@@ -26,11 +27,6 @@ export default function CreateButtonSection() {
     ]);
     const [itemErrors, setItemErrors] = useState([]);
 
-    const department_data = [
-        { value: "Finance", label: "Finance" },
-        { value: "IT", label: "IT" },
-        { value: "Human Resources", label: "Human Resources" },
-    ];
     const priority_data = [
         { value: "high", label: "High", color: "text-red-600 bg-red-100" },
         {

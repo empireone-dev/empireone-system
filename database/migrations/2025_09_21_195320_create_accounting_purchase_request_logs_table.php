@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('accounting_purchase_request_logs', function (Blueprint $table) {
             $table->id();
             $table->string('accounting_purchase_requests_id')->nullable();
+            $table->string('notes')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
         });

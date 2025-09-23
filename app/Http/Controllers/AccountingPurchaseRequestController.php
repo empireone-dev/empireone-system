@@ -170,13 +170,14 @@ class AccountingPurchaseRequestController extends Controller
         // Log + notify
         AccountingPurchaseRequestLog::create([
             'accounting_purchase_requests_id' => $pr->id,
-            'status' => 'Declined'
+            'status' => 'Declined',
+            'notes' => $validated['reason']
         ]);
         return response()->json(['message' => 'Purchase request declined successfully.'], 200);
     }
     public function show($id)
     {
-        $pr = AccountingPurchaseRequest::where('id', $id)->with(['items', 'requestor'])->first();
+        $pr = AccountingPurchaseRequest::where('id', $id)->with(['items', 'requestor','logs'])->first();
         return response()->json($pr, 200);
     }
     public function store(Request $request)

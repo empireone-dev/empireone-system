@@ -9,7 +9,7 @@ class AccountingPurchaseRequestLog extends Model
     
      protected $fillable = [
         'accounting_purchase_requests_id',
-        'status'
-
+        'status',
+        'notes',
     ];
 }

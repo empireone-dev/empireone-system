@@ -30,4 +30,8 @@ class AccountingPurchaseRequest extends Model
     {
         return $this->hasMany(AccountingPurchaseRequestItem::class, 'accounting_purchase_requests_id', 'id');
     }
+    public function logs(): HasMany
+    {
+        return $this->hasMany(AccountingPurchaseRequestLog::class, 'accounting_purchase_requests_id', 'id');
+    }
 }

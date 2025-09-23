@@ -106,6 +106,14 @@
             </tr>
             @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" style="text-align: right; font-weight: bold;">Overall Total:</td>
+                <td style="font-weight: bold;">
+                    {{ number_format(collect($purchase['items'])->sum('total_cost'), 2) }}
+                </td>
+            </tr>
+        </tfoot>
     </table>
 
     <div class="section flex items-center justify-between">

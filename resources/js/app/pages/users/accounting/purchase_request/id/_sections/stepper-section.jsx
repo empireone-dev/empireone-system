@@ -1,11 +1,15 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 
 export default function StepperSection() {
+    const { purchase_request } = useSelector((store) => store.accounting);
+    console.log("purchase_request", purchase_request?.logs);
     const steps = [
         {
             name: "Created Purchase Request",
@@ -19,7 +23,7 @@ export default function StepperSection() {
             href: "#",
             status: "complete",
         },
-       
+
         {
             name: "Pending Admin Approval",
             description: "Waiting For Admin Approval.",
@@ -38,13 +42,13 @@ export default function StepperSection() {
             href: "#",
             status: "complete",
         },
-          {
+        {
             name: "Final Approved",
             description: "Final approved by Head of Accounting",
             href: "#",
             status: "complete",
         },
-         {
+        {
             name: "Release Budget",
             description: "Iusto et officia maiores porro ad non quas.",
             href: "#",
@@ -66,106 +70,59 @@ export default function StepperSection() {
     return (
         <nav aria-label="Progress">
             <ol role="list" className="overflow-hidden">
-                {steps.map((step, stepIdx) => (
+                {purchase_request?.logs?.map((step, i) => (
                     <li
                         key={step.name}
                         className={classNames(
-                            stepIdx !== steps.length - 1 ? "pb-10" : "",
+                            i !== steps.length - 1 ? "pb-8" : "",
                             "relative"
                         )}
                     >
-                        {step.status === "complete" ? (
-                            <>
-                                {stepIdx !== steps.length - 1 ? (
-                                    <div
-                                        aria-hidden="true"
-                                        className="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-blue-600 "
-                                    />
-                                ) : null}
-                                <a
-                                    href={step.href}
-                                    className="group relative flex items-start"
-                                >
-                                    <span className="flex h-9 items-center">
-                                        <span className="relative z-10 flex size-8 items-center justify-center rounded-full bg-blue-600 group-hover:bg-blue-800  ">
-                                            <CheckIcon
-                                                aria-hidden="true"
-                                                className="size-5 text-white"
-                                            />
-                                        </span>
-                                    </span>
-                                    <span className="ml-4 flex min-w-0 flex-col">
-                                        <span className="text-sm font-medium text-gray-900 ">
-                                            {step.name}
-                                        </span>
-                                        <span className="text-sm text-gray-500 ">
-                                            {step.description}
-                                        </span>
-                                    </span>
-                                </a>
-                            </>
-                        ) : step.status === "current" ? (
-                            <>
-                                {stepIdx !== steps.length - 1 ? (
-                                    <div
-                                        aria-hidden="true"
-                                        className="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-gray-300 "
-                                    />
-                                ) : null}
-                                <a
-                                    href={step.href}
-                                    aria-current="step"
-                                    className="group relative flex items-start"
-                                >
-                                    <span
-                                        aria-hidden="true"
-                                        className="flex h-9 items-center"
-                                    >
-                                        <span className="relative z-10 flex size-8 items-center justify-center rounded-full border-2 border-blue-600 bg-white ">
-                                            <span className="size-2.5 rounded-full bg-blue-600 " />
-                                        </span>
-                                    </span>
-                                    <span className="ml-4 flex min-w-0 flex-col">
-                                        <span className="text-sm font-medium text-blue-600">
-                                            {step.name}
-                                        </span>
-                                        <span className="text-sm text-gray-500 ">
-                                            {step.description}
-                                        </span>
-                                    </span>
-                                </a>
-                            </>
-                        ) : (
-                            <>
-                                {stepIdx !== steps.length - 1 ? (
-                                    <div
-                                        aria-hidden="true"
-                                        className="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-gray-300 "
-                                    />
-                                ) : null}
-                                <a
-                                    href={step.href}
-                                    className="group relative flex items-start"
-                                >
-                                    <span
-                                        aria-hidden="true"
-                                        className="flex h-9 items-center"
-                                    >
-                                        <span className="relative z-10 flex size-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white group-hover:border-gray-400 ">
-                                            <span className="size-2.5 rounded-full bg-transparent group-hover:bg-gray-300 dark:group-hover:bg-white/15" />
-                                        </span>
-                                    </span>
-                                    <span className="ml-4 flex min-w-0 flex-col">
-                                        <span className="text-sm font-medium text-gray-500 ">
-                                            {step.name}
-                                        </span>
-                                        <span className="text-sm text-gray-500 ">
-                                            {step.description}
-                                        </span>
-                                    </span>
-                                </a>
-                            </>
+                        {i !== purchase_request.logs.length - 1 && (
+                            <div
+                                aria-hidden="true"
+                                className="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-gray-300"
+                            />
                         )}
+                        <a
+                            href={step.href}
+                            className="group relative flex items-start"
+                        >
+                            <span className="flex h-9 items-center">
+                                <span
+                                    className={`${
+                                        step.status == "Declined"
+                                            ? "bg-red-600  group-hover:bg-red-800"
+                                            : "bg-blue-600  group-hover:bg-blue-800"
+                                    } relative z-10 flex size-8 items-center justify-center rounded-full `}
+                                >
+                                    {step.status === "Declined" ? (
+                                        <XMarkIcon
+                                            aria-hidden="true"
+                                            className="size-5 text-white"
+                                        />
+                                    ) : (
+                                        <CheckIcon
+                                            aria-hidden="true"
+                                            className="size-5 text-white"
+                                        />
+                                    )}
+                                </span>
+                            </span>
+                            <span className="ml-4 flex min-w-0 flex-col">
+                                <span className="text-sm font-medium text-gray-900 ">
+                                    {step.status}
+                                </span>
+                                <span className="text-sm text-gray-500 ">
+                                    {moment(step.created_at).format("LLL")}
+                                </span>
+                                {
+                                    <span className="text-sm text-red-500 ">
+                                        {step.notes ?? ""}
+                                    </span>
+                                }
+                            </span>
+                        </a>
                     </li>
                 ))}
             </ol>

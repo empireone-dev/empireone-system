@@ -30,7 +30,7 @@ export default function Modal({ isOpen, onClose, title, children,width="" }) {
                         leaveFrom="opacity-100 scale-100 translate-y-0"
                         leaveTo="opacity-0 scale-95 translate-y-2"
                     >
-                        <div className={`w-full ${width} overflow-auto h-[95vh] py-12 transform rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all`}>
+                        <div className={`w-full ${width} overflow-auto max-h-[95vh] py-12 transform rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all`}>
                             {/* Title */}
                             {title && (
                                 <div
