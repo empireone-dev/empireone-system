@@ -1,1 +1,0 @@
-import{j as e,W as t}from"./app-3F2cqYtE.js";import"./search-lib-CU0dLCsd.js";import{A as r}from"./index-BXkfrsCY.js";function o(){return e.jsx("div",{children:e.jsxs(t,{href:"/users/accounting/purchase_request/create_purchase_request?page=1",className:" flex gap-3 text-2xl font-semibold text-gray-900 my-3",children:[e.jsx(r,{})," Back"]})})}export{o as default};
