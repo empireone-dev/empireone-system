@@ -52,9 +52,7 @@ export default function PurchaseRequestTable() {
                             <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                 Status
                             </th>
-                            <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                Action
-                            </th>
+
                             <th className="py-3.5 pr-4 pl-3 sm:pr-0">
                                 <span className="sr-only">Edit</span>
                             </th>
@@ -109,22 +107,22 @@ export default function PurchaseRequestTable() {
                                                 "Initial Approved": {
                                                     label: "Initial Approved",
                                                     classes:
-                                                        "bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-blue-300",
+                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-yellow-700 text-yellow-700",
                                                 },
                                                 "Second Approved": {
                                                     label: "Second Approved",
                                                     classes:
-                                                        "bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-green-300",
+                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-blue-500 text-blue-500",
                                                 },
                                                 "Final Approved": {
                                                     label: "Final Approved",
                                                     classes:
-                                                        "bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-green-300",
+                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-green-500 text-green-500",
                                                 },
                                                 Declined: {
                                                     label: "Declined",
                                                     classes:
-                                                        "bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-red-300",
+                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-red-500 text-red-500",
                                                 },
                                             };
 

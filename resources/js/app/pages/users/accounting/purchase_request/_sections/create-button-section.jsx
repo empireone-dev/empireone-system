@@ -12,9 +12,12 @@ import store from "@/app/store/store";
 import { get_purchase_request_thunk } from "@/app/redux/accounting-thunk";
 import TextArea from "@/app/_components/textarea";
 import { department_data } from "@/app/lib/department-lib";
+import { useSelector } from "react-redux";
+import { get_categories_thunk } from "@/app/redux/categories-thunk";
 
 export default function CreateButtonSection() {
     const [open, setOpen] = useState(false);
+    const { categories } = useSelector((store) => store.categories);
     const [items, setItems] = useState([
         {
             stock_no: "",
@@ -35,6 +38,11 @@ export default function CreateButtonSection() {
             color: "text-yellow-600 bg-yellow-100",
         },
         { value: "low", label: "Low", color: "text-green-600 bg-green-100" },
+    ];
+    const category_data = [
+        { value: "high", label: "High" },
+        { value: "medium", label: "Medium" },
+        { value: "low", label: "Low" },
     ];
 
     const {
@@ -139,6 +147,13 @@ export default function CreateButtonSection() {
             );
         }
     };
+    function select_department(value) {
+        store.dispatch(
+            get_categories_thunk({
+                department: value,
+            })
+        );
+    }
     return (
         <>
             <Button type="button" onClick={() => setOpen(true)}>
@@ -168,6 +183,19 @@ export default function CreateButtonSection() {
                         options={department_data}
                         error={errors?.department?.message}
                         register={register("department", {
+                            required: "This field is required",
+                        })}
+                        onChange={(e) => select_department(e.target.value)}
+                    />
+                    <Select
+                        label="Category"
+                        name="category_id"
+                        options={categories.map((res) => ({
+                            label: res.name,
+                            value: res.id,
+                        }))}
+                        error={errors?.category_id?.message}
+                        register={register("category_id", {
                             required: "This field is required",
                         })}
                     />

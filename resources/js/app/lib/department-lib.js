@@ -2,6 +2,10 @@ export const department_data = [
   {
     label: "IT Department",
     value: "IT Department",
+    // children: [{
+    //     label:"IT Department",
+    //     value:"IT Department"
+    // }]
   },
   {
     label: "HR Department",
