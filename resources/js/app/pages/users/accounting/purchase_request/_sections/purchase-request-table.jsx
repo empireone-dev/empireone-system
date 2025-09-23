@@ -4,6 +4,7 @@ import CreateButtonSection from "./create-button-section";
 import { useSelector } from "react-redux";
 import { peso_value } from "@/app/lib/peso-value";
 import moment from "moment";
+import PaginationSection from "./pagination-section";
 
 export default function PurchaseRequestTable() {
     const { purchase_requests } = useSelector((store) => store.accounting);
@@ -50,6 +51,9 @@ export default function PurchaseRequestTable() {
                             </th>
                             <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                 Status
+                            </th>
+                            <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                Action
                             </th>
                             <th className="py-3.5 pr-4 pl-3 sm:pr-0">
                                 <span className="sr-only">Edit</span>
@@ -100,7 +104,7 @@ export default function PurchaseRequestTable() {
                                                 Pending: {
                                                     label: "Pending",
                                                     classes:
-                                                        "bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-yellow-300",
+                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-yellow-500 text-yellow-500",
                                                 },
                                                 "Initial Approved": {
                                                     label: "Initial Approved",
@@ -152,6 +156,9 @@ export default function PurchaseRequestTable() {
                         })}
                     </tbody>
                 </table>
+                <div className="mt-4">
+                    <PaginationSection />
+                </div>
             </div>
         </div>
     );

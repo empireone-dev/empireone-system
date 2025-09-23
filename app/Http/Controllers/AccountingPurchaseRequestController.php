@@ -233,7 +233,7 @@ class AccountingPurchaseRequestController extends Controller
     public function index()
     {
         $auth = Auth::user();
-        $purchase_request = AccountingPurchaseRequest::where('requestor_id', $auth->id)->with(['requestor', 'items'])->orderBy('id','desc')->paginate(); // Get the first record from the model
+        $purchase_request = AccountingPurchaseRequest::where('requestor_id', $auth->id)->with(['requestor', 'items'])->orderBy('id', 'desc')->paginate(10); // Get the first record from the model
         return response()->json($purchase_request, 200); // Return it as a JSON response with 200 OK
     }
 

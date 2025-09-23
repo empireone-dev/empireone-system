@@ -7,7 +7,7 @@ export default function BackSection() {
     return (
         <div>
             <Link
-                href={`/users/accounting/purchase_request/create_purchase_request?page=${1}`}
+                href={`/users/accounting/purchase_request?page=${1}`}
                 className=" flex gap-3 text-2xl font-semibold text-gray-900 my-3"
             >
                 <FcUpLeft /> Back
