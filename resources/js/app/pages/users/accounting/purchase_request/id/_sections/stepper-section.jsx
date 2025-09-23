@@ -19,12 +19,7 @@ export default function StepperSection() {
             href: "#",
             status: "complete",
         },
-        {
-            name: "Preparation For Purchase Order",
-            description: "Accounting Will Create The Purchase Order.",
-            href: "#",
-            status: "complete",
-        },
+       
         {
             name: "Pending Admin Approval",
             description: "Waiting For Admin Approval.",
@@ -32,25 +27,25 @@ export default function StepperSection() {
             status: "complete",
         },
         {
-            name: "Budget Released",
-            description: "Iusto et officia maiores porro ad non quas.",
+            name: "Initial Approved",
+            description: "Approved by Archie.",
             href: "#",
             status: "complete",
         },
         {
-            name: "Buying Request Purchased Items",
-            description: "Iusto et officia maiores porro ad non quas.",
+            name: "Second Approved",
+            description: "Approved by Cielo",
             href: "#",
             status: "complete",
         },
           {
-            name: "Uploaded Invoice",
-            description: "Iusto et officia maiores porro ad non quas.",
+            name: "Final Approved",
+            description: "Final approved by Head of Accounting",
             href: "#",
             status: "complete",
         },
          {
-            name: "Received Items",
+            name: "Release Budget",
             description: "Iusto et officia maiores porro ad non quas.",
             href: "#",
             status: "current",

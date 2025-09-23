@@ -229,6 +229,7 @@ class AccountingPurchaseRequestController extends Controller
         $purchase_request = AccountingPurchaseRequest::where('requestor_id', $auth->id)->with(['requestor', 'items'])->paginate(); // Get the first record from the model
         return response()->json($purchase_request, 200); // Return it as a JSON response with 200 OK
     }
+    
 
     // public function update(Request $request, $id)
     // {

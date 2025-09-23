@@ -5,45 +5,6 @@ import { useSelector } from "react-redux";
 import { peso_value } from "@/app/lib/peso-value";
 import moment from "moment";
 
-const people = [
-    {
-        request_no: "PR#-091725-01",
-        department: "IT",
-        requester: "Wacky Hojilla",
-        total_cost: "$1,200",
-        priority: "High",
-        date: "2025-09-17",
-        status: "Pending",
-    },
-    {
-        request_no: "PR#-091725-02",
-        department: "IT",
-        requester: "Mark Harvey Leduna",
-        total_cost: "$1,200",
-        priority: "Low",
-        date: "2025-09-17",
-        status: "Approved",
-    },
-    {
-        request_no: "PR#-091725-03",
-        department: "IT",
-        requester: "Marlou Pepito",
-        total_cost: "$1,200",
-        priority: "Medium",
-        date: "2025-09-17",
-        status: "Purchased",
-    },
-    {
-        request_no: "PR#-091725-04",
-        department: "IT",
-        requester: "Quicky ",
-        total_cost: "$1,200",
-        priority: "High",
-        date: "2025-09-17",
-        status: "Completed",
-    },
-];
-
 export default function PurchaseRequestTable() {
     const { purchase_requests } = useSelector((store) => store.accounting);
     console.log("purchase_requests", purchase_requests.data);
@@ -134,9 +95,45 @@ export default function PurchaseRequestTable() {
                                         {moment(person.date).format("LL")}
                                     </td>
                                     <td className="px-3 py-4 text-sm">
-                                        <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-yellow-300">
-                                            {person.status}
-                                        </span>
+                                        {(() => {
+                                            const statusMap = {
+                                                Pending: {
+                                                    label: "Pending",
+                                                    classes:
+                                                        "bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-yellow-300",
+                                                },
+                                                "Initial Approved": {
+                                                    label: "Initial Approved",
+                                                    classes:
+                                                        "bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-blue-300",
+                                                },
+                                                "Second Approved": {
+                                                    label: "Second Approved",
+                                                    classes:
+                                                        "bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-green-300",
+                                                },
+                                                "Final Approved": {
+                                                    label: "Final Approved",
+                                                    classes:
+                                                        "bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-green-300",
+                                                },
+                                                Declined: {
+                                                    label: "Declined",
+                                                    classes:
+                                                        "bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-lg border border-red-300",
+                                                },
+                                            };
+
+                                            const status =
+                                                statusMap[person.status];
+                                            return status ? (
+                                                <span
+                                                    className={status.classes}
+                                                >
+                                                    {status.label}
+                                                </span>
+                                            ) : null;
+                                        })()}
                                     </td>
 
                                     <td className="py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-0">
