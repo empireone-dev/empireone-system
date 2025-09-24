@@ -15,19 +15,19 @@ export default function DescriptionSection() {
     );
     return (
         <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-            <div className="px-4 py-6 sm:px-6">
-                <h3 className="text-base font-semibold text-gray-900">
-                    Purchase Request Information
-                </h3>
-                <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                    Purchase Request details and application.
-                </p>
-            </div>
-            <div className="flex gap-3 justify-end">
-                
-                <FileUploadButton/>
-                <StatusUpdateButton/>
-            
+            <div className="px-4 py-6 sm:px-6 flex justify-between ">
+                <div className=" items-start">
+                    <h3 className="text-base font-semibold text-gray-900">
+                        Purchase Request Information
+                    </h3>
+                    <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                        Purchase Request details and application.
+                    </p>
+                </div>
+                <div className="flex gap-3 justify-end items-end">
+                    <FileUploadButton />
+                    <StatusUpdateButton />
+                </div>
             </div>
 
             <div className="border-t border-gray-100">
@@ -66,7 +66,6 @@ export default function DescriptionSection() {
                             {purchase_request.categories}
                         </dd>
                     </div>
-
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-medium text-gray-900">
                             Date

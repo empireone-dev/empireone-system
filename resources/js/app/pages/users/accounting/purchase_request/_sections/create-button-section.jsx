@@ -3,7 +3,7 @@ import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
 import Select from "@/app/_components/select";
 import Modal from "@/app/_components/modal";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { X } from "lucide-react";
 import { create_accounting_purchase_request_service } from "@/app/services/accounting-purchase-request";
 import SwalAlert from "@/app/_components/swal";
@@ -14,7 +14,8 @@ import TextArea from "@/app/_components/textarea";
 import { department_data } from "@/app/lib/department-lib";
 import { useSelector } from "react-redux";
 import { get_categories_thunk } from "@/app/redux/categories-thunk";
-
+import Dragger from "antd/es/upload/Dragger";
+import { InboxOutlined } from "@ant-design/icons";
 export default function CreateButtonSection() {
     const [open, setOpen] = useState(false);
     const { categories } = useSelector((store) => store.categories);
@@ -28,6 +29,7 @@ export default function CreateButtonSection() {
             total_cost: "",
         },
     ]);
+
     const [itemErrors, setItemErrors] = useState([]);
 
     const priority_data = [
@@ -40,6 +42,7 @@ export default function CreateButtonSection() {
     ];
 
     const {
+        control,
         register,
         handleSubmit,
         setValue,
@@ -220,6 +223,34 @@ export default function CreateButtonSection() {
                             required: "This field is required",
                         })}
                     />
+                    <Controller
+                        name="files"
+                        control={control}
+                        {...register("files")}
+                        render={({ field }) => (
+                            <Dragger
+                                height={150}
+                                beforeUpload={() => false}
+                                multiple
+                                onChange={(info) =>
+                                    field.onChange(info.fileList)
+                                }
+                                fileList={field.value}
+                            >
+                                <p className="ant-upload-drag-icon">
+                                    <InboxOutlined />
+                                </p>
+                                <p className="ant-upload-text">
+                                   Upload your quotation file (PDF, DOCX, or Excel)
+                                </p>
+                            </Dragger>
+                        )}
+                    />
+                    {errors?.files && (
+                        <p className="text-sm text-red-600 mt-1">
+                            {errors.files.message}
+                        </p>
+                    )}
                     <div className="text-xl">Items</div>
                     {items.map((item, index) => (
                         <div

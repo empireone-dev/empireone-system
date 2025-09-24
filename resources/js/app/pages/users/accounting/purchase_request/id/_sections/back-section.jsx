@@ -2,6 +2,8 @@ import { department_slug } from "@/app/lib/search-lib";
 import { Link } from "@inertiajs/react";
 import React from "react";
 import { FcUpLeft } from "react-icons/fc";
+import FileUploadButton from "./file-upload-button";
+import StatusUpdateButton from "./status-update-button";
 
 export default function BackSection() {
     return (
@@ -12,6 +14,7 @@ export default function BackSection() {
             >
                 <FcUpLeft /> Back
             </Link>
+            
         </div>
     );
 }
