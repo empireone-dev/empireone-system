@@ -22,6 +22,10 @@ const variantStyles = {
         solid: "bg-green-600 text-white hover:bg-green-700",
         outline: "border border-green-600 text-green-600 hover:bg-green-50",
     },
+    outline: {
+        solid: "bg-gray-600 text-white hover:bg-gray-700",
+        outline: "border border-gray-600 text-gray-600 hover:bg-gray-50",
+    },
 };
 
 const sizeStyles = {

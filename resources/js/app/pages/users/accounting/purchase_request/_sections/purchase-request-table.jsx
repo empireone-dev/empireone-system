@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { peso_value } from "@/app/lib/peso-value";
 import moment from "moment";
 import PaginationSection from "./pagination-section";
+import Table from "@/app/_components/table";
 
 export default function PurchaseRequestTable() {
     const { purchase_requests } = useSelector((store) => store.accounting);
@@ -28,7 +29,7 @@ export default function PurchaseRequestTable() {
                 </div>
             </div>
             <div className="-mx-4 mt-8 sm:-mx-0">
-                <table className="min-w-full divide-y divide-gray-300 ">
+                <table className="min-w-full divide-y divide-gray-300  ">
                     <thead>
                         <tr>
                             <th className="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-0">

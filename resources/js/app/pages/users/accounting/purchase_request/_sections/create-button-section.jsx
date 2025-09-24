@@ -31,17 +31,11 @@ export default function CreateButtonSection() {
     const [itemErrors, setItemErrors] = useState([]);
 
     const priority_data = [
-        { value: "high", label: "High", color: "text-red-600 bg-red-100" },
+        { value: "high", label: "High" },
         {
             value: "medium",
             label: "Medium",
-            color: "text-yellow-600 bg-yellow-100",
         },
-        { value: "low", label: "Low", color: "text-green-600 bg-green-100" },
-    ];
-    const category_data = [
-        { value: "high", label: "High" },
-        { value: "medium", label: "Medium" },
         { value: "low", label: "Low" },
     ];
 
@@ -210,14 +204,14 @@ export default function CreateButtonSection() {
                         })}
                     />
 
-                    <Input
+                    {/* <Input
                         label="Date"
                         type="date"
                         error={errors?.date?.message}
                         register={register("date", {
                             required: "This field is required",
                         })}
-                    />
+                    /> */}
 
                     <TextArea
                         label="Purpose"

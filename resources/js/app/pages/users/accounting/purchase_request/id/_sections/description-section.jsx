@@ -1,6 +1,9 @@
+import Button from "@/app/_components/button";
 import { peso_value } from "@/app/lib/peso-value";
 import moment from "moment";
 import { useSelector } from "react-redux";
+import FileUploadButton from "./file-upload-button";
+import StatusUpdateButton from "./status-update-button";
 
 export default function DescriptionSection() {
     const { purchase_request } = useSelector((store) => store.accounting);
@@ -19,6 +22,12 @@ export default function DescriptionSection() {
                 <p className="mt-1 max-w-2xl text-sm text-gray-500">
                     Purchase Request details and application.
                 </p>
+            </div>
+            <div className="flex gap-3 justify-end">
+                
+                <FileUploadButton/>
+                <StatusUpdateButton/>
+            
             </div>
 
             <div className="border-t border-gray-100">
@@ -49,7 +58,7 @@ export default function DescriptionSection() {
                             {purchase_request.department}
                         </dd>
                     </div>
-                       <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-medium text-gray-900">
                             Category
                         </dt>
@@ -121,8 +130,6 @@ export default function DescriptionSection() {
                         </tfoot>
                     </table>
                 </div>
-
-              
             </div>
         </div>
     );
