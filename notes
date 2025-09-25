@@ -1,15 +1,14 @@
-Purchase Request(Employee, Manager,Operations and Admin)
-	->requestor_id
-	->description
-	->quantity
-->manager approval
-->account department will make Purchase Order
-->Attorney approval
-->Treasury Report
-->Back to Accounting Department.
-->Upload Invoice. before close.
-->Received Report.
-->Go to Inventory.
+Unified System
+- resend email
+- file upload on create request
+- generate report on number of  request per month, total approved, declined, funds etc
+- after final approved jason and elona for sc and diocell for carcar will received email 
+- recipient will send receipt and quotation
+- approval ms if 20k up
+- dashboard on budget allocation on approver it depends if the budget exist
+- type of expense
+- add status update or comment based on status
+
 
 php artisan make:model --controller --migration NameOfTableModelController
 
