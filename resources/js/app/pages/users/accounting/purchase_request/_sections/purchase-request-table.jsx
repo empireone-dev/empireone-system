@@ -50,6 +50,7 @@ export default function PurchaseRequestTable() {
                             <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                 Date
                             </th>
+
                             <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                 Status
                             </th>

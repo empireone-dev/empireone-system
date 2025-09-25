@@ -38,7 +38,7 @@ export default function FileUploadButton() {
             </Button>
 
             <Modal
-                width="max-w-xl"
+                width="max-w-sm"
                 isOpen={open}
                 onClose={() => setOpen(false)}
                 title="File upload"
@@ -46,11 +46,14 @@ export default function FileUploadButton() {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <div className="flex flex-col gap-5 mt-5">
-                            <Select
-                                label="File"
-                                name="file"
-                                options={file_data}
-                            />
+                            <div className="mt-4">
+                                <Select
+                                    label="File"
+                                    name="file"
+                                    options={file_data}
+                                />
+                            </div>
+
                             <Controller
                                 name="files"
                                 control={control}
