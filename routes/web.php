@@ -116,6 +116,9 @@ Route::middleware(['auth:sanctum', 'account_type:2'])->prefix('users')->group(fu
          Route::get('/voucher_request', function () {
             return Inertia::render('users/accounting/voucher_request/page');
         });
+         Route::get('/voucher_request/{id}', function () {
+            return Inertia::render('users/accounting/voucher_request/id/page');
+        });
     });
       Route::prefix('human_resource')->group(function () {
         Route::get('/incident_report', function () {

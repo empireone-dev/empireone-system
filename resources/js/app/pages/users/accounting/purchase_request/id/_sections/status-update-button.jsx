@@ -18,6 +18,7 @@ export default function FileUploadButton() {
     const { purchase_request } = useSelector((store) => store.accounting);
     const notes_data = [
         { value: "Ordered", label: "Ordered" },
+        { value: "Paid", label: "Paid" },
         { value: "Received", label: "Received" },
         { value: "Completed", label: "Completed" },
     ];
@@ -35,16 +36,29 @@ export default function FileUploadButton() {
         register,
         handleSubmit,
         reset,
+        watch,
+        setValue,
         formState: { errors, isSubmitting },
     } = useForm({
         defaultValues: {
             status: "",
             files: [],
+            payment_methods: [],
         },
     });
 
+    const watchedStatus = watch("status");
+
+    // Clear payment methods when status changes and it's not "Paid"
+    React.useEffect(() => {
+        if (watchedStatus !== "Paid") {
+            setValue("payment_methods", []);
+        }
+    }, [watchedStatus, setValue]);
+
     const onSubmit = async (data) => {
         console.log("Uploaded files:", data.files);
+        console.log("Payment methods:", data.payment_methods);
         const new_data = {
             accounting_purchase_requests_id: accounting_purchase_requests_id,
             ...data,
@@ -55,6 +69,8 @@ export default function FileUploadButton() {
             if (key === "files" && value?.length) {
                 const file = value[0];
                 formData.append("file", file.originFileObj);
+            } else if (key === "payment_methods" && Array.isArray(value)) {
+                formData.append(key, JSON.stringify(value));
             } else {
                 formData.append(key, value ?? "");
             }
@@ -74,6 +90,11 @@ export default function FileUploadButton() {
         }
     };
 
+    const handleModalClose = () => {
+        setOpen(false);
+        reset();
+    };
+
     return (
         <>
             <Button variant="success" onClick={() => setOpen(true)}>
@@ -83,27 +104,57 @@ export default function FileUploadButton() {
             <Modal
                 width="max-w-md"
                 isOpen={open}
-                onClose={() => {
-                    setOpen(false);
-                    reset();
-                }}
+                onClose={handleModalClose}
                 title="Status Update"
             >
                 <form
-                    className="h-64 flex flex-col items-center justify-between w-full"
+                    className="h-auto flex flex-col items-center justify-between w-full"
                     onSubmit={handleSubmit(onSubmit)}
                 >
                     <div className="w-full">
                         <div className="flex flex-col gap-5">
-                            <Select
-                                label="Status"
+                            <Controller
                                 name="status"
-                                options={filtered}
-                                register={register("status", {
-                                    required: "This field is required",
-                                })}
-                                error={errors?.status?.message}
+                                control={control}
+                                rules={{ required: "This field is required" }}
+                                render={({ field }) => (
+                                    <Select
+                                        label="Status"
+                                        name="status"
+                                        options={filtered}
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        error={errors?.status?.message}
+                                    />
+                                )}
                             />
+
+                            {watchedStatus === "Paid" && (
+                                <div className="w-full">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Payment Methods
+                                    </label>
+                                    <div className="flex gap-5">
+                                        {["Bank", "Cash", "Cheque"].map((method) => (
+                                            <label key={method} className="flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    value={method}
+                                                    {...register("payment_methods")}
+                                                    className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                                />
+                                                <span className="text-sm text-gray-700">{method}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                    {errors?.payment_methods && (
+                                        <p className="mt-1 text-sm text-red-600">
+                                            {errors.payment_methods.message}
+                                        </p>
+                                    )}
+                                </div>
+                            )}
+
                             <TextArea
                                 label="Additional information"
                                 error={errors?.notes?.message}
