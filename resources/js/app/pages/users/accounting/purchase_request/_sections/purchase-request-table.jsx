@@ -54,10 +54,6 @@ export default function PurchaseRequestTable() {
                             <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                 Status
                             </th>
-
-                            <th className="py-3.5 pr-4 pl-3 sm:pr-0">
-                                <span className="sr-only">Edit</span>
-                            </th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white ">
@@ -69,7 +65,12 @@ export default function PurchaseRequestTable() {
                             return (
                                 <tr key={i}>
                                     <td className="w-full max-w-0 py-4 pr-3 pl-4 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-0">
-                                        {person.request_no}
+                                        <Link
+                                            href={`/users/accounting/purchase_request/${person.id}`}
+                                            className="text-indigo-600 underline hover:text-indigo-900 "
+                                        >
+                                            {person.request_no}
+                                        </Link>
                                     </td>
                                     <td className="px-3 py-4 text-sm text-gray-500">
                                         {person?.requestor?.department}
@@ -126,30 +127,26 @@ export default function PurchaseRequestTable() {
                                                     classes:
                                                         "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-red-500 text-red-500",
                                                 },
+                                                Completed: {
+                                                    label: "Completed",
+                                                    classes:
+                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-green-500 text-green-500",
+                                                },
                                             };
 
                                             const status =
                                                 statusMap[person.status];
                                             return status ? (
                                                 <span
-                                                    className={status.classes}
+                                                    className={
+                                                        status.classes ??
+                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-blue-500 text-blue-500"
+                                                    }
                                                 >
-                                                    {status.label}
+                                                    {person.status}
                                                 </span>
                                             ) : null;
                                         })()}
-                                    </td>
-
-                                    <td className="py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-0">
-                                        <Link
-                                            href={`/users/accounting/purchase_request/${person.id}`}
-                                            className="text-indigo-600 hover:text-indigo-900 "
-                                        >
-                                            Show Details
-                                            <span className="sr-only">
-                                                , {person.request_no}
-                                            </span>
-                                        </Link>
                                     </td>
                                 </tr>
                             );
