@@ -1,0 +1,1 @@
+import{b as c}from"./app-Bdvrdeom.js";async function e(r){try{return await c.post("/api/scan_receipt",r)}catch{}}async function a(r){try{return await c.post("/api/cocd_prompt",{prompt:r})}catch{}}export{a as c,e as s};

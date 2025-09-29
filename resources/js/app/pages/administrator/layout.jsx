@@ -80,6 +80,12 @@ export default function Layout({ children }) {
                     current: isCurrentSub == "Accounting_Department",
                 },
                 {
+                    name: "Legal Department",
+                    href: "/administrator/users/Legal_Department",
+                    icon: <FcPortraitMode className="h-6 w-6" />,
+                    current: isCurrentSub == "Legal_Department",
+                },
+                {
                     name: "Engagement Department",
                     href: "/administrator/users/Engagement_Department",
                     icon: <FcPortraitMode className="h-6 w-6" />,
