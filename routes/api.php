@@ -57,6 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::resource('accounting_purchase_request', AccountingPurchaseRequestController::class);
+    Route::post('/add_logs', [AccountingPurchaseRequestController::class, 'add_logs']);
 
     Route::resource('accounting_purchase_request_items', AccountingPurchaseRequestItemController::class);
 

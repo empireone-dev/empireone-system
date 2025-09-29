@@ -7,12 +7,28 @@ import StatusUpdateButton from "./status-update-button";
 
 export default function DescriptionSection() {
     const { purchase_request } = useSelector((store) => store.accounting);
-    console.log("purchase_request", purchase_request);
+
+    const notes_data = [
+        { value: "Pending", label: "Pending" },
+        { value: "Initial Approved", label: "Initial Approved" },
+        { value: "Second Approved", label: "Second Approved" },
+        { value: "Final Approved", label: "Final Approved" },
+    ];
+    const filtered = notes_data?.filter((obj2) =>
+        purchase_request?.logs?.some((obj1) => obj1.status === obj2.value)
+    );
+
+    const not_completed = !purchase_request?.logs?.some(
+        (obj1) => obj1.status === "Completed"
+    );
+
+    console.log("not_completed", not_completed);
 
     const grand_total_cost = purchase_request?.items?.reduce(
         (sum, item) => sum + Number(item.total_cost),
         0
     );
+
     return (
         <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
             <div className="px-4 py-6 sm:px-6 flex justify-between ">
@@ -24,10 +40,12 @@ export default function DescriptionSection() {
                         Purchase Request details and application.
                     </p>
                 </div>
-                <div className="flex gap-3 justify-end items-end">
-                    <FileUploadButton />
-                    <StatusUpdateButton />
-                </div>
+                {not_completed && filtered.length == 4 && (
+                    <div className="flex gap-3 justify-end items-end">
+                        <FileUploadButton />
+                        <StatusUpdateButton />
+                    </div>
+                )}
             </div>
 
             <div className="border-t border-gray-100">
@@ -66,7 +84,7 @@ export default function DescriptionSection() {
                             {purchase_request.categories}
                         </dd>
                     </div>
-                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-medium text-gray-900">
                             Quotation Attachment
                         </dt>

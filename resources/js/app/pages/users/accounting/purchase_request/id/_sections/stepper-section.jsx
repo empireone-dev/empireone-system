@@ -1,5 +1,6 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { FileIcon } from "lucide-react";
 import moment from "moment";
 import { useSelector } from "react-redux";
 
@@ -116,11 +117,22 @@ export default function StepperSection() {
                                 <span className="text-sm text-gray-500 ">
                                     {moment(step.created_at).format("LLL")}
                                 </span>
-                                {
-                                    <span className="text-sm text-red-500 ">
-                                        {step.notes ?? ""}
-                                    </span>
-                                }
+                                <div className="flex ">
+                                    {step.files && (
+                                        <a
+                                            href={step.files}
+                                            target="_blank"
+                                            className="text-sm text-blue-500 "
+                                        >
+                                            <FileIcon className="inline size-8 mr-1" />
+                                        </a>
+                                    )}
+                                    {step.notes && (
+                                        <span className="text-sm text-black ">
+                                            {step.notes ?? ""}
+                                        </span>
+                                    )}
+                                </div>
                             </span>
                         </a>
                     </li>

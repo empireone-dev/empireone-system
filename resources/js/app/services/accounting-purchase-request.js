@@ -1,5 +1,12 @@
 import axios from "axios";
 
+
+export function add_logs_service(data) {
+    try {
+        const result = axios.post("/api/add_logs", data);
+        return result;
+    } catch (error) {}
+}
 export function create_accounting_purchase_request_service(data) {
     try {
         const result = axios.post("/api/accounting_purchase_request", data);

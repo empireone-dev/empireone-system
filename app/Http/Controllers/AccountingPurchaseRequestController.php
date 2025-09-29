@@ -11,15 +11,35 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 
 class AccountingPurchaseRequestController extends Controller
 {
+
+
     public function email($number, $site)
     {
         return env("STAGE_{$number}_{$site}");
     }
 
+    public function add_logs(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $path = $request->file('file')->store(date("Y"), 's3');
+            $url = Storage::disk('s3')->url($path);
+        }
+        AccountingPurchaseRequestLog::create([
+            'accounting_purchase_requests_id' => $request->accounting_purchase_requests_id,
+            'status' => $request->status,
+            'notes' => $request->notes,
+            'files' => $url ?? null,
+        ]);
+        AccountingPurchaseRequest::where('id', $request->accounting_purchase_requests_id)->update([
+            'status' => $request->status,
+        ]);
+        return response()->json('success', 200);
+    }
     public function approve(Request $request, $request_no)
     {
         if (!$request->hasValidSignature()) {
