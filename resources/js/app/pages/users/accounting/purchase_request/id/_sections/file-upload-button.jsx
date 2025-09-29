@@ -107,6 +107,7 @@ export default function FileUploadButton() {
                             <Controller
                                 name="files"
                                 control={control}
+                                rules={{ required: "This field is required"}}
                                 register={register("files", {
                                     required: "This field is required",
                                 })}
