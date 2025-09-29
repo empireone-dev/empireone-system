@@ -7,7 +7,9 @@ import StatusUpdateButton from "./status-update-button";
 
 export default function DescriptionSection() {
     const { purchase_request } = useSelector((store) => store.accounting);
+    const { user } = useSelector((store) => store.accounts);
 
+    console.log("useruser", user);
     const notes_data = [
         { value: "Pending", label: "Pending" },
         { value: "Initial Approved", label: "Initial Approved" },
@@ -40,12 +42,14 @@ export default function DescriptionSection() {
                         Purchase Request details and application.
                     </p>
                 </div>
-                {not_completed && filtered.length == 4 && (
-                    <div className="flex gap-3 justify-end items-end">
-                        <FileUploadButton />
-                        <StatusUpdateButton />
-                    </div>
-                )}
+                {user?.department == "Accounting Department" &&
+                    not_completed &&
+                    filtered.length == 4 && (
+                        <div className="flex gap-3 justify-end items-end">
+                            <FileUploadButton />
+                            <StatusUpdateButton />
+                        </div>
+                    )}
             </div>
 
             <div className="border-t border-gray-100">

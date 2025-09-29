@@ -73,7 +73,7 @@ export default function StepperSection() {
             <ol role="list" className="overflow-hidden">
                 {purchase_request?.logs?.map((step, i) => (
                     <li
-                        key={step.name}
+                        key={i}
                         className={classNames(
                             i !== steps.length - 1 ? "pb-8" : "",
                             "relative"
