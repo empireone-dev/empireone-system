@@ -58,7 +58,7 @@ export default function CreateTicketSection() {
 
         // Append normal fields
         Object.entries(data).forEach(([key, value]) => {
-            if (key === "date_range") return; 
+            if (key === "date_range") return;
             if (key === "files" && value?.length) {
                 Array.from(value).forEach((file, index) => {
                     console.log("filefile", file);
