@@ -74,15 +74,15 @@ export default function PurchaseRequestTable() {
             total_cost: peso_value(total_cost),
             priority:
                 res.priority === "high" ? (
-                    <span className="text-red-500 text-sm font-medium px-2.5 py-0.5 rounded-sm">
+                    <span className="bg-red-200 text-red-500 text-sm font-medium px-2.5 py-0.5 rounded-sm">
                         High
                     </span>
                 ) : res.priority === "medium" ? (
-                    <span className="text-yellow-500 text-sm font-medium px-2.5 py-0.5 rounded-sm">
+                    <span className="bg-yellow-100 text-yellow-600 text-sm font-medium px-2.5 py-0.5 rounded-sm">
                         Medium
                     </span>
                 ) : res.priority === "low" ? (
-                    <span className="text-green-500 text-sm font-medium px-2.5 py-0.5 rounded-sm">
+                    <span className="bg-green-200 text-green-500 text-sm font-medium px-2.5 py-0.5 rounded-sm">
                         Low
                     </span>
                 ) : null,
