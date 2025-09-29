@@ -20,6 +20,7 @@ return new class extends Migration
     $table->string('request_no')->nullable(); // ✅ must match frontend
     $table->string('priority')->nullable(); // ✅ must match frontend
     $table->string(column: 'status')->nullable(); // ✅ must match frontend
+    $table->string(column: 'files')->nullable(); // ✅ must match frontend
     $table->date('date')->nullable();
     $table->timestamps();
 });

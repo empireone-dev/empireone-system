@@ -16,12 +16,12 @@ export default function PurchaseRequestTable() {
             <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
                     <h1 className="text-base font-semibold text-gray-900">
-                        Request
+                        Purchase Request
                     </h1>
                     <p className="mt-2 text-sm text-gray-700 ">
-                        A list of all the purchase requests in your account
-                        including their name, description, quantity and
-                        is_manager_approved.
+                        A list of all the purchase requests in your account,
+                        including their name, description, quantity, and manager
+                        approval status.
                     </p>
                 </div>
                 <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
@@ -83,15 +83,15 @@ export default function PurchaseRequestTable() {
                                     </td>
                                     <td className="px-3 py-4 text-sm">
                                         {person.priority === "high" ? (
-                                            <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-sm border border-red-400">
+                                            <span className=" text-red-500 text-sm font-medium px-2.5 py-0.5 rounded-sm ">
                                                 High
                                             </span>
                                         ) : person.priority === "medium" ? (
-                                            <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-sm border border-yellow-300">
+                                            <span className=" text-yellow-500 text-sm font-medium px-2.5 py-0.5 rounded-sm ">
                                                 Medium
                                             </span>
                                         ) : person.priority === "low" ? (
-                                            <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-sm border border-green-400">
+                                            <span className=" text-green-500 text-sm font-medium px-2.5 py-0.5 rounded-sm ">
                                                 Low
                                             </span>
                                         ) : null}
@@ -105,47 +105,47 @@ export default function PurchaseRequestTable() {
                                                 Pending: {
                                                     label: "Pending",
                                                     classes:
-                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-yellow-500 text-yellow-500",
+                                                        "bg-yellow-50 inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-sm border border-yellow-500 text-xs font-medium text-yellow-500",
                                                 },
                                                 "Initial Approved": {
                                                     label: "Initial Approved",
                                                     classes:
-                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-yellow-700 text-yellow-700",
+                                                        "bg-yellow-50 inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-sm text-xs border border-yellow-600 font-medium  text-yellow-700",
                                                 },
                                                 "Second Approved": {
                                                     label: "Second Approved",
                                                     classes:
-                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-blue-500 text-blue-500",
+                                                        "bg-blue-50 inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-sm text-xs border border-blue-500 font-medium  text-blue-500",
                                                 },
                                                 "Final Approved": {
                                                     label: "Final Approved",
                                                     classes:
-                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-green-500 text-green-500",
+                                                        "bg-green-50 inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-sm text-xs font-medium border border-green-500 text-green-500",
                                                 },
                                                 Declined: {
                                                     label: "Declined",
                                                     classes:
-                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-red-500 text-red-500",
+                                                        "bg-red- inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-sm text-xs font-medium border border-red-500  text-red-500",
                                                 },
                                                 Completed: {
                                                     label: "Completed",
                                                     classes:
-                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-green-500 text-green-500",
+                                                        "bg-cyan-50 inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-sm text-xs font-medium border border-cyan-500 text-cyan-500",
                                                 },
                                             };
 
                                             const status =
                                                 statusMap[person.status];
-                                            return status ? (
+                                            return (
                                                 <span
                                                     className={
-                                                        status.classes ??
-                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-blue-500 text-blue-500"
+                                                        status?.classes ??
+                                                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-sm text-xs font-medium border border-blue-500 text-blue-500"
                                                     }
                                                 >
                                                     {person.status}
                                                 </span>
-                                            ) : null;
+                                            );
                                         })()}
                                     </td>
                                 </tr>

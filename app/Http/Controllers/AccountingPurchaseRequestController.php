@@ -207,13 +207,14 @@ class AccountingPurchaseRequestController extends Controller
     }
     public function store(Request $request)
     {
+        $items = json_decode($request->items, true);
         $auth = Auth::user();
         $ap = AccountingPurchaseRequest::create([
             ...$request->all(),
             'requestor_id' => $auth->id,
             'status' => 'Pending'
         ]);
-        foreach ($request->items as $key => $value) {
+        foreach ($items as $key => $value) {
             AccountingPurchaseRequestItem::create([
                 "accounting_purchase_requests_id" => $ap->id,
                 "description" => $value['description'],
@@ -234,13 +235,27 @@ class AccountingPurchaseRequestController extends Controller
         ]);
         $declineUrl = URL::signedRoute('purchase.decline', [
             'request_no' => $ap['request_no'],
-            'status' => 'Initial Approved'
+            'status' => 'Initial Approved',
         ]);
+
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $path = $file->store(date("Y"), 's3');
+                $url = Storage::disk('s3')->url($path);
+                AccountingPurchaseRequestLog::create([
+                    'accounting_purchase_requests_id' => $ap->id,
+                    'files' => $url,
+                    'status' => 'File(s) Uploaded'
+                ]);
+            }
+        }
+
 
 
         $site = $auth->location == 'San Carlos' ? 'SCC' : 'CARCAR';
         Mail::to($this->email(1, $site))->send(new AccountingPurchaseRequestMail([
             ...$request->all(),
+            'items' => $items,
             'requestor' => $auth->name,
             'location' => $auth->location,
             'position' => $auth->position,

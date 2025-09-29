@@ -16,9 +16,11 @@ import { useSelector } from "react-redux";
 import { get_categories_thunk } from "@/app/redux/categories-thunk";
 import Dragger from "antd/es/upload/Dragger";
 import { InboxOutlined } from "@ant-design/icons";
+
 export default function CreateButtonSection() {
     const [open, setOpen] = useState(false);
     const { categories } = useSelector((store) => store.categories);
+
     const [items, setItems] = useState([
         {
             stock_no: "",
@@ -34,10 +36,7 @@ export default function CreateButtonSection() {
 
     const priority_data = [
         { value: "high", label: "High" },
-        {
-            value: "medium",
-            label: "Medium",
-        },
+        { value: "medium", label: "Medium" },
         { value: "low", label: "Low" },
     ];
 
@@ -55,13 +54,14 @@ export default function CreateButtonSection() {
             priority: "",
             request_no: "",
             date: "",
+            purpose: "",
+            files: [],
         },
     });
 
     const generateRequestNo = () => {
         return "PR-" + moment().format("MMDDYY-HHmmss");
     };
-
     useEffect(() => {
         if (open) {
             setValue("request_no", generateRequestNo());
@@ -119,9 +119,25 @@ export default function CreateButtonSection() {
     const onSubmit = async (data) => {
         if (!validateItems()) return; // block submission if invalid
 
+        const formData = new FormData();
+
         try {
-            const payload = { ...data, items };
-            await create_accounting_purchase_request_service(payload);
+            Object.entries(data).forEach(([key, value]) => {
+                if (key === "files" && Array.isArray(value) && value.length) {
+                    value.forEach((file) => {
+                        formData.append("files[]", file.originFileObj);
+                    });
+                } else if (key === "date" && value) {
+                    formData.append("date", moment(value).format("YYYY-MM-DD"));
+                } else {
+                    formData.append(key, value ?? "");
+                }
+            });
+
+            // Append items as JSON string
+            formData.append("items", JSON.stringify(items));
+
+            await create_accounting_purchase_request_service(formData);
             await store.dispatch(get_purchase_request_thunk());
             await SwalAlert({ type: "success" });
 
@@ -144,6 +160,7 @@ export default function CreateButtonSection() {
             );
         }
     };
+
     function select_department(value) {
         store.dispatch(
             get_categories_thunk({
@@ -151,6 +168,7 @@ export default function CreateButtonSection() {
             })
         );
     }
+
     return (
         <>
             <Button type="button" onClick={() => setOpen(true)}>
@@ -184,6 +202,7 @@ export default function CreateButtonSection() {
                         })}
                         onChange={(e) => select_department(e.target.value)}
                     />
+
                     <Select
                         label="Category"
                         name="category_id"
@@ -207,15 +226,6 @@ export default function CreateButtonSection() {
                         })}
                     />
 
-                    {/* <Input
-                        label="Date"
-                        type="date"
-                        error={errors?.date?.message}
-                        register={register("date", {
-                            required: "This field is required",
-                        })}
-                    /> */}
-
                     <TextArea
                         label="Purpose"
                         error={errors?.purpose?.message}
@@ -223,25 +233,27 @@ export default function CreateButtonSection() {
                             required: "This field is required",
                         })}
                     />
+
                     <Controller
                         name="files"
                         control={control}
-                        {...register("files")}
+                        rules={{ required: null}}
                         render={({ field }) => (
                             <Dragger
                                 height={150}
                                 beforeUpload={() => false}
                                 multiple
-                                onChange={(info) =>
-                                    field.onChange(info.fileList)
+                                onChange={({ fileList }) =>
+                                    field.onChange(fileList)
                                 }
-                                fileList={field.value}
+                                fileList={field.value || []}
                             >
                                 <p className="ant-upload-drag-icon">
                                     <InboxOutlined />
                                 </p>
                                 <p className="ant-upload-text">
-                                   Upload your quotation file (PDF, DOCX, or Excel)
+                                    Upload your quotation file (PDF, DOCX, or
+                                    Excel)
                                 </p>
                             </Dragger>
                         )}
@@ -251,6 +263,7 @@ export default function CreateButtonSection() {
                             {errors.files.message}
                         </p>
                     )}
+
                     <div className="text-xl">Items</div>
                     {items.map((item, index) => (
                         <div
