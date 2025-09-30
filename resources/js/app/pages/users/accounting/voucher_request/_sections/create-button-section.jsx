@@ -30,6 +30,7 @@ export default function CreateButtonSection() {
             purpose: "",
             date: "",
             amount: "",
+            priority: "",
             status: "Pending",
         },
     });
@@ -48,7 +49,9 @@ export default function CreateButtonSection() {
                 // or use e.preventDefault() to just prevent the scroll
             };
 
-            amountInput.addEventListener("wheel", handleWheel, { passive: false });
+            amountInput.addEventListener("wheel", handleWheel, {
+                passive: false,
+            });
 
             return () => {
                 amountInput.removeEventListener("wheel", handleWheel);
@@ -60,6 +63,20 @@ export default function CreateButtonSection() {
         { value: "IT", label: "IT" },
         { value: "HR", label: "Human Resources" },
         { value: "Accounting", label: "Accounting" },
+    ];
+
+    const category_data = [
+        { value: "Software Subscription", label: "Software Subscription" },
+        { value: "Repair and Maintenance", label: "Repair and Maintenance" },
+        { value: "Office Supplies", label: "Office Supplies" },
+        { value: "Meals", label: "Meals" },
+        { value: "Transportation", label: "Transportation" },
+    ];
+
+    const priority_data = [
+        { value: "high", label: "High" },
+        { value: "medium", label: "Medium" },
+        { value: "low", label: "Low" },
     ];
 
     const onSubmit = async (data) => {
@@ -122,6 +139,16 @@ export default function CreateButtonSection() {
                             })}
                             onChange={(e) => select_department(e.target.value)}
                         />
+                        <Select
+                            label="Category"
+                            name="category"
+                            options={category_data}
+                            error={errors?.category?.message}
+                            register={register("category", {
+                                required: "This field is required",
+                            })}
+                            onChange={(e) => select_category(e.target.value)}
+                        />
 
                         <Input
                             ref={amountInputRef}
@@ -138,9 +165,18 @@ export default function CreateButtonSection() {
                                 },
                             })}
                         />
+                        <Select
+                            label="Priority"
+                            name="priority"
+                            options={priority_data}
+                            error={errors?.priority?.message}
+                            register={register("priority", {
+                                required: "This field is required",
+                            })}
+                        />
 
                         <TextArea
-                            label="Purpose"
+                            label="Description/Purpose"
                             error={errors?.purpose?.message}
                             register={register("purpose", {
                                 required: "This field is required",

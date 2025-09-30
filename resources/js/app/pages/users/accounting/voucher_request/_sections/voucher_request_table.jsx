@@ -17,7 +17,9 @@ export default function VoucherRequestTable() {
             department: "IT",
             requestor: "John Doe",
             date: "2024-01-15",
+            purpose: "Software Subscription",
             amount: 15000,
+            priority: "high",
             status: "Pending",
         },
         {
@@ -26,7 +28,9 @@ export default function VoucherRequestTable() {
             department: "Finance",
             requestor: "Jane Smith",
             date: "2024-01-20",
+            purpose: "Printing Services",
             amount: 25000,
+            priority: "high",
             status: "Approved",
         },
         {
@@ -35,7 +39,9 @@ export default function VoucherRequestTable() {
             department: "HR",
             requestor: "Mike Johnson",
             date: "2024-01-25",
+            purpose: "Flight Reimbursement",
             amount: 8500,
+            priority: "medium",
             status: "Released",
         },
         {
@@ -44,7 +50,9 @@ export default function VoucherRequestTable() {
             department: "Accounting",
             requestor: "Sarah Wilson",
             date: "2024-01-30",
+            purpose: "Office Supplies",
             amount: 12000,
+            priority: "low",
             status: "Declined",
         },
     ];
@@ -77,7 +85,9 @@ export default function VoucherRequestTable() {
         { header: "Department", accessor: "department" },
         { header: "Requestor", accessor: "requestor" },
         { header: "Date", accessor: "date" },
+        { header: "Purpose", accessor: "purpose" },
         { header: "Amount", accessor: "amount" },
+        { header: "Priority", accessor: "priority" },
         { header: "Status", accessor: "status" },
     ];
 
@@ -98,7 +108,22 @@ export default function VoucherRequestTable() {
             department: res?.department ?? "",
             requestor: res.requestor,
             date: moment(res?.date).format("LL"),
+            purpose: res?.purpose ?? "",
             amount: peso_value(res?.amount ?? 0),
+            priority:
+                res.priority === "high" ? (
+                    <span className="bg-red-200 text-red-500 text-sm font-medium px-2.5 py-0.5 rounded-sm">
+                        High
+                    </span>
+                ) : res.priority === "medium" ? (
+                    <span className="bg-yellow-100 text-yellow-600 text-sm font-medium px-2.5 py-0.5 rounded-sm">
+                        Medium
+                    </span>
+                ) : res.priority === "low" ? (
+                    <span className="bg-green-200 text-green-500 text-sm font-medium px-2.5 py-0.5 rounded-sm">
+                        Low
+                    </span>
+                ) : null,
             status: (
                 <span
                     className={

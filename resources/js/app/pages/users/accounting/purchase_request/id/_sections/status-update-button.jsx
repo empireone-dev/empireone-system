@@ -10,6 +10,7 @@ import { add_logs_service } from "@/app/services/accounting-purchase-request";
 import store from "@/app/store/store";
 import { get_purchase_request_by_id_thunk } from "@/app/redux/accounting-thunk";
 import { useSelector } from "react-redux";
+import Checkbox from "@/app/_components/checkbox";
 
 const { Dragger } = Upload;
 
@@ -134,18 +135,18 @@ export default function FileUploadButton() {
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Payment Methods
                                     </label>
-                                    <div className="flex gap-5">
-                                        {["Bank", "Cash", "Cheque"].map((method) => (
-                                            <label key={method} className="flex items-center">
-                                                <input
-                                                    type="checkbox"
-                                                    value={method}
-                                                    {...register("payment_methods")}
-                                                    className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                                />
-                                                <span className="text-sm text-gray-700">{method}</span>
-                                            </label>
-                                        ))}
+                                    <div className="flex gap-3">
+                                        {["Bank", "Cash", "Cheque"].map(
+                                            (method, i) => (
+                                                <div>
+                                                    <Checkbox
+                                                        key={i}
+                                                        label={method}
+                                                        name={"payment_methods"+i}
+                                                    />
+                                                </div>
+                                            )
+                                        )}
                                     </div>
                                     {errors?.payment_methods && (
                                         <p className="mt-1 text-sm text-red-600">
@@ -156,6 +157,7 @@ export default function FileUploadButton() {
                             )}
 
                             <TextArea
+                                name={"notes"}
                                 label="Additional information"
                                 error={errors?.notes?.message}
                                 register={register("notes", {
