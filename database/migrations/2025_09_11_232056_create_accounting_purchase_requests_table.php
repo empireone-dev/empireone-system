@@ -11,19 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('accounting_purchase_requests', function (Blueprint $table) {
-    $table->id();
-    $table->string('department')->nullable();
-    $table->string('requestor_id')->nullable();
-    $table->string('accounting')->nullable();
-    $table->string('purpose')->nullable();
-    $table->string('request_no')->nullable(); // ✅ must match frontend
-    $table->string('priority')->nullable(); // ✅ must match frontend
-    $table->string(column: 'status')->nullable(); // ✅ must match frontend
-    $table->string(column: 'files')->nullable(); // ✅ must match frontend
-    $table->date('date')->nullable();
-    $table->timestamps();
-});
+        Schema::create('accounting_purchase_requests', function (Blueprint $table) {
+            $table->id();
+            $table->string('department')->nullable();
+            $table->string('requestor_id')->nullable();
+            $table->string('accounting')->nullable();
+            $table->string('purpose')->nullable();
+            $table->string('category')->nullable();
+            $table->string('request_no')->nullable(); // ✅ must match frontend
+            $table->string('priority')->nullable(); // ✅ must match frontend
+            $table->string('status')->nullable(); // ✅ must match frontend
+            $table->string('files')->nullable(); // ✅ must match frontend
+            $table->date('date')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

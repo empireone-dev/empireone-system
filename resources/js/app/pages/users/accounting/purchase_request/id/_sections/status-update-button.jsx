@@ -11,6 +11,8 @@ import store from "@/app/store/store";
 import { get_purchase_request_by_id_thunk } from "@/app/redux/accounting-thunk";
 import { useSelector } from "react-redux";
 import Checkbox from "@/app/_components/checkbox";
+import Radio from "@/app/_components/radio";
+import SwalAlert from "@/app/_components/swal";
 
 const { Dragger } = Upload;
 
@@ -18,10 +20,11 @@ export default function FileUploadButton() {
     const [open, setOpen] = useState(false);
     const { purchase_request } = useSelector((store) => store.accounting);
     const notes_data = [
-        { value: "Ordered", label: "Ordered" },
         { value: "Paid", label: "Paid" },
+        { value: "Ordered", label: "Ordered" },
         { value: "Received", label: "Received" },
         { value: "Completed", label: "Completed" },
+        { value: "Partial Payment", label: "Partial Payment" },
     ];
 
     const filtered = notes_data.filter(
@@ -44,7 +47,7 @@ export default function FileUploadButton() {
         defaultValues: {
             status: "",
             files: [],
-            payment_methods: [],
+            payment_method: null,
         },
     });
 
@@ -53,13 +56,13 @@ export default function FileUploadButton() {
     // Clear payment methods when status changes and it's not "Paid"
     React.useEffect(() => {
         if (watchedStatus !== "Paid") {
-            setValue("payment_methods", []);
+            setValue("payment_method", null);
         }
     }, [watchedStatus, setValue]);
 
     const onSubmit = async (data) => {
         console.log("Uploaded files:", data.files);
-        console.log("Payment methods:", data.payment_methods);
+        console.log("Payment methods:", data.payment_method);
         const new_data = {
             accounting_purchase_requests_id: accounting_purchase_requests_id,
             ...data,
@@ -70,7 +73,7 @@ export default function FileUploadButton() {
             if (key === "files" && value?.length) {
                 const file = value[0];
                 formData.append("file", file.originFileObj);
-            } else if (key === "payment_methods" && Array.isArray(value)) {
+            } else if (key === "payment_method" && Array.isArray(value)) {
                 formData.append(key, JSON.stringify(value));
             } else {
                 formData.append(key, value ?? "");
@@ -83,6 +86,9 @@ export default function FileUploadButton() {
                     accounting_purchase_requests_id
                 )
             );
+            await SwalAlert({
+                type: "success",
+            });
             reset();
             setOpen(false);
             console.log("Uploaded files:", data.files);
@@ -130,7 +136,8 @@ export default function FileUploadButton() {
                                 )}
                             />
 
-                            {watchedStatus === "Paid" && (
+                            {(watchedStatus === "Paid" ||
+                                watchedStatus === "Partial Payment") && (
                                 <div className="w-full">
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Payment Methods
@@ -139,19 +146,27 @@ export default function FileUploadButton() {
                                         {["Bank", "Cash", "Cheque"].map(
                                             (method, i) => (
                                                 <div>
-                                                    <Checkbox
+                                                    <Radio
+                                                        register={register(
+                                                            "payment_method",
+                                                            {
+                                                                required:
+                                                                    "This field is required",
+                                                            }
+                                                        )}
                                                         key={i}
+                                                        value={method}
                                                         label={method}
-                                                        name={"payment_methods"+i}
+                                                        name={"payment_method"}
                                                     />
                                                 </div>
                                             )
                                         )}
                                     </div>
-                                    {errors?.payment_methods && (
-                                        <p className="mt-1 text-sm text-red-600">
-                                            {errors.payment_methods.message}
-                                        </p>
+                                    {errors?.payment_method && (
+                                        <div className="text-red-600 text-sm mt-1">
+                                            {errors?.payment_method?.message}
+                                        </div>
                                     )}
                                 </div>
                             )}

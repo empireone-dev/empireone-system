@@ -12,6 +12,7 @@ class AccountingPurchaseRequest extends Model
         'department',
         'purpose',
         'accounting',
+        'category',
         'requestor_id',
         'request_no',
         'date',

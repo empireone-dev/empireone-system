@@ -47,6 +47,7 @@ export default function PurchaseRequestTable() {
         { header: "PR No.", accessor: "request_no" },
         { header: "Department", accessor: "department" },
         { header: "Requestor", accessor: "requestor" },
+        { header: "Categories", accessor: "category" },
         { header: "Date", accessor: "date" },
         { header: "Total Cost", accessor: "total_cost" },
         { header: "Priority", accessor: "priority" },
@@ -70,6 +71,7 @@ export default function PurchaseRequestTable() {
             ),
             department: res?.department ?? "",
             requestor: res?.requestor?.name ?? "",
+            category: res?.category ?? "",
             date: moment(res?.date).format("LL"),
             total_cost: peso_value(total_cost),
             priority:

@@ -33,6 +33,7 @@ class AccountingPurchaseRequestController extends Controller
             'accounting_purchase_requests_id' => $request->accounting_purchase_requests_id,
             'status' => $request->status,
             'notes' => $request->notes,
+            'payment_method' => $request->payment_method,
             'files' => $url ?? null,
         ]);
         AccountingPurchaseRequest::where('id', $request->accounting_purchase_requests_id)->update([
@@ -268,8 +269,13 @@ class AccountingPurchaseRequestController extends Controller
     public function index()
     {
         $auth = Auth::user();
-        $purchase_request = AccountingPurchaseRequest::where('requestor_id', $auth->id)->with(['requestor', 'items'])->orderBy('id', 'desc')->paginate(10); // Get the first record from the model
-        return response()->json($purchase_request, 200); // Return it as a JSON response with 200 OK
+        $query = AccountingPurchaseRequest::with(['requestor', 'items'])->orderBy('id', 'desc');
+        if ($auth->department !== 'Accounting Department') {
+            $query->where('requestor_id', $auth->id);
+        }
+
+        $purchase_requests = $query->paginate(10);
+        return response()->json($purchase_requests, 200);
     }
 
 

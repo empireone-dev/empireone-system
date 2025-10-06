@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('notes')->nullable();
             $table->string('files')->nullable();
             $table->string('status')->nullable();
+            $table->string('payment_method')->nullable();
             $table->timestamps();
         });
     }

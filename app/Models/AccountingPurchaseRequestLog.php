@@ -13,5 +13,6 @@ class AccountingPurchaseRequestLog extends Model
         'status',
         'files',
         'notes',
+        'payment_method'
     ];
 }

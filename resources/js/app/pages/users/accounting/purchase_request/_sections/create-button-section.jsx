@@ -16,10 +16,11 @@ import { useSelector } from "react-redux";
 import { get_categories_thunk } from "@/app/redux/categories-thunk";
 import Dragger from "antd/es/upload/Dragger";
 import { InboxOutlined } from "@ant-design/icons";
+import { purchase_order_categories } from "@/app/lib/purchase-order-category";
 
 export default function CreateButtonSection() {
     const [open, setOpen] = useState(false);
-    const { categories } = useSelector((store) => store.categories);
+    const [categories, setCategories] = useState([]);
 
     const [items, setItems] = useState([
         {
@@ -162,11 +163,10 @@ export default function CreateButtonSection() {
     };
 
     function select_department(value) {
-        store.dispatch(
-            get_categories_thunk({
-                department: value,
-            })
+        const res = purchase_order_categories.find(
+            (dept) => dept.department === value
         );
+        setCategories(res.categories);
     }
 
     return (
@@ -205,13 +205,13 @@ export default function CreateButtonSection() {
 
                     <Select
                         label="Category"
-                        name="category_id"
+                        name="category"
                         options={categories.map((res) => ({
-                            label: res.name,
-                            value: res.id,
+                            label: res,
+                            value: res,
                         }))}
-                        error={errors?.category_id?.message}
-                        register={register("category_id", {
+                        error={errors?.category?.message}
+                        register={register("category", {
                             required: "This field is required",
                         })}
                     />
@@ -237,7 +237,7 @@ export default function CreateButtonSection() {
                     <Controller
                         name="files"
                         control={control}
-                        rules={{ required: null}}
+                        rules={{ required: null }}
                         render={({ field }) => (
                             <Dragger
                                 height={150}
