@@ -24,6 +24,7 @@ return new class extends Migration
             $table->decimal('amount', 15, 2)->nullable();
             $table->decimal('total', 15, 2)->nullable();
             $table->string('files')->nullable();
+            $table->string('payment_method')->nullable();
             $table->string('status')->nullable();
             $table->string('date')->nullable();
             $table->timestamps();

@@ -36,11 +36,12 @@ class AccountingExpensesController extends Controller
 
 
 
-    public function get_daily_expenses()
+    public function get_daily_expenses(Request $request)
     {
         $today = Carbon::today()->toDateString();
 
         $transactions = AccountingExpenses::where('status', 'Approved')
+            ->where('payment_method', $request->query('payment_method', 'Cash'))
             ->orderBy('date', 'asc')
             ->with(['user'])
             ->get()
@@ -64,6 +65,7 @@ class AccountingExpensesController extends Controller
                 'receipt_number' => $request->receipt_number,
                 'amount' => $request->amount,
                 'category' => $request->category,
+                'payment_method' => $request->payment_method,
             ]);
 
             $cash_flow =  AccountingCashFlow::where('id', 1)->first();

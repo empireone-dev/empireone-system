@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AccountingPurchaseRequestMail;
+use App\Models\AccountingCashFlow;
+use App\Models\AccountingExpenses;
 use App\Models\AccountingPurchaseRequest;
 use App\Models\AccountingPurchaseRequestItem;
 use App\Models\AccountingPurchaseRequestLog;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -25,17 +28,42 @@ class AccountingPurchaseRequestController extends Controller
 
     public function add_logs(Request $request)
     {
+        $user = Auth::user();
         if ($request->hasFile('file')) {
             $path = $request->file('file')->store(date("Y"), 's3');
             $url = Storage::disk('s3')->url($path);
         }
+        $apr = AccountingPurchaseRequest::where('id', $request->accounting_purchase_requests_id)->first();
         AccountingPurchaseRequestLog::create([
             'accounting_purchase_requests_id' => $request->accounting_purchase_requests_id,
             'status' => $request->status,
-            'notes' => $request->notes,
+            'notes' => $request->amount
+                ? "Amount: {$request->amount} Additional Information: {$request->notes}"
+                : $request->notes,
             'payment_method' => $request->payment_method,
             'files' => $url ?? null,
         ]);
+        if ($request->payment_method) {
+            $ae = AccountingExpenses::create([
+                'date' => Carbon::now()->format('F j, Y h:i A'),
+                'site' => $user->site_id,
+                'user_id' => $user->id,
+                'description' => $request->notes,
+                'receipt_number' => 'PR-' . date('mdy-Hi'),
+                'amount' => $request->amount,
+                'total' => $request->amount,
+                'tin' => 'N/A',
+                'status' => 'Approved',
+                'payment_method' => $request->payment_method,
+                'category' => $apr->category,
+            ]);
+            $cash_flow =  AccountingCashFlow::where('id', 1)->first();
+            if ($ae->status == 'Approved' && $cash_flow) {
+                $cash_flow->update([
+                    'total' => $cash_flow->total - $request->amount,
+                ]);
+            }
+        }
         AccountingPurchaseRequest::where('id', $request->accounting_purchase_requests_id)->update([
             'status' => $request->status,
         ]);

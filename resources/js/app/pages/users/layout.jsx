@@ -67,7 +67,7 @@ export default function Layout({ children }) {
                     ? [
                           {
                               name: "Expenses Report",
-                              href: "/users/accounting/expenses/daily_expenses",
+                              href: "/users/accounting/expenses/daily_expenses?payment_method=Cash",
                               icon: <FcBarChart className="h-6 w-6" />,
                               current: isCurrentSub == "expenses",
                           },

@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import Checkbox from "@/app/_components/checkbox";
 import Radio from "@/app/_components/radio";
 import SwalAlert from "@/app/_components/swal";
+import Input from "@/app/_components/input";
 
 const { Dragger } = Upload;
 
@@ -138,37 +139,53 @@ export default function FileUploadButton() {
 
                             {(watchedStatus === "Paid" ||
                                 watchedStatus === "Partial Payment") && (
-                                <div className="w-full">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Payment Methods
-                                    </label>
-                                    <div className="flex gap-3">
-                                        {["Bank", "Cash", "Cheque"].map(
-                                            (method, i) => (
-                                                <div>
-                                                    <Radio
-                                                        register={register(
-                                                            "payment_method",
-                                                            {
-                                                                required:
-                                                                    "This field is required",
+                                <>
+                                    <div className="w-full">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Payment Methods
+                                        </label>
+                                        <div className="flex gap-3">
+                                            {["Bank", "Cash", "Cheque"].map(
+                                                (method, i) => (
+                                                    <div>
+                                                        <Radio
+                                                            register={register(
+                                                                "payment_method",
+                                                                {
+                                                                    required:
+                                                                        "This field is required",
+                                                                }
+                                                            )}
+                                                            key={i}
+                                                            value={method}
+                                                            label={method}
+                                                            name={
+                                                                "payment_method"
                                                             }
-                                                        )}
-                                                        key={i}
-                                                        value={method}
-                                                        label={method}
-                                                        name={"payment_method"}
-                                                    />
-                                                </div>
-                                            )
+                                                        />
+                                                    </div>
+                                                )
+                                            )}
+                                        </div>
+                                        {errors?.payment_method && (
+                                            <div className="text-red-600 text-sm mt-1">
+                                                {
+                                                    errors?.payment_method
+                                                        ?.message
+                                                }
+                                            </div>
                                         )}
                                     </div>
-                                    {errors?.payment_method && (
-                                        <div className="text-red-600 text-sm mt-1">
-                                            {errors?.payment_method?.message}
-                                        </div>
-                                    )}
-                                </div>
+                                    <Input
+                                        label="Amount"
+                                        type="number"
+                                        name="amount"
+                                        error={errors?.amount?.message}
+                                        register={register("amount", {
+                                            required: "This field is required",
+                                        })}
+                                    />
+                                </>
                             )}
 
                             <TextArea

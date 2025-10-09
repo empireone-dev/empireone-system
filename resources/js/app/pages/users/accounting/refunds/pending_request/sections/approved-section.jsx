@@ -1,6 +1,7 @@
 import Button from "@/app/_components/button";
 import Input from "@/app/_components/input";
 import Modal from "@/app/_components/modal";
+import Radio from "@/app/_components/radio";
 import Select from "@/app/_components/select";
 import SwalAlert from "@/app/_components/swal";
 import { accounting_categories } from "@/app/lib/accounting-category";
@@ -133,6 +134,27 @@ export default function ApprovedSection({ data }) {
                             required: "This field is required",
                         })}
                     />
+
+                    <div className="flex gap-3">
+                        {["Bank", "Cash", "Cheque"].map((method, i) => (
+                            <div>
+                                <Radio
+                                    register={register("payment_method", {
+                                        required: "This field is required",
+                                    })}
+                                    key={i}
+                                    value={method}
+                                    label={method}
+                                    name={"payment_method"}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    {errors?.payment_method && (
+                        <div className="text-red-600 text-sm ">
+                            {errors?.payment_method?.message}
+                        </div>
+                    )}
                     <Button
                         type="submit"
                         loading={isSubmitting}

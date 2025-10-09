@@ -31,13 +31,17 @@ export default function TableSection() {
                     description: limitString(res.description),
                     date: moment(res.date).format("LLL"),
                     receipt: (
-                        <a
-                            href={res.files}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <FcImageFile className="h-6 w-6" />
-                        </a>
+                        <>
+                            {res.files && (
+                                <a
+                                    href={res.files}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <FcImageFile className="h-6 w-6" />
+                                </a>
+                            )}
+                        </>
                     ),
                     tin: res.tin,
                     receipt_number: res.receipt_number,

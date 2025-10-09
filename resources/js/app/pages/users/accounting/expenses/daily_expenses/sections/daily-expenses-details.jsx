@@ -3,11 +3,15 @@ import moment from "moment";
 import React from "react";
 import { useSelector } from "react-redux";
 import EditCashflowSection from "./edit-cashflow-section";
+import Select from "@/app/_components/select";
+import { router } from "@inertiajs/react";
 
 export default function DailyExpensesDetails() {
     const { daily_expenses, cash_flow } = useSelector(
         (state) => state.accounting
     );
+    const queryParams = new URLSearchParams(window.location.search);
+    const payment_method = queryParams.get("payment_method") ?? "";
     const { user } = useSelector((state) => state.accounts);
     const totalAmount = daily_expenses?.reduce(
         (sum, item) => sum + Number(item.amount),
@@ -17,6 +21,20 @@ export default function DailyExpensesDetails() {
     return (
         <>
             <div className=" rounded-t-lg px-4 py-8 shadow-xs ring-1 ring-gray-300 sm:mx-0  sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-8 xl:pt-8 xl:pb-20">
+                <div className="w-52">
+                    <Select
+                        label="Payment Method"
+                        value={payment_method}
+                        onChange={(e) =>
+                            router.visit(`?payment_method=${e.target.value}`)
+                        }
+                        options={[
+                            { label: "Cash", value: "Cash" },
+                            { label: "Bank", value: "Bank" },
+                            { label: "Cheque", value: "Cheque" },
+                        ]}
+                    />
+                </div>
                 <div className="flex items-center justify-between">
                     <h2 className="text-base font-semibold text-gray-900">
                         DAILY EXPENSES REPORT

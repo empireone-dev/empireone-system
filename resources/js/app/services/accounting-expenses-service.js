@@ -49,7 +49,7 @@ export async function get_accounting_expenses_service(data) {
 
 export async function get_daily_expenses_service() {
     try {
-        const result =await axios.get('/api/get_daily_expenses')    
+        const result =await axios.get('/api/get_daily_expenses'+window.location.search)    
         return result
     } catch (error) {
 
