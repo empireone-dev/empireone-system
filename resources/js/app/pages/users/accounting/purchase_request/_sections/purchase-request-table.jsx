@@ -14,32 +14,32 @@ export default function PurchaseRequestTable() {
         Pending: {
             label: "Pending",
             classes:
-                "bg-yellow-50 inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-sm border border-yellow-500 text-xs font-medium text-yellow-500",
+                "bg-yellow-50 flex justify-center items-center gap-x-1.5 py-1.5 px-1 w-28 rounded-sm border border-yellow-500 text-xs font-medium text-yellow-500",
         },
         "Initial Approved": {
             label: "Initial Approved",
             classes:
-                "bg-yellow-50 inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-sm text-xs border border-yellow-600 font-medium text-yellow-700",
+                "bg-yellow-50 flex justify-center items-center gap-x-1.5 py-1.5 px-1 w-28 rounded-sm text-xs border border-yellow-600 font-medium text-yellow-700",
         },
         "Second Approved": {
             label: "Second Approved",
             classes:
-                "bg-blue-50 inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-sm text-xs border border-blue-500 font-medium text-blue-500",
+                "bg-blue-50 flex justify-center items-center gap-x-1.5 py-1.5 px-1 w-28 rounded-sm text-xs border border-blue-500 font-medium text-blue-500",
         },
         "Final Approved": {
             label: "Final Approved",
             classes:
-                "bg-green-50 inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-sm text-xs font-medium border border-green-500 text-green-500",
+                "bg-green-50 flex justify-center items-center gap-x-1.5 py-1.5 px-1 w-28 rounded-sm text-xs font-medium border border-green-500 text-green-500",
         },
         Declined: {
             label: "Declined",
             classes:
-                "bg-red-50 inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-sm text-xs font-medium border border-red-500 text-red-500",
+                "bg-red-50 flex justify-center items-center gap-x-1.5 py-1.5 px-1 w-28 rounded-sm text-xs font-medium border border-red-500 text-red-500",
         },
         Completed: {
             label: "Completed",
             classes:
-                "bg-cyan-50 inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-sm text-xs font-medium border border-cyan-500 text-cyan-500",
+                "bg-cyan-50 flex justify-center items-center gap-x-1.5 py-1.5 px-1 w-28 rounded-sm text-xs font-medium border border-cyan-500 text-cyan-500",
         },
     };
 
@@ -92,7 +92,7 @@ export default function PurchaseRequestTable() {
                 <span
                     className={
                         statusMap[res?.status]?.classes ??
-                        "inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-sm text-xs font-medium border border-gray-400 text-gray-600"
+                        "flex justify-center items-center gap-x-1.5 py-1.5 px-1 w-28 text-center rounded-sm text-xs font-medium border border-gray-400 text-gray-600"
                     }
                 >
                     {statusMap[res?.status]?.label ?? res?.status}

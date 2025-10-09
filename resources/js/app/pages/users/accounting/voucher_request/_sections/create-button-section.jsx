@@ -123,6 +123,7 @@ export default function CreateButtonSection() {
                 >
                     <div className="space-y-4">
                         <Input
+                            disabled
                             label="VR No."
                             placeholder="Auto-generated"
                             error={errors?.vr_no?.message}

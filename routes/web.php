@@ -91,17 +91,20 @@ Route::middleware(['auth:sanctum', 'account_type:2'])->prefix('users')->group(fu
         });
     });
     Route::prefix('accounting/expenses')->group(function () {
-        Route::get('my_fund_requests', function () {
-            return Inertia::render('users/accounting/expenses/my_fund_requests/page');
-        });
-        Route::get('pending_request', function () {
-            return Inertia::render('users/accounting/expenses/pending_request/page');
-        });
         Route::get('daily_expenses', function () {
             return Inertia::render('users/accounting/expenses/daily_expenses/page');
         });
         Route::get('expenses_report', function () {
             return Inertia::render('users/accounting/expenses/expenses_report/page');
+        });
+    });
+
+    Route::prefix('accounting/refunds')->group(function () {
+        Route::get('my_fund_requests', function () {
+            return Inertia::render('users/accounting/refunds/my_fund_requests/page');
+        });
+        Route::get('pending_request', function () {
+            return Inertia::render('users/accounting/refunds/pending_request/page');
         });
     });
 

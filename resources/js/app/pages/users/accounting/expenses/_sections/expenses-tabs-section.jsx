@@ -17,33 +17,17 @@ export default function ExpensesTabsSection() {
     const isCurrentSub = window.location.pathname.split("/")[4];
     const tabs = [
         {
-            name: "My Refund",
-            href: "/users/accounting/expenses/my_fund_requests",
-            icon: FcBusinesswoman,
-            current: isCurrentSub == "my_fund_requests",
+            name: "Daily Expenses",
+            href: "/users/accounting/expenses/daily_expenses",
+            icon: FcCalendar,
+            current: isCurrentSub == "daily_expenses",
         },
-        ...(user.department === "Accounting Department"
-            ? [
-                  {
-                      name: "Pending Request",
-                      href: "/users/accounting/expenses/pending_request",
-                      icon: FcOvertime,
-                      current: isCurrentSub == "pending_request",
-                  },
-                  {
-                      name: "Daily Expenses",
-                      href: "/users/accounting/expenses/daily_expenses",
-                      icon: FcCalendar,
-                      current: isCurrentSub == "daily_expenses",
-                  },
-                  {
-                      name: "Expenses Report",
-                      href: "/users/accounting/expenses/expenses_report",
-                      icon: FcBarChart,
-                      current: isCurrentSub == "expenses_report",
-                  },
-              ]
-            : []),
+        {
+            name: "Expenses Report",
+            href: "/users/accounting/expenses/expenses_report",
+            icon: FcBarChart,
+            current: isCurrentSub == "expenses_report",
+        },
     ];
 
     return (

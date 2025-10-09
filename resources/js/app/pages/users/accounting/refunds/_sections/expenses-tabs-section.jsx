@@ -5,7 +5,6 @@ import {
     FcBusinesswoman,
     FcCalendar,
     FcOvertime,
-    FcRules,
 } from "react-icons/fc";
 import { useSelector } from "react-redux";
 
@@ -13,44 +12,33 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 
-export default function PurchaseRequestTabsSection() {
+export default function ExpensesTabsSection() {
     const { user } = useSelector((state) => state.accounts);
     const isCurrentSub = window.location.pathname.split("/")[4];
     const tabs = [
         {
-            name: "My Purchase Requests",
-            href: "/users/accounting/purchase_request/create_purchase_request",
+            name: "My Refund",
+            href: "/users/accounting/refunds/my_fund_requests",
             icon: FcBusinesswoman,
-            current: isCurrentSub == "create_purchase_request",
+            current: isCurrentSub == "my_fund_requests",
         },
-        // ...(user.department === "Accounting Department"
-        //     ? [
-        //           {
-        //               name: "Pending Request",
-        //               href: "/users/accounting/purchase_request/pending_purchase_request",
-        //               icon: FcOvertime,
-        //               current: isCurrentSub == "pending_purchase_request",
-        //           },
-        //       ]
-        //     : []),
-
-        // ...(user.department === "Accounting Department"
-        //     ? [
-        //           {
-        //               name: "Purchase Order",
-        //               href: "/users/accounting/purchase_request/purchase_order",
-        //               icon: FcRules,
-        //               current: isCurrentSub == "purchase_order",
-        //           },
-        //       ]
-        //     : []),
+        ...(user.department === "Accounting Department"
+            ? [
+                  {
+                      name: "Pending Request",
+                      href: "/users/accounting/refunds/pending_request",
+                      icon: FcOvertime,
+                      current: isCurrentSub == "pending_request",
+                  },
+              ]
+            : []),
     ];
 
     return (
         <div>
             <div className="grid grid-cols-1 sm:hidden">
                 <select
-                    value={`/users/accounting/purchase_request/${isCurrentSub}`}
+                    value={`/users/accounting/expenses/${isCurrentSub}`}
                     onChange={(e) => router.visit(e.target.value)}
                     aria-label="Select a tab"
                     className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-2 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 dark:bg-white/5 dark:text-gray-100 dark:outline-white/10 dark:*:bg-gray-800 dark:focus:outline-indigo-500"

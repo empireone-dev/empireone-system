@@ -4,6 +4,7 @@ import { get_user_thunk } from "@/app/redux/account-thunk";
 import store from "@/app/store/store";
 import { useEffect } from "react";
 import {
+    FcBarChart,
     FcCalculator,
     FcClock,
     FcCollaboration,
@@ -62,11 +63,21 @@ export default function Layout({ children }) {
             icon: <FcCalculator className="h-6 w-6" />,
             current: isCurrentMain == "accounting",
             children: [
+                ...(user.department === "Accounting Department"
+                    ? [
+                          {
+                              name: "Expenses Report",
+                              href: "/users/accounting/expenses/daily_expenses",
+                              icon: <FcBarChart className="h-6 w-6" />,
+                              current: isCurrentSub == "expenses",
+                          },
+                      ]
+                    : []),
                 {
                     name: "Refund Request",
-                    href: "/users/accounting/expenses/my_fund_requests",
+                    href: "/users/accounting/refunds/my_fund_requests",
                     icon: <FcMoneyTransfer className="h-6 w-6" />,
-                    current: isCurrentSub == "expenses",
+                    current: isCurrentSub == "refunds",
                 },
                 {
                     name: "Purchase Request",
@@ -106,10 +117,9 @@ export default function Layout({ children }) {
                     icon: <FcHighPriority className="h-6 w-6" />,
                     current: isCurrentSub == "incident_report",
                 },
-               
             ],
         },
-        
+
         // ...(user.department !== "Accounting Department"
         //     ? [
         //           {
