@@ -85,7 +85,7 @@ export default function DescriptionSection() {
                             Category
                         </dt>
                         <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-                            {purchase_request.categories}
+                            {purchase_request.category}
                         </dd>
                     </div>
 
