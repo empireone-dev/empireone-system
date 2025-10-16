@@ -97,6 +97,9 @@ Route::middleware(['auth:sanctum', 'account_type:2'])->prefix('users')->group(fu
         Route::get('expenses_report', function () {
             return Inertia::render('users/accounting/expenses/expenses_report/page');
         });
+         Route::get('cash_in_bank', function () {
+            return Inertia::render('users/accounting/expenses/cash_in_bank/page');
+        });
     });
 
     Route::prefix('accounting/refunds')->group(function () {

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('accounting_cash_flows', function (Blueprint $table) {
             $table->id();
+            $table->string('location')->nullable();
             $table->string('starting_balance')->nullable();
             $table->string('cash_withdrawn')->nullable();
             $table->string('total')->nullable();

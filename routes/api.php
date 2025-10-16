@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountingCashFlowController;
+use App\Http\Controllers\AccountingCashInBankController;
+use App\Http\Controllers\AccountingDebitRecordController;
 use App\Http\Controllers\AccountingExpensesController;
 use App\Http\Controllers\AccountingPurchaseRequestController;
 use App\Http\Controllers\AccountingPurchaseRequestItemController;
@@ -53,6 +55,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/my_fund_request', [AccountingExpensesController::class, 'my_fund_request']);
     Route::post('/request_change_status', [AccountingExpensesController::class, 'request_change_status']);
     Route::resource('accounting_cash_flows', AccountingCashFlowController::class);
+    Route::resource('cash_in_bank', AccountingCashInBankController::class);
+    Route::resource('debit_records', AccountingDebitRecordController::class);
+
     Route::get('/get_expenses_report', [AccountingExpensesController::class, 'get_expenses_report']);
 
 

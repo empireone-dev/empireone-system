@@ -228,6 +228,7 @@ export default function CreateButtonSection() {
 
                     <TextArea
                         label="Purpose"
+                        name="purpose"
                         error={errors?.purpose?.message}
                         register={register("purpose", {
                             required: "This field is required",

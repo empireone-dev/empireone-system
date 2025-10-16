@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AccountingCashFlow extends Model
 {
     protected $fillable = [
+        'location',
         'starting_balance',
         'cash_withdrawn',
         'total',

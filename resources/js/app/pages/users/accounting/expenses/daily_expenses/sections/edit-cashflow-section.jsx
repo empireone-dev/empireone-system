@@ -96,7 +96,7 @@ export default function EditCashflowSection() {
                         loading={isSubmitting}
                         disabled={isSubmitting}
                     >
-                        APPROVED
+                        SUBMIT
                     </Button>
                 </form>
             </Modal>

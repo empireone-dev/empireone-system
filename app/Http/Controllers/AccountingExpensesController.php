@@ -109,9 +109,12 @@ class AccountingExpensesController extends Controller
             'total' => $request->amount,
             'tin' => $request->tin,
             'files' => $url ?? null,
-            'status' => 'Pending',
+            'status' => $request->status ?? 'Pending',
+            'payment_method' => $request->payment_method ?? 'Cash',
         ]);
-
+        if ($request->status == 'Approved') {
+            AccountingCashFlow::where('location', $user->location)->decrement('total', $request->amount);
+        }
         return response()->json($account_expenses, 200);
     }
 

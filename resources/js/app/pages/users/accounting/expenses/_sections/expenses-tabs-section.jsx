@@ -4,6 +4,7 @@ import {
     FcBarChart,
     FcBusinesswoman,
     FcCalendar,
+    FcLibrary,
     FcOvertime,
 } from "react-icons/fc";
 import { useSelector } from "react-redux";
@@ -27,6 +28,12 @@ export default function ExpensesTabsSection() {
             href: "/users/accounting/expenses/expenses_report",
             icon: FcBarChart,
             current: isCurrentSub == "expenses_report",
+        },
+        {
+            name: "Cash In Bank",
+            href: "/users/accounting/expenses/cash_in_bank",
+            icon: FcLibrary,
+            current: isCurrentSub == "cash_in_bank",
         },
     ];
 

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import EditCashflowSection from "./edit-cashflow-section";
 import Select from "@/app/_components/select";
 import { router } from "@inertiajs/react";
+import CreateExpensesSection from "./create-expenses-section";
 
 export default function DailyExpensesDetails() {
     const { daily_expenses, cash_flow } = useSelector(
@@ -39,8 +40,10 @@ export default function DailyExpensesDetails() {
                     <h2 className="text-base font-semibold text-gray-900">
                         DAILY EXPENSES REPORT
                     </h2>
-
-                    <EditCashflowSection />
+                    <div className="flex gap-3">
+                        <CreateExpensesSection />
+                        <EditCashflowSection />
+                    </div>
                 </div>
                 <dl className="mt-6 grid grid-cols-1 text-sm/6 sm:grid-cols-2">
                     <div className="sm:pr-4">
