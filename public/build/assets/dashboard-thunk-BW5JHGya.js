@@ -1,1 +1,0 @@
-import{b as s,i as e}from"./app-Bdvrdeom.js";function o(a){try{return s.get("/api/dashboard?"+new URLSearchParams(a).toString())}catch{}}function i(a){return async function(t,n){const r=await o(a);t(e.actions.setDashboard(r.data))}}export{i as g};
