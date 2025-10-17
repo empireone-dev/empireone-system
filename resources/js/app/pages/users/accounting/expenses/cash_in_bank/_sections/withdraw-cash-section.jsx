@@ -47,7 +47,7 @@ export default function WithdrawCashSection() {
     return (
         <div>
             <Button variant="success" onClick={() => setOpen(true)}>
-                Withdraw Cash
+                WITHDRAW CASH
             </Button>
             <Modal
                 width="max-w-lg"

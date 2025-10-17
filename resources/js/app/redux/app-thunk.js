@@ -3,8 +3,10 @@ import { appSlice } from "./app-slice";
 
 export function cocd_prompt_thunk(data) {
     return async function (dispatch, getState) {
-        const res = await cocd_prompt_service(data.prompt);
+        const res = await cocd_prompt_service(data);
+        console.log('resresres',res.data)
         dispatch(appSlice.actions.setChatBots(res.data));
+        return res.data;
     };
 }
 

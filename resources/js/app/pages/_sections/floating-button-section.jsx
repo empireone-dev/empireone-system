@@ -3,13 +3,17 @@ import { X, Bot, Send } from "lucide-react";
 import store from "@/app/store/store";
 import { cocd_prompt_thunk } from "@/app/redux/app-thunk";
 import { useSelector } from "react-redux";
+import moment from "moment";
+import { FaCheck } from "react-icons/fa6";
 
+const types = ["Incident Report", "Ask a Question"];
 export default function ChatbotModal() {
     const [isOpen, setIsOpen] = useState(false);
     const { chatbots } = useSelector((store) => store.app);
     const scrollRef = useRef(null);
     const [animateIn, setAnimateIn] = useState(false);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const [selectedOption, setSelectedOption] = useState("");
     const [messages, setMessages] = useState([
         {
             from: "bot",
@@ -27,6 +31,7 @@ export default function ChatbotModal() {
 
     const toggleModal = () => {
         if (!isOpen) {
+            setSelectedOption("");
             setIsOpen(true);
             setTimeout(() => setAnimateIn(true), 10); // small delay for animation to trigger
         } else {
@@ -38,27 +43,22 @@ export default function ChatbotModal() {
         }
     };
 
-    console.log("chatbots", chatbots.result);
-
-    useEffect(() => {
-        if (chatbots.result) {
-            setMessages((prev) => [
-                ...prev,
-                { from: "bot", text: chatbots.result },
-            ]);
-        }
-    }, [chatbots.result]);
-
     const sendMessage = async () => {
         if (input.trim() === "") return;
         try {
             setIsAnalyzing(true);
             setMessages([...messages, { from: "user", text: input }]);
             setInput("");
-            await store.dispatch(cocd_prompt_thunk({ prompt: input }));
+            const res = await store.dispatch(
+                cocd_prompt_thunk({ prompt: input, type: selectedOption })
+            );
+            setMessages((prev) => [...prev, { from: "bot", text: res.result }]);
+            setSelectedOption("");
             setIsAnalyzing(false);
         } catch (error) {
             setInput("");
+            setMessages((prev) => [...prev, { from: "bot", text: error.message }]);
+            setSelectedOption("");
             setIsAnalyzing(false);
         }
         // setMessages([...messages, { from: "user", text: input }]);
@@ -68,6 +68,19 @@ export default function ChatbotModal() {
         //     ...prev,
         //     { from: "bot", text: "Thanks for your message!" },
         // ]);
+    };
+
+    const handleQuickNoteSelect = (option) => {
+        if (option == "Incident Report") {
+            setInput(
+                `Name of Violator:\nDate and Time: ${moment().format(
+                    "LLL"
+                )}\nWitnesses (if any):\nDetails of Incident:\nAdditional Notes:`
+            );
+        } else {
+            setInput("");
+        }
+        setSelectedOption(option);
     };
 
     return (
@@ -149,26 +162,58 @@ export default function ChatbotModal() {
                                 </div>
                             )}
                         </div>
-
-                        {/* Input Area */}
-                        <div className="flex items-center gap-2 border-t p-4 bg-white sticky bottom-0 z-10">
-                            <input
-                                type="text"
-                                className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Type your message..."
-                                value={input}
-                                onChange={(e) => setInput(e.target.value)}
-                                onKeyDown={(e) =>
-                                    e.key === "Enter" && sendMessage()
-                                }
-                            />
-                            <button
-                                onClick={sendMessage}
-                                className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full"
-                            >
-                                <Send className="w-4 h-4" />
-                            </button>
+                        <div className="flex flex-wrap gap-2 m-3">
+                            {types.map((note, idx) => (
+                                <button
+                                    key={idx}
+                                    type="button"
+                                    onClick={() =>
+                                        handleQuickNoteSelect(
+                                            note == selectedOption ? "" : note
+                                        )
+                                    }
+                                    className={`border-2 text-blue-800 font-black rounded-full border-blue-800 px-3 py-1.5 text-sm  focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                        note === selectedOption
+                                            ? "bg-blue-800 text-white  ring-blue-800"
+                                            : ""
+                                    }`}
+                                >
+                                    <div className="flex gap-1">
+                                        {note == selectedOption && (
+                                            <FaCheck className="h-5" />
+                                        )}{" "}
+                                        {note}
+                                    </div>
+                                </button>
+                            ))}
                         </div>
+                        {/* Input Area */}
+                        {selectedOption && (
+                            <div className="flex items-center gap-2 border-t p-4 bg-white sticky bottom-0 z-10">
+                                <textarea
+                                    rows={3}
+                                    disabled={isAnalyzing}
+                                    className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                                    placeholder="Type your message..."
+                                    value={input}
+                                    onChange={(e) => setInput(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter" && !e.shiftKey) {
+                                            e.preventDefault();
+                                            sendMessage();
+                                        }
+                                    }}
+                                />
+
+                                <button
+                                    disabled={isAnalyzing}
+                                    onClick={sendMessage}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full"
+                                >
+                                    <Send className="w-4 h-4" />
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
