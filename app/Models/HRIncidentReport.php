@@ -16,5 +16,6 @@ class HRIncidentReport extends Model
         'violation',
         'infraction',
         'files',
+        'status',
     ];
 }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->longText('notes')->nullable();
             $table->longText('violation')->nullable();
             $table->longText('infraction')->nullable();
+            $table->longText('status')->nullable();
             $table->string('files')->nullable();
             $table->timestamps();
         });

@@ -10,6 +10,7 @@ use App\Http\Controllers\AccountingPurchaseRequestItemController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HRIncidentReportController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\OpenAIController;
 use App\Http\Controllers\SiteController;
@@ -57,6 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('accounting_cash_flows', AccountingCashFlowController::class);
     Route::resource('cash_in_bank', AccountingCashInBankController::class);
     Route::resource('debit_records', AccountingDebitRecordController::class);
+    Route::resource('incident_report', HRIncidentReportController::class);
 
     Route::get('/get_expenses_report', [AccountingExpensesController::class, 'get_expenses_report']);
 
