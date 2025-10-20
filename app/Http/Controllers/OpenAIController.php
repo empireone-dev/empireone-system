@@ -156,16 +156,21 @@ class OpenAIController extends Controller
         $data = json_decode($rawOutput, true);
 
         if ($type === 'Incident Report' && is_array($data)) {
-            HRIncidentReport::create([
-                'violator' => $data['violator'] ?? null,
-                'date' => $data['date'] ?? null,
-                'witness' => $data['witness'] ?? null,
-                'details' => $data['details'] ?? null,
-                'notes' => $data['notes'] ?? null,
-                'violation' => $data['article_of_infraction_details'] ?? null,
-                'infraction' => $this->toStringValue($data['gravity_of_infraction'] ?? null),
-            ]);
-            return response()->json(['result' => 'Incident report saved successfully.']);
+            if ($data['violator'] && $data['violator'] != 'Unknown') {
+                HRIncidentReport::create([
+                    'violator' => $data['violator'] ?? null,
+                    'date' => $data['date'] ?? null,
+                    'witness' => $data['witness'] ?? null,
+                    'details' => $data['details'] ?? null,
+                    'notes' => $data['notes'] ?? null,
+                    'violation' => $data['article_of_infraction_details'] ?? null,
+                    'infraction' => $this->toStringValue($data['gravity_of_infraction'] ?? null),
+                ]);
+
+                return response()->json(['result' => 'Incident report saved successfully.', 200]);
+            } else {
+                return response()->json(['result' => 'No violator found', 200]);
+            }
         }
 
         return response()->json(['result' => $rawOutput]);
