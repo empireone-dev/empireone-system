@@ -10,7 +10,7 @@ export function incident_report_thunk() {
 }
 
 
-export function incident_report_by_id_thunk(id) {
+export function get_incident_report_by_id_thunk(id) {
     return async function (dispatch, getState) {
         const res = await get_incident_report_by_id_service(id)
         dispatch(hrSlice.actions.setIr(res));

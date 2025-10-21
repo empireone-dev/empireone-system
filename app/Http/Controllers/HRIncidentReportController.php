@@ -12,4 +12,9 @@ class HRIncidentReportController extends Controller
         $irs = HRIncidentReport::paginate();
         return response()->json($irs, 200);
     }
+    public function show($id)
+    {
+        $ir = HRIncidentReport::with(['filed_by', 'evidence'])->find($id);
+        return response()->json($ir, 200);
+    }
 }

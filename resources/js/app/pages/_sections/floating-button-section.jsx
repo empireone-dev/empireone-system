@@ -5,7 +5,10 @@ import { cocd_prompt_thunk } from "@/app/redux/app-thunk";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { FaCheck } from "react-icons/fa6";
+import { message, Upload } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
 
+const { Dragger } = Upload;
 const types = ["Incident Report", "Ask a Question"];
 export default function ChatbotModal() {
     const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +17,7 @@ export default function ChatbotModal() {
     const [animateIn, setAnimateIn] = useState(false);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [selectedOption, setSelectedOption] = useState("");
+    const [files, setFiles] = useState([]);
     const [messages, setMessages] = useState([
         {
             from: "bot",
@@ -46,18 +50,26 @@ export default function ChatbotModal() {
     const sendMessage = async () => {
         if (input.trim() === "") return;
         try {
+            const formData = new FormData();
+            files.forEach((fileObj) => {
+                formData.append("files[]", fileObj.originFileObj);
+            });
+            formData.append("prompt", input);
+            formData.append("type", selectedOption);
+
             setIsAnalyzing(true);
             setMessages([...messages, { from: "user", text: input }]);
             setInput("");
-            const res = await store.dispatch(
-                cocd_prompt_thunk({ prompt: input, type: selectedOption })
-            );
+            const res = await store.dispatch(cocd_prompt_thunk(formData));
             setMessages((prev) => [...prev, { from: "bot", text: res.result }]);
             setSelectedOption("");
             setIsAnalyzing(false);
         } catch (error) {
             setInput("");
-            setMessages((prev) => [...prev, { from: "bot", text: error.message }]);
+            setMessages((prev) => [
+                ...prev,
+                { from: "bot", text: error.message },
+            ]);
             setSelectedOption("");
             setIsAnalyzing(false);
         }
@@ -83,6 +95,29 @@ export default function ChatbotModal() {
         setSelectedOption(option);
     };
 
+    const props = {
+        name: "file",
+        multiple: true,
+        method: "GET",
+        action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
+        onChange(info) {
+            const { status } = info.file;
+            if (status !== "uploading") {
+                console.log(info.file, info.fileList);
+            }
+            if (status === "done") {
+                setFiles(info.fileList);
+                message.success(
+                    `${info.file.name} file uploaded successfully.`
+                );
+            } else if (status === "error") {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+        onDrop(e) {
+            console.log("Dropped files", e.dataTransfer.files);
+        },
+    };
     return (
         <>
             {/* Floating Chat Button */}
@@ -143,6 +178,22 @@ export default function ChatbotModal() {
                                     </div>
                                 </div>
                             ))}
+                            <br />
+                            {selectedOption == "Incident Report" && (
+                                <Dragger
+                                    className="!h-36 !p-0 flex items-center justify-center border-dashed border-2 border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 transition-all duration-200"
+                                    {...props}
+                                >
+                                    <p className="ant-upload-drag-icon">
+                                        <InboxOutlined />
+                                    </p>
+                                    <p className="ant-upload-text">
+                                        Click or drag file to this area to
+                                        upload the evidence.
+                                    </p>
+                                </Dragger>
+                            )}
+                            <br />
                             {isAnalyzing && (
                                 <div className="flex items-center px-3 py-2 justify-center bg-gray-200 rounded-2xl max-w-14">
                                     <div className="flex space-x-1">
@@ -187,8 +238,9 @@ export default function ChatbotModal() {
                                 </button>
                             ))}
                         </div>
-                        {/* Input Area */}
-                        {selectedOption && (
+                        {(selectedOption === "Ask a Question" ||
+                            (selectedOption === "Incident Report" &&
+                                files.length !== 0)) && (
                             <div className="flex items-center gap-2 border-t p-4 bg-white sticky bottom-0 z-10">
                                 <textarea
                                     rows={3}

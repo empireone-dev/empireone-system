@@ -131,6 +131,10 @@ Route::middleware(['auth:sanctum', 'account_type:2'])->prefix('users')->group(fu
             return Inertia::render('users/human_resource/incident_report/page');
         });
 
+          Route::get('/incident_report/{id}', function () {
+            return Inertia::render('users/human_resource/incident_report/id/page');
+        });
+
     });
     Route::get('settings', function () {
         return Inertia::render('users/settings/page');

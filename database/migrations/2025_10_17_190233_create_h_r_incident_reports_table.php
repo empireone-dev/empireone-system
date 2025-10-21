@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('violator')->nullable();
             $table->string('date')->nullable();
+            $table->string('filed_by')->nullable();
             $table->string('witness')->nullable();
             $table->longText('details')->nullable();
             $table->longText('notes')->nullable();

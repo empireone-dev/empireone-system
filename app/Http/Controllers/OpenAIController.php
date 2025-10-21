@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HREvidence;
 use App\Models\HRIncidentReport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Smalot\PdfParser\Parser;
 
 
@@ -104,6 +107,7 @@ class OpenAIController extends Controller
 
     public function cocd_prompt(Request $request)
     {
+        $auth = Auth::user();
         $content = '';
         $request->validate([
             'prompt' => 'required|string',
@@ -157,7 +161,8 @@ class OpenAIController extends Controller
 
         if ($type === 'Incident Report' && is_array($data)) {
             if ($data['violator'] && $data['violator'] != 'Unknown') {
-                HRIncidentReport::create([
+                $hrir =  HRIncidentReport::create([
+                    'filed_by' => $auth->id,
                     'violator' => $data['violator'] ?? null,
                     'date' => $data['date'] ?? null,
                     'witness' => $data['witness'] ?? null,
@@ -166,6 +171,18 @@ class OpenAIController extends Controller
                     'violation' => $data['article_of_infraction_details'] ?? null,
                     'infraction' => $this->toStringValue($data['gravity_of_infraction'] ?? null),
                 ]);
+
+                if ($request->hasFile('files')) {
+                    foreach ($request->file('files') as $uploadedFile) {
+                        $path = $uploadedFile->store(date("Y"), 's3');
+                        $url = Storage::disk('s3')->url($path);
+                        HREvidence::create([
+                            'incident_report_id' => $hrir->id,
+                            'file' => $url,
+                            'type' => 'IR'
+                        ]);
+                    }
+                }
 
                 return response()->json(['result' => 'Incident report saved successfully.', 200]);
             } else {
