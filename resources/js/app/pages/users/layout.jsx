@@ -85,12 +85,12 @@ export default function Layout({ children }) {
                     icon: <FcSurvey className="h-6 w-6" />,
                     current: isCurrentSub == "purchase_request",
                 },
-                {
-                    name: "Voucher Request",
-                    href: "/users/accounting/voucher_request",
-                    icon: <FcNeutralTrading className="h-6 w-6" />,
-                    current: isCurrentSub == "voucher_request",
-                },
+                // {
+                //     name: "Voucher Request",
+                //     href: "/users/accounting/voucher_request",
+                //     icon: <FcNeutralTrading className="h-6 w-6" />,
+                //     current: isCurrentSub == "voucher_request",
+                // },
                 //   {
                 //       name: "Daily Expenses",
                 //       href: "/users/accounting/expenses/daily_expenses",
