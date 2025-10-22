@@ -1,1 +1,0 @@
-import{u as a,j as o}from"./app-DOKCV2J7.js";import{P as s}from"./pagination-D-_wV_mf.js";function r(){const{accounts:t}=a(n=>n.accounts);return console.log("accounts",t),o.jsx(o.Fragment,{children:o.jsx(s,{data:t})})}export{r as default};

@@ -29,7 +29,7 @@ export default function TableSection() {
                 data={daily_expenses?.map((res, i) => ({
                     requestor: res?.user?.name ?? "NONE",
                     description: limitString(res.description),
-                    date: moment(res.date).format("LLL"),
+                    date: moment(res.date).format("LL"),
                     receipt: (
                         <>
                             {res.files && (

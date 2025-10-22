@@ -105,20 +105,25 @@ export default function Layout({ children }) {
                 //   },
             ],
         },
-        {
-            name: "Human Resource",
-            href: "/users/human_resource",
-            icon: <FcConferenceCall className="h-6 w-6" />,
-            current: isCurrentMain == "human_resource",
-            children: [
-                {
-                    name: "Incident Report",
-                    href: "/users/human_resource/incident_report",
-                    icon: <FcHighPriority className="h-6 w-6" />,
-                    current: isCurrentSub == "incident_report",
-                },
-            ],
-        },
+        ...(user.department === "HR Department" ||
+        user.department === "Accounting Department"
+            ? [
+                  {
+                      name: "Human Resource",
+                      href: "/users/human_resource",
+                      icon: <FcConferenceCall className="h-6 w-6" />,
+                      current: isCurrentMain == "human_resource",
+                      children: [
+                          {
+                              name: "Incident Report",
+                              href: "/users/human_resource/incident_report",
+                              icon: <FcHighPriority className="h-6 w-6" />,
+                              current: isCurrentSub == "incident_report",
+                          },
+                      ],
+                  },
+              ]
+            : []),
 
         // ...(user.department !== "Accounting Department"
         //     ? [

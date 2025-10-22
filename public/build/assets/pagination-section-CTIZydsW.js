@@ -1,0 +1,1 @@
+import{u as a,j as o}from"./app-BNhbWXV9.js";import{P as s}from"./pagination-Dd_afFgm.js";function r(){const{accounts:t}=a(n=>n.accounts);return console.log("accounts",t),o.jsx(o.Fragment,{children:o.jsx(s,{data:t})})}export{r as default};

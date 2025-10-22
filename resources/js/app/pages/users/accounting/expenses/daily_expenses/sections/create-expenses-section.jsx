@@ -39,10 +39,9 @@ export default function CreateExpensesSection() {
             balance: "",
             tin: "",
             files: [],
-            date: dayjs(), // single date (can change to array for range)
+            date: moment().format("LLL"), // single date (can change to array for range)
         },
     });
-
     async function submit_data(data) {
         const formData = new FormData();
         formData.append("status", "Approved");
@@ -51,12 +50,14 @@ export default function CreateExpensesSection() {
             if (key === "files" && value?.length) {
                 const file = value[0];
                 formData.append("file", file.originFileObj);
-            } else if (key === "date") {
-                formData.append(
-                    "date",
-                    moment(value.toISOString()).format("LLL")
-                );
-            } else {
+            } 
+            // else if (key === "date") {
+            //     formData.append(
+            //         "date",
+            //         moment(value.toISOString()).format("LLL")
+            //     );
+            // } 
+            else {
                 formData.append(key, value ?? "");
             }
         });
@@ -95,12 +96,12 @@ export default function CreateExpensesSection() {
             if (amount) setValue("amount", amount);
             if (description) setValue("description", description);
             if (tin) setValue("tin", tin);
-            if (date) {
-                const parsedDate = dayjs(date, ["MM/DD/YYYY", "YYYY-MM-DD"]);
-                if (parsedDate.isValid()) {
-                    setValue("date", parsedDate);
-                }
-            }
+            // if (date) {
+            //     const parsedDate = dayjs(date, ["MM/DD/YYYY", "YYYY-MM-DD"]);
+            //     if (parsedDate.isValid()) {
+            //         setValue("date", parsedDate);
+            //     }
+            // }
 
             field.onChange(latestFile);
             setIsUploaded(true);
@@ -137,6 +138,7 @@ export default function CreateExpensesSection() {
                         <div className="flex-1 flex flex-col gap-4">
                             {!loading && isUploaded && (
                                 <div className="flex flex-col gap-4">
+                                    {/* Receipt Date
                                     <Controller
                                         control={control}
                                         name="date"
@@ -161,7 +163,7 @@ export default function CreateExpensesSection() {
                                         <p className="text-sm text-red-600 mt-1">
                                             {errors.date.message}
                                         </p>
-                                    )}
+                                    )} */}
 
                                     <Input
                                         label="Description"
@@ -263,7 +265,7 @@ export default function CreateExpensesSection() {
                         loading={isSubmitting || loading}
                         disabled={isSubmitting || loading || !isUploaded}
                     >
-                        SUBMIT REFUND
+                        SUBMIT
                     </Button>
                 </form>
             </Modal>
