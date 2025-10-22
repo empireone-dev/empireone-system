@@ -49,7 +49,7 @@ class AccountingExpensesController extends Controller
                 $parsedDate = Carbon::parse($expense->created_at)->toDateString();
                 return $parsedDate == $today;
             })
-            ->values(); 
+            ->values();
 
         return response()->json($transactions, 200);
     }
@@ -69,10 +69,8 @@ class AccountingExpensesController extends Controller
             ]);
 
             $cash_flow =  AccountingCashFlow::where('id', 1)->first();
-            if ($request->status == 'Approved' && $cash_flow) {
-                $cash_flow->update([
-                    'total' => $cash_flow->total - $request->amount,
-                ]);
+            if ($request->payment_method == 'Cash' && $request->status == 'Approved' && $cash_flow) {
+                $cash_flow->decrement('total', $request->amount);
             }
             return response()->json(['message' => 'Status updated successfully'], 200);
         }

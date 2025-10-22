@@ -17,6 +17,8 @@ import {
     get_daily_expenses_thunk,
     get_my_fund_request_thunk,
 } from "@/app/redux/accounting-thunk";
+import { accounting_categories } from "@/app/lib/accounting-category";
+import Select from "@/app/_components/select";
 
 const { Dragger } = Upload;
 
@@ -39,7 +41,8 @@ export default function CreateExpensesSection() {
             balance: "",
             tin: "",
             files: [],
-            date: moment().format("LLL"), // single date (can change to array for range)
+            date: moment().format("LLL"),
+            category: "",
         },
     });
     async function submit_data(data) {
@@ -176,6 +179,15 @@ export default function CreateExpensesSection() {
                                         </p>
                                     )} */}
 
+                                    <Select
+                                        label="Category"
+                                        name="category"
+                                        options={accounting_categories}
+                                        error={errors?.category?.message}
+                                        register={register("category", {
+                                            required: "This field is required",
+                                        })}
+                                    />
                                     <Input
                                         label="Description"
                                         type="text"

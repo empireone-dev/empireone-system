@@ -1,1 +1,0 @@
-import{j as t}from"./app-DgySGI2u.js";import{B as r}from"./button-DQc2T16C.js";import"./index-DOtoqCjg.js";function n(){return t.jsx(t.Fragment,{children:t.jsx(r,{variant:"success",children:"Status Update"})})}export{n as default};

@@ -1,4 +1,5 @@
 import Table from "@/app/_components/table";
+import { peso_value } from "@/app/lib/peso-value";
 import { Tag } from "antd";
 import moment from "moment";
 import React from "react";
@@ -45,7 +46,7 @@ export default function TableSection() {
                     ),
                     tin: res.tin,
                     receipt_number: res.receipt_number,
-                    amount: res.amount,
+                    amount: peso_value(res.amount),
                     status: (
                         <Tag
                             color={
