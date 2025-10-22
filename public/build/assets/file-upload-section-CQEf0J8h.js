@@ -1,0 +1,1 @@
+import{j as t}from"./app-C-4QPIQM.js";import{B as o}from"./button-ROcuXKFf.js";import"./index-DoUGS9Ik.js";function n(){return t.jsx(t.Fragment,{children:t.jsx(o,{variant:"outline",children:"Upload File"})})}export{n as default};

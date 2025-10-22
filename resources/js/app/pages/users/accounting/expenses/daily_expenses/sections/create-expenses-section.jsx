@@ -50,13 +50,13 @@ export default function CreateExpensesSection() {
             if (key === "files" && value?.length) {
                 const file = value[0];
                 formData.append("file", file.originFileObj);
-            } 
+            }
             // else if (key === "date") {
             //     formData.append(
             //         "date",
             //         moment(value.toISOString()).format("LLL")
             //     );
-            // } 
+            // }
             else {
                 formData.append(key, value ?? "");
             }
@@ -92,10 +92,21 @@ export default function CreateExpensesSection() {
                 res.data.result;
 
             // Populate fields from scan
-            if (receipt_number) setValue("receipt_number", receipt_number);
+            if (receipt_number) {
+                setValue("receipt_number", receipt_number);
+            } else {
+                setValue(
+                    "receipt_number",
+                    `RN-${moment().format("MMDDYYYYHHmmss")}`
+                );
+            }
             if (amount) setValue("amount", amount);
             if (description) setValue("description", description);
-            if (tin) setValue("tin", tin);
+            if (tin) {
+                setValue("tin", tin);
+            } else {
+                setValue("tin", "N/A");
+            }
             // if (date) {
             //     const parsedDate = dayjs(date, ["MM/DD/YYYY", "YYYY-MM-DD"]);
             //     if (parsedDate.isValid()) {

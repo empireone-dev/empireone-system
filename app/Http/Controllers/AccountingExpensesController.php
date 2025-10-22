@@ -49,7 +49,7 @@ class AccountingExpensesController extends Controller
                 $parsedDate = Carbon::parse($expense->created_at)->toDateString();
                 return $parsedDate == $today;
             })
-            ->values(); // reset array keys
+            ->values(); 
 
         return response()->json($transactions, 200);
     }
