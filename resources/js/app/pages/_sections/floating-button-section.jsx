@@ -181,8 +181,7 @@ export default function ChatbotModal() {
                             <br />
                             {selectedOption == "Incident Report" && (
                                 <Dragger
-                                    className="!h-36 !p-0 flex items-center justify-center border-dashed border-2 border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 transition-all duration-200"
-                                    {...props}
+                                   {...props}
                                 >
                                     <p className="ant-upload-drag-icon">
                                         <InboxOutlined />

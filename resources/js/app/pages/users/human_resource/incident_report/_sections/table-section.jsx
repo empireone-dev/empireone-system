@@ -17,7 +17,7 @@ export default function TableSection() {
         { header: "Date", accessor: "date" },
         // { header: "Violation", accessor: "violation" },
         { header: "Details", accessor: "details" },
-        { header: "Notes", accessor: "notes" },
+        // { header: "Notes", accessor: "notes" },
         // { header: "Files", accessor: "files" },
         { header: "Status", accessor: "status" },
     ];

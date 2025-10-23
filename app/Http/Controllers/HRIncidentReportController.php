@@ -9,7 +9,7 @@ class HRIncidentReportController extends Controller
 {
     public function index()
     {
-        $irs = HRIncidentReport::paginate();
+        $irs = HRIncidentReport::orderBy('created_at', 'desc')->paginate();
         return response()->json($irs, 200);
     }
     public function show($id)
