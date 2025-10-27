@@ -8,6 +8,7 @@ import accountSlice from "../redux/account-slice";
 import dashboardsSlice from "../redux/dashboard-slice";
 import accountingSlice from "../redux/accounting-slice";
 import hrSlice from "../redux/hr-slice";
+import  engagementSlice  from "../redux/engagement-slice";
 
 const store = configureStore({
     reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
         dashboards: dashboardsSlice,
         accounting: accountingSlice,
         hr: hrSlice,
+        engagement:engagementSlice,
     },
 });
 

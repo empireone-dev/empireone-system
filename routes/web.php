@@ -97,7 +97,7 @@ Route::middleware(['auth:sanctum', 'account_type:2'])->prefix('users')->group(fu
         Route::get('expenses_report', function () {
             return Inertia::render('users/accounting/expenses/expenses_report/page');
         });
-         Route::get('cash_in_bank', function () {
+        Route::get('cash_in_bank', function () {
             return Inertia::render('users/accounting/expenses/cash_in_bank/page');
         });
     });
@@ -119,22 +119,42 @@ Route::middleware(['auth:sanctum', 'account_type:2'])->prefix('users')->group(fu
         Route::get('/purchase_request/{id}', function () {
             return Inertia::render('users/accounting/purchase_request/id/page');
         });
-         Route::get('/voucher_request', function () {
+        Route::get('/voucher_request', function () {
             return Inertia::render('users/accounting/voucher_request/page');
         });
-         Route::get('/voucher_request/{id}', function () {
+        Route::get('/voucher_request/{id}', function () {
             return Inertia::render('users/accounting/voucher_request/id/page');
         });
     });
-      Route::prefix('human_resource')->group(function () {
+    Route::prefix('human_resource')->group(function () {
         Route::get('/incident_report', function () {
             return Inertia::render('users/human_resource/incident_report/page');
         });
 
-          Route::get('/incident_report/{id}', function () {
+        Route::get('/incident_report/{id}', function () {
             return Inertia::render('users/human_resource/incident_report/id/page');
         });
+    });
+    Route::prefix('engagement')->group(function () {
+        Route::get('/survey', function () {
+            return Inertia::render('users/engagement/survey/page');
+        });
+        Route::get('/calendar', function () {
+            return Inertia::render('users/engagement/calendar/page');
+        });
+        Route::get('/news_feed', function () {
+            return Inertia::render('users/engagement/news_feed/page');
+        });
+        Route::get('/activities', function () {
+            return Inertia::render('users/engagement/activities/page');
+        });
+        Route::get('/announcements', function () {
+            return Inertia::render('users/engagement/announcements/page');
+        });
 
+        // Route::get('/incident_report/{id}', function () {
+        //     return Inertia::render('users/engagement/incident_report/id/page');
+        // });
     });
     Route::get('settings', function () {
         return Inertia::render('users/settings/page');

@@ -4,15 +4,19 @@ import { get_user_thunk } from "@/app/redux/account-thunk";
 import store from "@/app/store/store";
 import { useEffect } from "react";
 import {
+    FcAdvertising,
     FcBarChart,
     FcCalculator,
+    FcCalendar,
     FcClock,
     FcCollaboration,
     FcConferenceCall,
     FcCurrencyExchange,
     FcHighPriority,
+    FcIdea,
     FcMoneyTransfer,
     FcNeutralTrading,
+    FcNews,
     FcOnlineSupport,
     FcPortraitMode,
     FcSupport,
@@ -119,6 +123,50 @@ export default function Layout({ children }) {
                               href: "/users/human_resource/incident_report",
                               icon: <FcHighPriority className="h-6 w-6" />,
                               current: isCurrentSub == "incident_report",
+                          },
+                      ],
+                  },
+              ]
+            : []),
+
+        ...(user.department === "Engagement Department" ||
+        user.department === "Accounting Department"
+            ? [
+                  {
+                      name: "Engagement",
+                      href: "/users/engagement",
+                      icon: <FcIdea className="h-6 w-6" />,
+                      current: isCurrentMain == "engagement",
+                      children: [
+                          {
+                              name: "Calendar Activities",
+                              href: "/users/engagement/calendar",
+                              icon: <FcCalendar className="h-6 w-6" />,
+                              current: isCurrentSub == "calendar",
+                          },
+                          {
+                              name: "Activities & Events",
+                              href: "/users/engagement/activities",
+                              icon: <FcCollaboration className="h-6 w-6" />,
+                              current: isCurrentSub == "activities",
+                          },
+                          {
+                              name: "Announcements",
+                              href: "/users/engagement/announcements",
+                              icon: <FcAdvertising className="h-6 w-6" />,
+                              current: isCurrentSub == "announcements",
+                          },
+                          {
+                              name: "Survey / Poll",
+                              href: "/users/engagement/survey",
+                              icon: <FcBarChart className="h-6 w-6" />,
+                              current: isCurrentSub == "survey",
+                          },
+                          {
+                              name: "News Feed",
+                              href: "/users/engagement/news_feed",
+                              icon: <FcNews className="h-6 w-6" />,
+                              current: isCurrentSub == "news_feed",
                           },
                       ],
                   },
