@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class EngagementActivity extends Model
 {
@@ -13,4 +14,9 @@ class EngagementActivity extends Model
         'end_at',
         'status',
     ];
+
+    public function files(): HasMany
+    {
+        return $this->hasMany(EngagementFile::class, 'news_feed_id', 'id')->where('type', 'activity');
+    }
 }

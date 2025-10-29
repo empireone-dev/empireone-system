@@ -64,6 +64,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     
     Route::resource('engagement_activities', EngagementActivityController::class);
+    Route::post('/update_activity', [EngagementActivityController::class, 'update_activity']);
     Route::resource('engagement_calendar', EngagementCalendarController::class);
 
     Route::get('/get_expenses_report', [AccountingExpensesController::class, 'get_expenses_report']);

@@ -30,7 +30,7 @@ class AccountingPurchaseRequestController extends Controller
     {
         $user = Auth::user();
         if ($request->hasFile('file')) {
-            $path = $request->file('file')->store(date("Y"), 's3');
+            $path = $request->file('file')->store('unified/' . date("Y"), 's3');
             $url = Storage::disk('s3')->url($path);
         }
         $apr = AccountingPurchaseRequest::where('id', $request->accounting_purchase_requests_id)->first();
@@ -269,7 +269,7 @@ class AccountingPurchaseRequestController extends Controller
 
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $path = $file->store(date("Y"), 's3');
+                $path = $file->store('unified/' . date("Y"), 's3');
                 $url = Storage::disk('s3')->url($path);
                 AccountingPurchaseRequestLog::create([
                     'accounting_purchase_requests_id' => $ap->id,

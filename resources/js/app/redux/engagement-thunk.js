@@ -6,7 +6,7 @@ import { engagementSlice } from "./engagement-slice";
 export function get_engagement_activities_thunk() {
     return async function (dispatch, getState) {
         const res = await get_engagement_activities_service()
-        dispatch(engagementSlice.actions.setEngagements(res.data));
+        dispatch(engagementSlice.actions.setActivities(res.data));
     };
 }
 
@@ -15,7 +15,7 @@ export function get_engagement_activities_thunk() {
 export function get_engagement_activities_by_id_thunk(id) {
     return async function (dispatch, getState) {
         const res = await get_engagement_activities_by_id_service(id)
-        dispatch(engagementSlice.actions.setEngagement(res));
+        dispatch(engagementSlice.actions.setActivity(res));
     };
 }
 

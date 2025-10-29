@@ -3,17 +3,17 @@ import { createSlice } from "@reduxjs/toolkit";
 export const engagementSlice = createSlice({
     name: "engagement",
     initialState: {
-        engagement: {},
-        engagements: [],
+        activity: {},
+        activities: [],
         calendars: [],
         calendar: {},
     },
     reducers: {
-        setEngagement: (state, action) => {
-            state.engagement = action.payload;
+        setActivity: (state, action) => {
+            state.activity = action.payload;
         },
-        setEngagements: (state, action) => {
-            state.engagements = action.payload;
+        setActivities: (state, action) => {
+            state.activities = action.payload;
         },
         setCalendars: (state, action) => {
             state.calendars = action.payload;
@@ -23,6 +23,7 @@ export const engagementSlice = createSlice({
         },
     },
 });
-export const { setEngagement, setEngagements, setCalendars, setCalendar } = engagementSlice.actions;
+export const { setActivity, setActivities, setCalendars, setCalendar } =
+    engagementSlice.actions;
 
 export default engagementSlice.reducer;

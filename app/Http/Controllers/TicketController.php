@@ -356,7 +356,7 @@ class TicketController extends Controller
         ]);
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $uploadedFile) {
-                $path = $uploadedFile->store(date("Y"), 's3');
+                $path = $uploadedFile->store('unified/' . date("Y"), 's3');
                 $url = Storage::disk('s3')->url($path);
                 File::create([
                     'ticket_id' => $ticket->id,

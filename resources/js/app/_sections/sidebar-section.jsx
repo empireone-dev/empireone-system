@@ -22,7 +22,7 @@ export default function SidebarSection({ navigation }) {
             <Transition show={sidebarOpen} as={Fragment}>
                 <div
                     onClick={() => dispatch(setSidebarOpen(false))}
-                    className="relative z-50 lg:hidden"
+                    className="relative z-40 lg:hidden"
                 >
                     {/* Backdrop */}
                     <div>
@@ -76,7 +76,7 @@ export default function SidebarSection({ navigation }) {
             </Transition>
 
             {/* Desktop sidebar */}
-            <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+            <div className="hidden lg:fixed lg:inset-y-0 lg:z-40 lg:flex lg:w-72 lg:flex-col">
                 <div className="flex grow flex-col border-r border-gray-300 bg-white px-1.5 pb-4 shadow-md">
                     <div className="flex h-20 justify-center p-3  items-center">
                         <img

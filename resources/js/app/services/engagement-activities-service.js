@@ -14,7 +14,10 @@ export function get_engagement_activities_service() {
     } catch (error) {}
 }
 
-export async function get_engagement_activities_by_id_service(product_code, date) {
+export async function get_engagement_activities_by_id_service(
+    product_code,
+    date
+) {
     const res = await axios.get(
         "/api/engagement_activities/" + product_code + "?date=" + date
     );
@@ -30,7 +33,7 @@ export function delete_engagement_activities_service(id) {
 
 export function update_engagement_activities_service(data) {
     try {
-        const result = axios.put(`/api/engagement_activities/${data.id}`, data);
+        const result = axios.post(`/api/update_activity`, data);
         return result;
     } catch (error) {}
 }

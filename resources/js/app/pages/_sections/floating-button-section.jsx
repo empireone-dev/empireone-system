@@ -121,7 +121,7 @@ export default function ChatbotModal() {
     return (
         <>
             {/* Floating Chat Button */}
-            <button onClick={toggleModal} className="fixed bottom-6 right-4">
+            <button onClick={toggleModal} className="fixed bottom-6 right-4 z-50">
                 <img src="/gif/chatbot.gif" className="h-24" />
             </button>
 

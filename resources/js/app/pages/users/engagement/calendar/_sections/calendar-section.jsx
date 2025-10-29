@@ -3,6 +3,7 @@ import { Badge, Calendar } from "antd";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+import ViewDaySection from "./view-day-section";
 dayjs.extend(isBetween);
 
 const CalendarSection = () => {
@@ -15,14 +16,18 @@ const CalendarSection = () => {
         calendars.forEach((event) => {
             if (!event?.activity?.start_at || !event?.activity?.end_at) return;
 
-            const start = dayjs(event.activity.start_at);
-            const end = dayjs(event.activity.end_at);
+            const start = dayjs(event?.activity?.start_at);
+            const end = dayjs(event?.activity?.end_at);
             if (!start.isValid() || !end.isValid()) return;
 
             if (value.isBetween(start, end, "day", "[]")) {
                 listData.push({
+                    start: event?.activity?.start_at,
+                    end: event?.activity?.end_at,
+                    description: event?.activity?.description || "",
+                    name: event?.activity?.name || "",
                     type: "success",
-                    content: event.activity.name || "Untitled Event",
+                    content: event?.activity?.name || "Untitled Event",
                 });
             }
         });
@@ -37,13 +42,9 @@ const CalendarSection = () => {
             if (!listData?.length) return null;
 
             return (
-                <ul className="events m-0 p-0 list-none">
-                    {listData.map((item, index) => (
-                        <li key={index}>
-                            <Badge status={item.type} text={item.content} />
-                        </li>
-                    ))}
-                </ul>
+                <div>
+                    <ViewDaySection data={listData} />
+                </div>
             );
         } catch (error) {
             console.error("Calendar cell render error:", error);
