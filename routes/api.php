@@ -68,7 +68,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('engagement_calendar', EngagementCalendarController::class);
 
     Route::get('/get_expenses_report', [AccountingExpensesController::class, 'get_expenses_report']);
-
+    Route::get('/get_petty_cash', [AccountingExpensesController::class, 'get_petty_cash']);
 
     Route::resource('accounting_purchase_request', AccountingPurchaseRequestController::class);
     Route::post('/add_logs', [AccountingPurchaseRequestController::class, 'add_logs']);

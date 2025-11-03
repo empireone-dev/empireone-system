@@ -28,6 +28,16 @@ export async function get_my_fund_request_service() {
     }
 }
 
+export async function get_petty_cash_service() {
+    try {
+        const result =await axios.get('/api/get_petty_cash')    
+        return result
+    } catch (error) {
+
+    }
+}
+
+
 export async function get_fund_pending_request_service() {
     try {
         const result =await axios.get('/api/get_fund_pending_request')    

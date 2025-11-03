@@ -15,7 +15,9 @@ export const accountingSlice = createSlice({
         cash_in_bank: {},
         debit_records: [],
         refunds:[],
-        refund:{}
+        refund:{},
+        pettycashes:[],
+        pettycash:{},
     },
     reducers: {
         setExpense: (state, action) => {
@@ -54,6 +56,12 @@ export const accountingSlice = createSlice({
         setRefund: (state, action) => {
             state.refund = action.payload;
         },
+        setPettyCashes: (state, action) => {
+            state.pettycashes = action.payload;
+        },
+        setPettyCash: (state, action) => {
+            state.pettycash = action.payload;
+        },
     },
 });
 export const {
@@ -66,6 +74,8 @@ export const {
     setDebitRecords,
     setRefunds,
     setRefund,
+    setPettyCashes,
+    setPettyCash,
 } = accountingSlice.actions;
 
 export default accountingSlice.reducer;

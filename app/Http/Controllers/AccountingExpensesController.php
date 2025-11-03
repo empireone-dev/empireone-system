@@ -86,6 +86,11 @@ class AccountingExpensesController extends Controller
         ])->with(['user'])->orderBy('id', 'desc')->paginate();
         return response()->json($transactions, 200);
     }
+    public function get_petty_cash()
+    {
+        $transactions = AccountingExpenses::where('type', 'Petty Cash')->orderBy('id', 'desc')->with(['user'])->paginate();
+        return response()->json($transactions, 200);
+    }
     public function index(Request $request)
     {
         $transactions = AccountingExpenses::where('status', $request->status)->orderBy('date', 'asc')->with(['user'])->paginate();
@@ -111,6 +116,7 @@ class AccountingExpensesController extends Controller
             'tin' => $request->tin,
             'files' => $url ?? null,
             'status' => $request->status ?? 'Pending',
+            'type' => $request->type,
             'payment_method' => $request->payment_method ?? 'Cash',
         ]);
         if ($request->status == 'Approved') {

@@ -56,6 +56,7 @@ class AccountingPurchaseRequestController extends Controller
                 'status' => 'Approved',
                 'payment_method' => $request->payment_method,
                 'category' => $apr->category,
+                'type' => 'Purchase Request',
             ]);
             $cash_flow =  AccountingCashFlow::where('id', 1)->first();
             if ($ae->status == 'Approved' && $cash_flow) {

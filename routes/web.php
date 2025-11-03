@@ -125,6 +125,13 @@ Route::middleware(['auth:sanctum', 'account_type:2'])->prefix('users')->group(fu
         Route::get('/voucher_request/{id}', function () {
             return Inertia::render('users/accounting/voucher_request/id/page');
         });
+
+        Route::get('/petty_cash_requests', function () {
+            return Inertia::render('users/accounting/petty_cash_requests/page');
+        });
+        Route::get('/petty_cash_requests/{id}', function () {
+            return Inertia::render('users/accounting/petty_cash_requests/id/page');
+        });
     });
     Route::prefix('human_resource')->group(function () {
         Route::get('/incident_report', function () {

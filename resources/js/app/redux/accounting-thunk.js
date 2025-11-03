@@ -1,6 +1,6 @@
 import { get_accounting_cash_flows_service } from "../services/accounting-cash-flows";
 import { get_cash_in_bank_service } from "../services/accounting-cash-in-bank-service";
-import { get_accounting_expenses_service, get_daily_expenses_service, get_expenses_report_service, get_my_fund_request_service } from "../services/accounting-expenses-service";
+import { get_accounting_expenses_service, get_daily_expenses_service, get_expenses_report_service, get_my_fund_request_service, get_petty_cash_service } from "../services/accounting-expenses-service";
 import { get_accounting_purchase_request_by_id_service, get_accounting_purchase_request_service } from "../services/accounting-purchase-request";
 import { get_debit_records_service } from "../services/debit-records-service";
 import { accountingSlice } from "./accounting-slice";
@@ -56,6 +56,14 @@ export function get_my_fund_request_thunk() {
         dispatch(accountingSlice.actions.setRefunds(res.data));
     };
 }
+
+export function get_petty_cash_thunk() {
+    return async function (dispatch, getState) {
+        const res = await get_petty_cash_service();
+        dispatch(accountingSlice.actions.setPettyCashes(res.data));
+    };
+}
+
 export function get_purchase_request_thunk() {
     return async function (dispatch, getState) {
         const res = await get_accounting_purchase_request_service();

@@ -86,17 +86,24 @@ export default function Layout({ children }) {
                       ]
                     : []),
                 {
+                    name: "Purchase Request",
+                    href: "/users/accounting/purchase_request",
+                    icon: <FcSurvey className="h-6 w-6" />,
+                    current: isCurrentSub == "purchase_request",
+                },
+                {
                     name: "Refund Request",
                     href: "/users/accounting/refunds/my_fund_requests",
                     icon: <FcMoneyTransfer className="h-6 w-6" />,
                     current: isCurrentSub == "refunds",
                 },
                 {
-                    name: "Purchase Request",
-                    href: "/users/accounting/purchase_request",
-                    icon: <FcSurvey className="h-6 w-6" />,
-                    current: isCurrentSub == "purchase_request",
+                    name: "Petty Cash Request",
+                    href: "/users/accounting/petty_cash_requests",
+                    icon: <FcMoneyTransfer className="h-6 w-6" />,
+                    current: isCurrentSub == "petty_cash_requests",
                 },
+
                 // {
                 //     name: "Voucher Request",
                 //     href: "/users/accounting/voucher_request",
@@ -190,10 +197,12 @@ export default function Layout({ children }) {
                       icon: <FcEngineering className="h-6 w-6" />,
                       current: isCurrentMain == "assets",
                       children: [
-                        {
+                          {
                               name: "Devices",
                               href: "/users/assets/devices",
-                              icon: <FcMultipleSmartphones className="h-6 w-6" />,
+                              icon: (
+                                  <FcMultipleSmartphones className="h-6 w-6" />
+                              ),
                               current: isCurrentSub == "devices",
                           },
                           {
@@ -202,32 +211,32 @@ export default function Layout({ children }) {
                               icon: <FcFrame className="h-6 w-6" />,
                               current: isCurrentSub == "monitors",
                           },
-                           {
+                          {
                               name: "Peripherals",
                               href: "/users/assets/peripherals",
                               icon: <FcTwoSmartphones className="h-6 w-6" />,
                               current: isCurrentSub == "peripherals",
                           },
-                         {
+                          {
                               name: "Other Assets",
                               href: "/users/assets/other_assets",
                               icon: <FcSalesPerformance className="h-6 w-6" />,
                               current: isCurrentSub == "other_assets",
                           },
-                           {
+                          {
                               name: "System Units",
                               href: "/users/assets/system_units",
                               icon: <FcSelfServiceKiosk className="h-6 w-6" />,
                               current: isCurrentSub == "system_units",
                           },
-                           {
+                          {
                               name: "Devices Returns",
                               href: "/users/assets/devices_returns",
                               icon: <FcDownload className="h-6 w-6" />,
                               current: isCurrentSub == "devices_returns",
                           },
-                          
-                           {
+
+                          {
                               name: "Parts & Accessories",
                               href: "/users/assets/parts_accessories",
                               icon: <FcServices className="h-6 w-6" />,
