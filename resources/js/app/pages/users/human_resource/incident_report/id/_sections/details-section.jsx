@@ -9,6 +9,7 @@ import { FcUpLeft } from "react-icons/fc";
 // import CloseTicketSection from "./close-ticket-section";
 import { FolderIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
+import StatusUpdateSection from "./status-update-section";
 
 export default function DetailsSection() {
     const scrollRef = useRef(null);
@@ -16,7 +17,7 @@ export default function DetailsSection() {
     const queryParams = new URLSearchParams(window.location.search);
     const page = queryParams.get("page") ?? "1";
     const [showFilesModal, setShowFilesModal] = useState(false);
-    // useEffect(() => {
+    // useEffect(() => {z
     //     const el = scrollRef.current;
     //     if (el) {
     //         el.scrollTop = el.scrollHeight;
@@ -44,6 +45,7 @@ export default function DetailsSection() {
                                 <CloseTicketSection />
                             )} */}
                         </div>
+
                         <Title
                             label={`Incident Report - ${
                                 ir?.id
@@ -202,6 +204,10 @@ export default function DetailsSection() {
                             </tbody>
                         </table>
                     </div>
+                    <div >
+                        <StatusUpdateSection />
+                    </div>
+
                     <div
                         ref={scrollRef}
                         className="h-[64vh]  px-3 thin-scrollbar overflow-auto flex flex-col gap-5"

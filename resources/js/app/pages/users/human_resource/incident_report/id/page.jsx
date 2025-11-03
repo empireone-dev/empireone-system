@@ -3,6 +3,8 @@ import Layout from "../../../layout";
 import store from "@/app/store/store";
 import { get_incident_report_by_id_thunk } from "@/app/redux/hr-thunk";
 import DetailsSection from "./_sections/details-section";
+import StepperSection from "./_sections/stepper-section";
+import StatusUpdateSection from "./_sections/status-update-section";
 
 export default function Page() {
     useEffect(() => {
@@ -14,7 +16,9 @@ export default function Page() {
     }, []);
     return (
         <Layout>
-            <DetailsSection />
+           
+           <div> <DetailsSection /></div>
+           <div> <StepperSection /></div>
         </Layout>
     );
 }
