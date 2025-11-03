@@ -46,7 +46,7 @@ class AccountingExpensesController extends Controller
             ->with(['user'])
             ->get()
             ->filter(function ($expense) use ($today) {
-                $parsedDate = Carbon::parse($expense->created_at)->toDateString();
+                $parsedDate = Carbon::parse($expense->updated_at)->toDateString();
                 return $parsedDate == $today;
             })
             ->values();
