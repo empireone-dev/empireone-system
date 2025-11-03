@@ -85,11 +85,13 @@ export default function SidebarSection({ navigation }) {
                             alt="Your Company"
                         />
                     </div>
-                    <SidebarDesktopSection
-                        setOpenIndex={setOpenIndex}
-                        openIndex={openIndex}
-                        navigation={navigation}
-                    />
+                    <div className="flex grow flex-col gap-y-5 pb-24 overflow-auto h-screen thin-scrollbar">
+                        <SidebarDesktopSection
+                            setOpenIndex={setOpenIndex}
+                            openIndex={openIndex}
+                            navigation={navigation}
+                        />
+                    </div>
                 </div>
             </div>
         </>

@@ -12,16 +12,24 @@ import {
     FcCollaboration,
     FcConferenceCall,
     FcCurrencyExchange,
+    FcDownload,
+    FcEngineering,
+    FcFrame,
     FcHighPriority,
     FcIdea,
     FcMoneyTransfer,
+    FcMultipleSmartphones,
     FcNeutralTrading,
     FcNews,
     FcOnlineSupport,
     FcPortraitMode,
+    FcSalesPerformance,
+    FcSelfServiceKiosk,
+    FcServices,
     FcSupport,
     FcSurvey,
     FcTemplate,
+    FcTwoSmartphones,
 } from "react-icons/fc";
 import FloatingButtonSection from "../_sections/floating-button-section";
 import { useSelector } from "react-redux";
@@ -167,6 +175,63 @@ export default function Layout({ children }) {
                               href: "/users/engagement/news_feed",
                               icon: <FcNews className="h-6 w-6" />,
                               current: isCurrentSub == "news_feed",
+                          },
+                      ],
+                  },
+              ]
+            : []),
+
+        ...(user.department === "IT Department" ||
+        user.department === "Accounting Department"
+            ? [
+                  {
+                      name: "Assets",
+                      href: "/users/assets",
+                      icon: <FcEngineering className="h-6 w-6" />,
+                      current: isCurrentMain == "assets",
+                      children: [
+                        {
+                              name: "Devices",
+                              href: "/users/assets/devices",
+                              icon: <FcMultipleSmartphones className="h-6 w-6" />,
+                              current: isCurrentSub == "devices",
+                          },
+                          {
+                              name: "Monitors",
+                              href: "/users/assets/monitors",
+                              icon: <FcFrame className="h-6 w-6" />,
+                              current: isCurrentSub == "monitors",
+                          },
+                           {
+                              name: "Peripherals",
+                              href: "/users/assets/peripherals",
+                              icon: <FcTwoSmartphones className="h-6 w-6" />,
+                              current: isCurrentSub == "peripherals",
+                          },
+                         {
+                              name: "Other Assets",
+                              href: "/users/assets/other_assets",
+                              icon: <FcSalesPerformance className="h-6 w-6" />,
+                              current: isCurrentSub == "other_assets",
+                          },
+                           {
+                              name: "System Units",
+                              href: "/users/assets/system_units",
+                              icon: <FcSelfServiceKiosk className="h-6 w-6" />,
+                              current: isCurrentSub == "system_units",
+                          },
+                           {
+                              name: "Devices Returns",
+                              href: "/users/assets/devices_returns",
+                              icon: <FcDownload className="h-6 w-6" />,
+                              current: isCurrentSub == "devices_returns",
+                          },
+                          
+                           {
+                              name: "Parts & Accessories",
+                              href: "/users/assets/parts_accessories",
+                              icon: <FcServices className="h-6 w-6" />,
+                              current: isCurrentSub == "parts_accessories",
                           },
                       ],
                   },

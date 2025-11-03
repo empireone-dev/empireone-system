@@ -1,1 +1,0 @@
-import{j as e}from"./app-CW_t62uj.js";import r from"./expenses-tabs-section-ivRe44ha.js";import"./index-2zOMRjCN.js";import"./iconBase-H15Lr_2O.js";import"./ChevronDownIcon-Dtslz520.js";function u({children:t}){return e.jsxs("div",{className:"flex flex-col gap-4",children:[e.jsx(r,{}),t]})}export{u as default};

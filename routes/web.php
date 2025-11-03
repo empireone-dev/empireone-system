@@ -156,6 +156,29 @@ Route::middleware(['auth:sanctum', 'account_type:2'])->prefix('users')->group(fu
         //     return Inertia::render('users/engagement/incident_report/id/page');
         // });
     });
+    Route::prefix('assets')->group(function () {
+        Route::get('/devices', function () {
+            return Inertia::render('users/assets/devices/page');
+        });
+        Route::get('/monitors', function () {
+            return Inertia::render('users/assets/monitors/page');
+        });
+        Route::get('/system_units', function () {
+            return Inertia::render('users/assets/system_units/page');
+        });
+        Route::get('/peripherals', function () {
+            return Inertia::render('users/assets/peripherals/page');
+        });
+        Route::get('/other_assets', function () {
+            return Inertia::render('users/assets/other_assets/page');
+        });
+        Route::get('/devices_returns', function () {
+            return Inertia::render('users/assets/devices_returns/page');
+        });
+        Route::get('/parts_accessories', function () {
+            return Inertia::render('users/assets/parts_accessories/page');
+        });
+    });
     Route::get('settings', function () {
         return Inertia::render('users/settings/page');
     });
