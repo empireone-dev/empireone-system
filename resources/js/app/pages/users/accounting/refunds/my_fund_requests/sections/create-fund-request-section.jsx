@@ -42,6 +42,7 @@ export default function CreateFundRequestSection() {
     async function submit_data(data) {
         const formData = new FormData();
         formData.append("payment_method", "Cash");
+        formData.append("type", "Refund");
         Object.entries(data).forEach(([key, value]) => {
             if (key === "files" && value?.length) {
                 const file = value[0];

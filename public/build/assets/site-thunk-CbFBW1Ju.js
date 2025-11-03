@@ -1,0 +1,1 @@
+import{a as s,e as i}from"./app-BtvlB2Qi.js";function r(){try{return s.get("/api/sites")}catch{}}function c(){return async function(t,a){const e=await r();t(i.actions.setSites(e.data))}}export{c as g};

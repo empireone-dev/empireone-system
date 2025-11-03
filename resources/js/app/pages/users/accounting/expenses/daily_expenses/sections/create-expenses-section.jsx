@@ -49,6 +49,7 @@ export default function CreateExpensesSection() {
         const formData = new FormData();
         formData.append("status", "Approved");
         formData.append("payment_method", "Cash");
+        formData.append("type", "Expense");
         Object.entries(data).forEach(([key, value]) => {
             if (key === "files" && value?.length) {
                 const file = value[0];

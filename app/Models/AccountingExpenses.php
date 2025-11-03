@@ -22,6 +22,7 @@ class AccountingExpenses extends Model
         'files',
         'status',
         'payment_method',
+        'type',
     ];
        public function user(): HasOne
     {

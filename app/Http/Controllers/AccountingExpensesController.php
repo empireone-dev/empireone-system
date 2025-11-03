@@ -80,7 +80,10 @@ class AccountingExpensesController extends Controller
     public function my_fund_request()
     {
         $user = Auth::user();
-        $transactions = AccountingExpenses::where('user_id', $user->id)->with(['user'])->orderBy('id', 'desc')->paginate();
+        $transactions = AccountingExpenses::where([
+            ['user_id', '=', $user->id],
+            ['type', '=', 'Refund']
+        ])->with(['user'])->orderBy('id', 'desc')->paginate();
         return response()->json($transactions, 200);
     }
     public function index(Request $request)

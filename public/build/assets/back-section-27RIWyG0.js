@@ -1,1 +1,0 @@
-import{j as e,W as t}from"./app-ixqA7ti0.js";import"./search-lib-CU0dLCsd.js";import{M as r}from"./index-Dwy6cxO0.js";import"./iconBase-B9wBBpH4.js";function c(){return e.jsx("div",{children:e.jsxs(t,{href:"/users/accounting/voucher_request?page=1",className:" flex gap-3 text-2xl font-semibold text-gray-900 my-3",children:[e.jsx(r,{})," Back"]})})}export{c as default};
