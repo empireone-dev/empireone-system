@@ -53,7 +53,7 @@ export function get_daily_expenses_thunk() {
 export function get_my_fund_request_thunk() {
     return async function (dispatch, getState) {
         const res = await get_my_fund_request_service();
-        dispatch(accountingSlice.actions.setExpenses(res.data));
+        dispatch(accountingSlice.actions.setRefunds(res.data));
     };
 }
 export function get_purchase_request_thunk() {
