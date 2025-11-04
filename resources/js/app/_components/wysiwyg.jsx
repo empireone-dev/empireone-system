@@ -10,18 +10,22 @@ export default function Wysiwyg({ label, name, value = "", onChange, error }) {
 
     // ✅ Load initial HTML value into editor when `value` changes
     useEffect(() => {
-        if (value) {
+        if (!value) return;
+
+        // Convert current editor to HTML
+        const currentHTML = draftToHtml(
+            convertToRaw(editorState.getCurrentContent())
+        );
+
+        // Only update editorState if the incoming value is different
+        if (value !== currentHTML) {
             const blocksFromHtml = htmlToDraft(value);
-            if (blocksFromHtml) {
-                const { contentBlocks, entityMap } = blocksFromHtml;
-                const contentState = ContentState.createFromBlockArray(
-                    contentBlocks,
-                    entityMap
-                );
-                setEditorState(EditorState.createWithContent(contentState));
-            }
-        } else {
-            setEditorState(EditorState.createEmpty());
+            const { contentBlocks, entityMap } = blocksFromHtml;
+            const contentState = ContentState.createFromBlockArray(
+                contentBlocks,
+                entityMap
+            );
+            setEditorState(EditorState.createWithContent(contentState));
         }
     }, [value]);
 

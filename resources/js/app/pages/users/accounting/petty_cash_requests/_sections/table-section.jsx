@@ -1,4 +1,5 @@
 import Table from "@/app/_components/table";
+import { Link } from "@inertiajs/react";
 import { Tag } from "antd";
 import moment from "moment";
 import React from "react";
@@ -9,9 +10,9 @@ export default function TableSection() {
     const { pettycashes } = useSelector((state) => state.accounting);
 
     const columns = [
+        { header: "Petty ID", accessor: "receipt_number" },
         { header: "Name of Requestor", accessor: "requestor" },
         { header: "Description", accessor: "description" },
-        { header: "Petty ID", accessor: "receipt_number" },
         { header: "Petty Cash Date", accessor: "date" },
         { header: "Receipt", accessor: "receipt" },
         { header: "Status", accessor: "status" },
@@ -38,7 +39,11 @@ export default function TableSection() {
                             <FcImageFile className="h-6 w-6" />
                         </a>
                     ),
-                    receipt_number: res?.receipt_number,
+                    receipt_number: (
+                        <Link className="text-blue-500 underline">
+                            {res?.receipt_number}
+                        </Link>
+                    ),
                     status: (
                         <Tag
                             color={
