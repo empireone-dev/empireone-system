@@ -204,9 +204,9 @@ export default function DetailsSection() {
                             </tbody>
                         </table>
                     </div>
-                    <div >
+                    {/* <div >
                         <StatusUpdateSection />
-                    </div>
+                    </div> */}
 
                     <div
                         ref={scrollRef}

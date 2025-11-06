@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountingPurchaseRequestController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\HRIncidentReportController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
@@ -195,6 +196,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// HR Incident Report Routes
+Route::prefix('hr/incident-reports')->group(function () {
+    Route::get('/', [HRIncidentReportController::class, 'index']);
+    Route::get('/{id}', [HRIncidentReportController::class, 'show']);
+    Route::post('/{id}/validate', [HRIncidentReportController::class, 'validateIR']);
+    Route::post('/{id}/invalidate', [HRIncidentReportController::class, 'invalidateIR']);
+    Route::post('/{id}/employee-response', [HRIncidentReportController::class, 'uploadEmployeeResponse']);
+    Route::post('/{id}/schedule-hearing', [HRIncidentReportController::class, 'scheduleHearing']);
+    Route::post('/{id}/upload-nod', [HRIncidentReportController::class, 'uploadNOD']);
+    Route::post('/{id}/add-log', [HRIncidentReportController::class, 'addLog']);
 });
 
 require __DIR__ . '/auth.php';
