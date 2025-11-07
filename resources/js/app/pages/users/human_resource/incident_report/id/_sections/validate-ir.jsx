@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import Modal from "@/app/_components/modal";
-import TextArea from "@/app/_components/textarea";
+import Wysiwyg from "@/app/_components/wysiwyg";
 import Button from "@/app/_components/button";
 import SwalAlert from "@/app/_components/swal";
 import store from "@/app/store/store";
@@ -28,7 +28,7 @@ export default function ValidateIRModal({ isOpen, onClose, irId }) {
     };
 
     const handleSubmit = async () => {
-        if (!formData.notes) {
+        if (!formData.notes || formData.notes.trim() === "") {
             SwalAlert({ icon: "error", title: "Validation Error", text: "Please provide notes" });
             return;
         }
@@ -54,18 +54,17 @@ export default function ValidateIRModal({ isOpen, onClose, irId }) {
 
     return (
         <Modal
-            width="max-w-lg"
+            width="max-w-3xl"
             isOpen={isOpen}
             onClose={onClose}
             title="Validate IR & Serve NTE"
         >
             <div className="space-y-4">
-                <TextArea
-                    label="Notes *"
-                    rows={4}
+                <Wysiwyg
+                    label="Validation Details"
+                    name="notes"
                     value={formData.notes}
-                    onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-                    placeholder="Enter validation notes and NTE details"
+                    onChange={(html) => setFormData(prev => ({ ...prev, notes: html }))}
                 />
                 
                 <div>

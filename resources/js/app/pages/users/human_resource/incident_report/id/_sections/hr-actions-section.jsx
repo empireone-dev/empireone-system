@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import ValidateIRModal from "./validate-ir";
 import InvalidateIRModal from "./invalidate-ir";
-import EmployeeResponseModal from "./employee-response";
+import EmployeeResponseModal from "./create-employee-response";
 import ScheduleHearingModal from "./schedule-hearing";
 import UploadNODModal from "./upload-nod";
 
@@ -17,8 +17,7 @@ export default function HRActionsSection() {
     const { ir } = useSelector((store) => store.hr);
     const [showValidateModal, setShowValidateModal] = useState(false);
     const [showInvalidateModal, setShowInvalidateModal] = useState(false);
-    const [showEmployeeResponseModal, setShowEmployeeResponseModal] =
-        useState(false);
+
     const [showHearingModal, setShowHearingModal] = useState(false);
     const [showNODModal, setShowNODModal] = useState(false);
 
@@ -72,13 +71,7 @@ export default function HRActionsSection() {
                     )}
 
                     {canUploadResponse && (
-                        <button
-                            onClick={() => setShowEmployeeResponseModal(true)}
-                            className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-                        >
-                            <DocumentArrowUpIcon className="w-5 h-5" />
-                            Upload Employee Response
-                        </button>
+                        <EmployeeResponseModal irId={ir?.id} />
                     )}
 
                     {canScheduleHearing && (
@@ -117,11 +110,6 @@ export default function HRActionsSection() {
                 />
             </div>
 
-            <EmployeeResponseModal
-                isOpen={showEmployeeResponseModal}
-                onClose={() => setShowEmployeeResponseModal(false)}
-                irId={ir?.id}
-            />
             <ScheduleHearingModal
                 isOpen={showHearingModal}
                 onClose={() => setShowHearingModal(false)}

@@ -3,7 +3,6 @@ import { Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import Modal from "@/app/_components/modal";
 import TextArea from "@/app/_components/textarea";
-import Select from "@/app/_components/select";
 import Button from "@/app/_components/button";
 import SwalAlert from "@/app/_components/swal";
 import store from "@/app/store/store";
@@ -14,15 +13,6 @@ const { Dragger } = Upload;
 export default function UploadNODModal({ isOpen, onClose, irId }) {
     const [formData, setFormData] = useState({ notes: "", file: null, sanction: "" });
     const [loading, setLoading] = useState(false);
-
-    const sanctionOptions = [
-        { value: "Verbal Warning", label: "Verbal Warning" },
-        { value: "Written Warning", label: "Written Warning" },
-        { value: "Memo", label: "Memo" },
-        { value: "Suspension", label: "Suspension" },
-        { value: "Termination", label: "Termination" },
-        { value: "No Sanction", label: "No Sanction" }
-    ];
 
     const uploadProps = {
         name: 'file',
@@ -38,8 +28,14 @@ export default function UploadNODModal({ isOpen, onClose, irId }) {
     };
 
     const handleSubmit = async () => {
-        if (!formData.file || !formData.sanction) {
-            SwalAlert({ icon: "error", title: "Validation Error", text: "Please upload NOD file and specify sanction" });
+        // Validate required fields
+        if (!formData.file) {
+            SwalAlert({ icon: "error", title: "Validation Error", text: "Please upload NOD file" });
+            return;
+        }
+        
+        if (!formData.sanction || formData.sanction === "") {
+            SwalAlert({ icon: "error", title: "Validation Error", text: "Please select a sanction" });
             return;
         }
 
@@ -48,8 +44,14 @@ export default function UploadNODModal({ isOpen, onClose, irId }) {
             const data = new FormData();
             data.append('nod_file', formData.file);
             data.append('sanction', formData.sanction);
-            if (formData.notes) {
+            if (formData.notes && formData.notes.trim() !== "") {
                 data.append('notes', formData.notes);
+            }
+
+            // Debug: Log FormData contents
+            console.log('FormData contents:');
+            for (let [key, value] of data.entries()) {
+                console.log(key, ':', value);
             }
 
             await store.dispatch(upload_nod_thunk(irId, data));
@@ -57,7 +59,21 @@ export default function UploadNODModal({ isOpen, onClose, irId }) {
             setFormData({ notes: "", file: null, sanction: "" });
             onClose();
         } catch (error) {
-            SwalAlert({ icon: "error", title: "Error", text: "Failed to upload NOD" });
+            console.error('Upload NOD error:', error);
+            console.error('Error response:', error.response?.data);
+            
+            // Check for Laravel validation errors
+            if (error.response?.data?.errors) {
+                const errors = Object.values(error.response.data.errors).flat();
+                SwalAlert({ 
+                    icon: "error", 
+                    title: "Validation Error", 
+                    text: errors.join(', ') 
+                });
+            } else {
+                const errorMsg = error.response?.data?.message || "Failed to upload NOD";
+                SwalAlert({ icon: "error", title: "Error", text: errorMsg });
+            }
         } finally {
             setLoading(false);
         }
@@ -71,23 +87,36 @@ export default function UploadNODModal({ isOpen, onClose, irId }) {
             title="Upload NOD & Close Case"
         >
             <div className="space-y-4">
-                <Select
-                    label="Sanction *"
-                    name="sanction"
-                    options={sanctionOptions}
-                    value={formData.sanction}
-                    onChange={(e) => setFormData(prev => ({ ...prev, sanction: e.target.value }))}
-                />
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Sanction <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                        value={formData.sanction}
+                        onChange={(e) => setFormData(prev => ({ ...prev, sanction: e.target.value }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    >
+                        <option value="">Select sanction</option>
+                        <option value="Verbal Warning">Verbal Warning</option>
+                        <option value="Written Warning">Written Warning</option>
+                        <option value="Memo">Memo</option>
+                        <option value="Suspension">Suspension</option>
+                        <option value="Termination">Termination</option>
+                        <option value="No Sanction">No Sanction</option>
+                    </select>
+                </div>
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                        NOD File *
+                        NOD File <span className="text-red-500">*</span>
                     </label>
                     <Dragger {...uploadProps}>
                         <p className="ant-upload-drag-icon">
                             <InboxOutlined />
                         </p>
                         <p className="ant-upload-text">Click or drag NOD file to upload</p>
+                        <p className="ant-upload-hint">PDF, DOC, or DOCX (max 5MB)</p>
                     </Dragger>
                 </div>
 

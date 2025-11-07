@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import Modal from "@/app/_components/modal";
-import TextArea from "@/app/_components/textarea";
+import Wysiwyg from "@/app/_components/wysiwyg";
 import Button from "@/app/_components/button";
 import SwalAlert from "@/app/_components/swal";
 import store from "@/app/store/store";
@@ -28,7 +28,7 @@ export default function InvalidateIRModal({ isOpen, onClose, irId }) {
     };
 
     const handleSubmit = async () => {
-        if (!formData.reason) {
+        if (!formData.reason || formData.reason.trim() === "") {
             SwalAlert({ icon: "error", title: "Validation Error", text: "Please provide a reason" });
             return;
         }
@@ -54,18 +54,17 @@ export default function InvalidateIRModal({ isOpen, onClose, irId }) {
 
     return (
         <Modal
-            width="max-w-lg"
+            width="max-w-3xl"
             isOpen={isOpen}
             onClose={onClose}
             title="Mark IR as Invalid"
         >
             <div className="space-y-4">
-                <TextArea
-                    label="Reason for Invalidation *"
-                    rows={4}
+                <Wysiwyg
+                    label="Reason for Invalidation"
+                    name="reason"
                     value={formData.reason}
-                    onChange={(e) => setFormData(prev => ({ ...prev, reason: e.target.value }))}
-                    placeholder="Enter reason why this IR is invalid"
+                    onChange={(html) => setFormData(prev => ({ ...prev, reason: html }))}
                 />
                 
                 <div>
@@ -77,6 +76,7 @@ export default function InvalidateIRModal({ isOpen, onClose, irId }) {
                             <InboxOutlined />
                         </p>
                         <p className="ant-upload-text">Click or drag file to upload</p>
+                        <p className="ant-upload-hint">PDF, DOC, DOCX (max 5MB)</p>
                     </Dragger>
                 </div>
 

@@ -20,13 +20,10 @@ class HRIncidentReportController extends Controller
     
     public function show($id)
     {
-        $ir = HRIncidentReport::with(['filed_by', 'evidence', 'logs.handler'])->find($id);
+        $ir = HRIncidentReport::with(['filed_by', 'evidence', 'logs'])->find($id);
         return response()->json($ir, 200);
     }
 
-    /**
-     * Validate IR as Valid - Triggers NTE issuance
-     */
     public function validateIR(Request $request, $id)
     {
         $request->validate([
@@ -41,26 +38,19 @@ class HRIncidentReportController extends Controller
             $fileUrl = $request->file('nte_file')->store('hr/nte', 's3');
         }
 
-        // Update IR status
         $ir->update(['status' => 'Valid — NTE Served']);
 
-        // Create log entry
         HRIncidentReportLog::create([
             'incident_report_id' => $id,
             'user' => Auth::user()->name,
-            'assigned_hr_handler' => Auth::id(),
             'status' => 'Valid — NTE Served',
             'notes' => $request->notes,
             'files' => $fileUrl,
-            'due_date' => now()->addDays(5) // 5-day response window
         ]);
 
         return response()->json(['message' => 'IR validated and NTE served successfully'], 200);
     }
 
-    /**
-     * Invalidate IR - Mark as Invalid and close
-     */
     public function invalidateIR(Request $request, $id)
     {
         $request->validate([
@@ -80,7 +70,6 @@ class HRIncidentReportController extends Controller
         HRIncidentReportLog::create([
             'incident_report_id' => $id,
             'user' => Auth::user()->name,
-            'assigned_hr_handler' => Auth::id(),
             'status' => 'Invalid – Closed',
             'notes' => 'Reason: ' . $request->reason,
             'files' => $fileUrl
@@ -89,9 +78,6 @@ class HRIncidentReportController extends Controller
         return response()->json(['message' => 'IR marked as invalid and closed'], 200);
     }
 
-    /**
-     * Upload Employee Explanation/Response
-     */
     public function uploadEmployeeResponse(Request $request, $id)
     {
         $request->validate([
@@ -108,7 +94,6 @@ class HRIncidentReportController extends Controller
         HRIncidentReportLog::create([
             'incident_report_id' => $id,
             'user' => Auth::user()->name,
-            'assigned_hr_handler' => Auth::id(),
             'status' => 'Employee Response Submitted',
             'notes' => $request->notes ?? 'Employee explanation received',
             'files' => $fileUrl
@@ -117,9 +102,6 @@ class HRIncidentReportController extends Controller
         return response()->json(['message' => 'Employee response uploaded successfully'], 200);
     }
 
-    /**
-     * Schedule Hearing (for grave offenses)
-     */
     public function scheduleHearing(Request $request, $id)
     {
         $request->validate([
@@ -140,7 +122,6 @@ class HRIncidentReportController extends Controller
         HRIncidentReportLog::create([
             'incident_report_id' => $id,
             'user' => Auth::user()->name,
-            'assigned_hr_handler' => Auth::id(),
             'status' => 'Hearing Scheduled',
             'notes' => $request->notes . " | Hearing Date: " . $request->hearing_date,
             'files' => $fileUrl
@@ -149,9 +130,6 @@ class HRIncidentReportController extends Controller
         return response()->json(['message' => 'Hearing scheduled successfully'], 200);
     }
 
-    /**
-     * Upload NOD (Notice of Decision) and close case
-     */
     public function uploadNOD(Request $request, $id)
     {
         $request->validate([
@@ -169,7 +147,6 @@ class HRIncidentReportController extends Controller
         HRIncidentReportLog::create([
             'incident_report_id' => $id,
             'user' => Auth::user()->name,
-            'assigned_hr_handler' => Auth::id(),
             'status' => 'NOD Issued',
             'notes' => 'Sanction: ' . $request->sanction . ' | ' . ($request->notes ?? 'Case closed with NOD'),
             'files' => $fileUrl
@@ -178,9 +155,6 @@ class HRIncidentReportController extends Controller
         return response()->json(['message' => 'NOD uploaded and case closed successfully'], 200);
     }
 
-    /**
-     * Generic add log for any workflow step
-     */
     public function addLog(Request $request, $id)
     {
         $request->validate([
@@ -197,7 +171,6 @@ class HRIncidentReportController extends Controller
         HRIncidentReportLog::create([
             'incident_report_id' => $id,
             'user' => Auth::user()->name,
-            'assigned_hr_handler' => Auth::id(),
             'status' => $request->status,
             'notes' => $request->notes,
             'files' => $fileUrl

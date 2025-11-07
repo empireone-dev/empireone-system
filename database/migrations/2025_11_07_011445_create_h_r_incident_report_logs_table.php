@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('incident_report_id')->nullable();
             $table->string('user')->nullable();
-            $table->string('notes')->nullable();
+            $table->text('notes')->nullable();
             $table->string('files')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
