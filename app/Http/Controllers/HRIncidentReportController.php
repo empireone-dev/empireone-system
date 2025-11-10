@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\HRIncidentReport;
 use App\Models\HRIncidentReportLog;
+use App\Mail\HRIncidentReportNTEMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
+use Carbon\Carbon;
+use Inertia\Inertia;  
 
 class HRIncidentReportController extends Controller
 {
@@ -26,16 +31,20 @@ class HRIncidentReportController extends Controller
 
     public function validateIR(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'notes' => 'required|string',
-            'nte_file' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:5120'
+            'nte_file' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:5120',
+            'employee_email' => 'required|email',
+            'response_days' => 'nullable|numeric|min:1|max:30', // Change from 'integer' to 'numeric'
         ]);
 
-        $ir = HRIncidentReport::findOrFail($id);
+        $ir = HRIncidentReport::with('filed_by')->findOrFail($id);
         
         $fileUrl = null;
+        $filePath = null;
         if ($request->hasFile('nte_file')) {
-            $fileUrl = $request->file('nte_file')->store('hr/nte', 's3');
+            $filePath = $request->file('nte_file')->store('hr/nte', 's3');
+            $fileUrl = Storage::disk('s3')->url($filePath);
         }
 
         $ir->update(['status' => 'Valid — NTE Served']);
@@ -44,11 +53,40 @@ class HRIncidentReportController extends Controller
             'incident_report_id' => $id,
             'user' => Auth::user()->name,
             'status' => 'Valid — NTE Served',
-            'notes' => $request->notes,
+            'notes' => $validated['notes'],
             'files' => $fileUrl,
         ]);
 
-        return response()->json(['message' => 'IR validated and NTE served successfully'], 200);
+        // Send NTE email to employee
+        $responseDays = (int)($validated['response_days'] ?? 5); // Cast to int for Carbon
+        $responseDeadline = Carbon::now()->addWeekdays($responseDays);
+        
+        // Generate response URL
+        $responseUrl = URL::temporarySignedRoute(
+            'hr.incident-report.respond',
+            $responseDeadline,
+            ['id' => $id]
+        );
+
+        $mailData = [
+            'ir_id' => $ir->id,
+            'violator' => $ir->violator,
+            'incident_date' => $ir->date,
+            'location' => $ir->filed_by->location ?? 'N/A',
+            'infraction' => $ir->infraction,
+            'notes' => $validated['notes'],
+            'response_deadline' => $responseDeadline,
+            'response_days' => $responseDays,
+            'responseUrl' => $responseUrl,
+            'nte_file_path' => $filePath,
+        ];
+
+        Mail::to($validated['employee_email'])->send(new HRIncidentReportNTEMail($mailData));
+
+        return response()->json([
+            'message' => 'IR validated, NTE served, and email sent to employee successfully',
+            'email_sent_to' => $validated['employee_email']
+        ], 200);
     }
 
     public function invalidateIR(Request $request, $id)
@@ -180,5 +218,68 @@ class HRIncidentReportController extends Controller
         $ir->update(['status' => $request->status]);
 
         return response()->json(['message' => 'Log added successfully'], 200);
+    }
+
+    public function showResponseForm(Request $request, $id)
+    {
+        // Validate the signed URL
+        if (!$request->hasValidSignature()) {
+            abort(403, 'This response link has expired or is invalid.');
+        }
+
+        $ir = HRIncidentReport::with(['filed_by', 'logs'])->findOrFail($id);
+
+        // Check if employee has already responded
+        $hasResponded = HRIncidentReportLog::where('incident_report_id', $id)
+            ->where('status', 'Employee Response Submitted')
+            ->exists();
+
+        return Inertia::render('hr/incident_report_response/page', [
+            'incident_report' => $ir,
+            'has_responded' => $hasResponded,
+        ]);
+    }
+
+    public function submitEmployeeResponse(Request $request, $id)
+    {
+        // Validate the signed URL
+        if (!$request->hasValidSignature()) {
+            return response()->json(['message' => 'This response link has expired or is invalid.'], 403);
+        }
+
+        $validated = $request->validate([
+            'employee_name' => 'required|string|max:255',
+            'employee_email' => 'required|email',
+            'explanation' => 'required|string|min:50',
+            'response_file' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:5120'
+        ]);
+
+        $ir = HRIncidentReport::findOrFail($id);
+
+        // Check if already responded
+        $hasResponded = HRIncidentReportLog::where('incident_report_id', $id)
+            ->where('status', 'Employee Response Submitted')
+            ->exists();
+
+        if ($hasResponded) {
+            return response()->json(['message' => 'You have already submitted a response.'], 400);
+        }
+
+        $fileUrl = null;
+        if ($request->hasFile('response_file')) {
+            $fileUrl = $request->file('response_file')->store('hr/employee_responses', 's3');
+        }
+
+        $ir->update(['status' => 'Employee Response Submitted']);
+
+        HRIncidentReportLog::create([
+            'incident_report_id' => $id,
+            'user' => $validated['employee_name'] . ' (' . $validated['employee_email'] . ')',
+            'status' => 'Employee Response Submitted',
+            'notes' => $validated['explanation'],
+            'files' => $fileUrl
+        ]);
+
+        return response()->json(['message' => 'Your response has been submitted successfully.'], 200);
     }
 }

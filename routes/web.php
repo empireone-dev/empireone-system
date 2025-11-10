@@ -210,4 +210,11 @@ Route::prefix('hr/incident-reports')->group(function () {
     Route::post('/{id}/add-log', [HRIncidentReportController::class, 'addLog']);
 });
 
+// Public Employee Response Routes (no auth required)
+Route::get('/hr/incident-report/{id}/respond', [HRIncidentReportController::class, 'showResponseForm'])
+    ->name('hr.incident-report.respond');
+    
+Route::post('/hr/incident-report/{id}/submit-response', [HRIncidentReportController::class, 'submitEmployeeResponse'])
+    ->name('hr.incident-report.submit-response');
+
 require __DIR__ . '/auth.php';
