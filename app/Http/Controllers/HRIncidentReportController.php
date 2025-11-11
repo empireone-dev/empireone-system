@@ -53,7 +53,7 @@ class HRIncidentReportController extends Controller
             'incident_report_id' => $id,
             'user' => Auth::user()->name,
             'status' => 'Valid — NTE Served',
-            'notes' => $validated['notes'],
+            'notes' => strip_tags($validated['notes']), // Strip HTML tags
             'files' => $fileUrl,
         ]);
 
@@ -242,11 +242,6 @@ class HRIncidentReportController extends Controller
 
     public function submitEmployeeResponse(Request $request, $id)
     {
-        // Validate the signed URL
-        if (!$request->hasValidSignature()) {
-            return response()->json(['message' => 'This response link has expired or is invalid.'], 403);
-        }
-
         $validated = $request->validate([
             'employee_name' => 'required|string|max:255',
             'employee_email' => 'required|email',
@@ -276,7 +271,7 @@ class HRIncidentReportController extends Controller
             'incident_report_id' => $id,
             'user' => $validated['employee_name'] . ' (' . $validated['employee_email'] . ')',
             'status' => 'Employee Response Submitted',
-            'notes' => $validated['explanation'],
+            'notes' => strip_tags($validated['explanation']), // Strip HTML tags
             'files' => $fileUrl
         ]);
 
