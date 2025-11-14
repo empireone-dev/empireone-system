@@ -8,6 +8,7 @@ import { FolderIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
 import StepperSection from "./stepper-section";
 import HRActionsSection from "./hr-actions-section";
+import ShowFileSection from "./show-file-section";
 
 export default function DetailsSection() {
     const { ir } = useSelector((store) => store.hr);
@@ -179,65 +180,7 @@ export default function DetailsSection() {
             </div>
 
             {/* Files Modal */}
-            {showFilesModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[80vh] overflow-hidden">
-                        <div className="flex items-center justify-between p-6 border-b">
-                            <h3 className="text-lg font-semibold text-gray-900">
-                                Uploaded Files ({ir?.evidence?.length || 0})
-                            </h3>
-                            <button
-                                onClick={() => setShowFilesModal(false)}
-                                className="text-gray-400 hover:text-gray-600 transition-colors"
-                            >
-                                <XMarkIcon className="w-6 h-6" />
-                            </button>
-                        </div>
-                        <div className="p-6 overflow-y-auto max-h-[60vh]">
-                            {ir?.evidence && ir?.evidence.length > 0 ? (
-                                <div className="space-y-3">
-                                    {ir?.evidence.map((res, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50"
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <FolderIcon className="w-5 h-5 text-gray-500" />
-                                                <div>
-                                                    <p className="font-medium text-gray-900">
-                                                        {res.files ||
-                                                            `File ${index + 1}`}
-                                                    </p>
-                                                    {res.created_at && (
-                                                        <p className="text-sm text-gray-500">
-                                                            Uploaded:{" "}
-                                                            {new Date(
-                                                                res.created_at
-                                                            ).toLocaleDateString()}
-                                                        </p>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            <a
-                                                href={res.file}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm"
-                                            >
-                                                View File
-                                            </a>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <p className="text-center text-gray-500 py-8">
-                                    No files uploaded
-                                </p>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            )}
+          <ShowFileSection data={ir} />
         </>
     );
 }

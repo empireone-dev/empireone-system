@@ -10,8 +10,8 @@ const { Dragger } = Upload;
 
 export default function EmployeeResponsePage({ incident_report, has_responded }) {
     const [formData, setFormData] = useState({
-        employee_name: "",
-        employee_email: "",
+        employee_name: incident_report.violator || "", // Pre-fill with violator name
+        employee_email: incident_report.employee_email || "", // Pre-fill if available
         explanation: "",
         file: null,
     });
@@ -140,6 +140,19 @@ export default function EmployeeResponsePage({ incident_report, has_responded })
                                 <p className="font-medium text-gray-900">{incident_report.infraction}</p>
                             </div>
                         </div>
+                    </div>
+
+                    {/* Case Facts Section - NEW */}
+                    <div className="px-6 py-6 bg-yellow-50 border-b border-yellow-200">
+                        <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                            <span>📋</span> Case Facts / Incident Description
+                        </h2>
+                        <div className="bg-white p-4 rounded-lg border border-yellow-300">
+                            <p className="text-gray-700 whitespace-pre-wrap">{incident_report.notes || 'No additional details provided.'}</p>
+                        </div>
+                        <p className="text-sm text-yellow-700 mt-3">
+                            <strong>Note:</strong> Please read the case facts above carefully before submitting your explanation.
+                        </p>
                     </div>
 
                     {/* Form */}

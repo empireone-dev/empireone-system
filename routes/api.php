@@ -62,7 +62,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('debit_records', AccountingDebitRecordController::class);
     Route::resource('incident_report', HRIncidentReportController::class);
 
-    
+
     Route::resource('engagement_activities', EngagementActivityController::class);
     Route::post('/update_activity', [EngagementActivityController::class, 'update_activity']);
     Route::resource('engagement_calendar', EngagementCalendarController::class);
@@ -81,7 +81,22 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::get('get_account_by_department', [AccountController::class, 'get_account_by_department']);
+
+
+
+    Route::prefix('hr/incident-reports')->group(function () {
+        Route::get('/', [HRIncidentReportController::class, 'index']);
+        Route::get('/{id}', [HRIncidentReportController::class, 'show']);
+        Route::post('/{id}/validate', [HRIncidentReportController::class, 'validateIR']);
+        Route::post('/{id}/invalidate', [HRIncidentReportController::class, 'invalidateIR']);
+        Route::post('/{id}/employee-response', [HRIncidentReportController::class, 'uploadEmployeeResponse']);
+        Route::post('/{id}/schedule-hearing', [HRIncidentReportController::class, 'scheduleHearing']);
+        Route::post('/{id}/upload-nod', [HRIncidentReportController::class, 'uploadNOD']);
+        Route::post('/{id}/add-log', [HRIncidentReportController::class, 'addLog']);
+    });
 });
+
+
 // Route::post('/chat', function (Request $request) {
 //     $client = new \GuzzleHttp\Client();
 

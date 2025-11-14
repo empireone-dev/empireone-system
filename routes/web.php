@@ -198,17 +198,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// HR Incident Report Routes
-Route::prefix('hr/incident-reports')->group(function () {
-    Route::get('/', [HRIncidentReportController::class, 'index']);
-    Route::get('/{id}', [HRIncidentReportController::class, 'show']);
-    Route::post('/{id}/validate', [HRIncidentReportController::class, 'validateIR']);
-    Route::post('/{id}/invalidate', [HRIncidentReportController::class, 'invalidateIR']);
-    Route::post('/{id}/employee-response', [HRIncidentReportController::class, 'uploadEmployeeResponse']);
-    Route::post('/{id}/schedule-hearing', [HRIncidentReportController::class, 'scheduleHearing']);
-    Route::post('/{id}/upload-nod', [HRIncidentReportController::class, 'uploadNOD']);
-    Route::post('/{id}/add-log', [HRIncidentReportController::class, 'addLog']);
-});
 
 // Public Employee Response Routes (no auth required)
 Route::get('/hr/incident-report/{id}/respond', [HRIncidentReportController::class, 'showResponseForm'])
@@ -216,5 +205,9 @@ Route::get('/hr/incident-report/{id}/respond', [HRIncidentReportController::clas
     
 Route::post('/hr/incident-report/{id}/submit-response', [HRIncidentReportController::class, 'submitEmployeeResponse'])
     ->name('hr.incident-report.submit-response');
+
+// View employee response details
+Route::get('/hr/incident-report/{id}/view-response/{logId}', [HRIncidentReportController::class, 'viewEmployeeResponse'])
+    ->name('hr.incident-report.view-response');
 
 require __DIR__ . '/auth.php';

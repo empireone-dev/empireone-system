@@ -25,7 +25,7 @@
             text-align: center;
             padding: 20px;
             background-color: #f8f9fa;
-            border-bottom: 3px solid #dc3545;
+            border-bottom: 3px solid  #0000FF;
             margin-bottom: 30px;
         }
 
@@ -35,7 +35,7 @@
         }
 
         .header h1 {
-            color: #dc3545;
+            color:  #0000FF;
             font-size: 24px;
             margin: 10px 0;
         }
@@ -70,7 +70,7 @@
         .section-title {
             font-size: 16px;
             font-weight: bold;
-            color: #dc3545;
+            color:  #0000FF;
             margin-bottom: 10px;
             padding-bottom: 5px;
             border-bottom: 2px solid #dee2e6;
@@ -96,7 +96,7 @@
             background-color: #f8f9fa;
             padding: 15px;
             border-radius: 4px;
-            border-left: 4px solid #dc3545;
+            border-left: 4px solid  #0000FF;
             margin-bottom: 20px;
         }
 
@@ -114,7 +114,7 @@
         }
 
         .deadline {
-            background-color: #dc3545;
+            background-color:  #0000FF;
             color: white;
             padding: 10px 15px;
             border-radius: 4px;
@@ -164,7 +164,7 @@
 
         <div class="content">
             <div class="alert-box">
-                <strong>URGENT NOTICE:</strong> This is a formal Notice to Explain regarding an incident report filed against you. Please read carefully and respond within the specified deadline.
+                <strong>URGENT NOTICE:</strong> This Notice is issued as part of the Company’s due process mechanism and does not constitute a pre-judgment of guilt. It is intended to give you the opportunity to explain your side regarding the matter stated below in accordance with the requirements of due process under the Labor Code of the Philippines.
             </div>
 
             <div class="section">
@@ -179,16 +179,20 @@
                         <td><strong>{{ $irData['violator'] }}</strong></td>
                     </tr>
                     <tr>
+                        <td>Supervisor Name:</td>
+                        <td><strong>{{ $irData['supervisor_name'] }}</strong></td>
+                    </tr>
+                    <tr>
                         <td>Date of Incident:</td>
-                        <td>{{ \Carbon\Carbon::parse($irData['incident_date'])->format('F d, Y') }}</td>
+                        <td><strong>{{ \Carbon\Carbon::parse($irData['incident_date'])->format('F d, Y') }}</strong></td>
                     </tr>
                     <tr>
                         <td>Location/Site:</td>
-                        <td>{{ $irData['location'] ?? 'N/A' }}</td>
+                        <td><strong>{{ $irData['location'] ?? 'N/A' }}</strong></td>
                     </tr>
                     <tr>
                         <td>Infraction:</td>
-                        <td><strong style="color: #dc3545;">{{ $irData['infraction'] }}</strong></td>
+                        <td><strong style="color:  #0000FF;">{{ $irData['infraction'] }}</strong></td>
                     </tr>
                 </table>
             </div>
@@ -201,12 +205,12 @@
             </div>
 
             <div class="deadline">
-                ⏰ RESPONSE DEADLINE: {{ \Carbon\Carbon::parse($irData['response_deadline'])->format('F d, Y h:i A') }}
+                 RESPONSE DEADLINE: {{ \Carbon\Carbon::parse($irData['response_deadline'])->format('F d, Y h:i A') }}
             </div>
 
             <div class="response-section">
                 <h3>📝 How to Respond</h3>
-                <p><strong>You are required to submit a written explanation regarding this incident within <span style="color: #dc3545;">{{ $irData['response_days'] }} business days</span> from receipt of this notice.</strong></p>
+                <p><strong>You are required to submit a written explanation regarding this incident within <span style="color:  #0000FF;">{{ $irData['response_days'] }} business days</span> from receipt of this notice.</strong></p>
 
                 <p>Your explanation should include:</p>
                 <ul>

@@ -84,7 +84,7 @@ export default function ValidateIRModal({ isOpen, onClose, irId }) {
                 </div>
 
                 <Input
-                    label="Employee Email Address *"
+                    label="Violator Email Address *"
                     type="email"
                     value={formData.employee_email}
                     onChange={(e) => setFormData(prev => ({ ...prev, employee_email: e.target.value }))}

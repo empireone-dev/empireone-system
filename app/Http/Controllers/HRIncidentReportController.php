@@ -81,11 +81,12 @@ class HRIncidentReportController extends Controller
             'incident_date' => $ir->date,
             'location' => $ir->filed_by->location ?? 'N/A',
             'infraction' => $ir->infraction,
-            'notes' => strip_tags($validated['notes']), // Clean HTML for email
+            'notes' => strip_tags($validated['notes']),
             'response_deadline' => $responseDeadline,
             'response_days' => $responseDays,
             'responseUrl' => $responseUrl,
             'nte_file_path' => $filePath,
+            'supervisor_name' => Auth::user()->name, 
         ];
 
         Mail::to($validated['employee_email'])->send(new HRIncidentReportNTEMail($mailData));
@@ -303,5 +304,28 @@ class HRIncidentReportController extends Controller
         }
 
         return response()->json(['message' => 'Your response has been submitted successfully.'], 200);
+    }
+
+    public function viewEmployeeResponse(Request $request, $id, $logId)
+    {
+        $ir = HRIncidentReport::findOrFail($id);
+        $log = HRIncidentReportLog::findOrFail($logId);
+        
+        // Get the explanation from the stored file
+        $explanation = '';
+        if ($log->files) {
+            try {
+                $filePath = str_replace(Storage::disk('s3')->url(''), '', $log->files);
+                $explanation = Storage::disk('s3')->get($filePath);
+            } catch (\Exception $e) {
+                $explanation = 'Unable to load explanation.';
+            }
+        }
+        
+        return Inertia::render('hr/incident_report_response/view', [
+            'incident_report' => $ir,
+            'log' => $log,
+            'explanation' => $explanation,
+        ]);
     }
 }

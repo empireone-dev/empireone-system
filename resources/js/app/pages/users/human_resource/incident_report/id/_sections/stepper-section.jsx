@@ -121,13 +121,16 @@ export default function StepperSection() {
                                         )}
                                         {step.files && (
                                             <a
-                                                href={step.files}
+                                                href={step.status === 'Employee Response Submitted' 
+                                                    ? `/hr/incident-report/${ir.id}/view-response/${step.id}`
+                                                    : step.files
+                                                }
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
                                             >
                                                 <FileIcon className="inline size-4" />
-                                                View attachment
+                                                {step.status === 'Employee Response Submitted' ? 'View Response' : 'View attachment'}
                                             </a>
                                         )}
                                     </div>
