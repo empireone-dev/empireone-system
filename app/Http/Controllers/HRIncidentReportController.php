@@ -35,7 +35,7 @@ class HRIncidentReportController extends Controller
             'notes' => 'required|string',
             'nte_file' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:5120',
             'employee_email' => 'required|email',
-            'response_days' => 'nullable|numeric|min:1|max:30', // Change from 'integer' to 'numeric'
+            'response_days' => 'nullable|numeric|min:1|max:30',
         ]);
 
         $ir = HRIncidentReport::with('filed_by')->findOrFail($id);
@@ -49,19 +49,26 @@ class HRIncidentReportController extends Controller
 
         $ir->update(['status' => 'Valid — NTE Served']);
 
+        // Create a summary instead of storing full HTML
+        $noteSummary = 'NTE has been served to the employee. Response deadline: ' . 
+                       ((int)($validated['response_days'] ?? 5)) . ' business days.';
+        
+        if ($fileUrl) {
+            $noteSummary .= ' NTE document attached.';
+        }
+
         HRIncidentReportLog::create([
             'incident_report_id' => $id,
             'user' => Auth::user()->name,
             'status' => 'Valid — NTE Served',
-            'notes' => strip_tags($validated['notes']), // Strip HTML tags
-            'files' => $fileUrl,
+            'notes' => $noteSummary, // Short summary
+            'files' => $fileUrl, // File URL for viewing
         ]);
 
         // Send NTE email to employee
-        $responseDays = (int)($validated['response_days'] ?? 5); // Cast to int for Carbon
+        $responseDays = (int)($validated['response_days'] ?? 5);
         $responseDeadline = Carbon::now()->addWeekdays($responseDays);
         
-        // Generate response URL
         $responseUrl = URL::temporarySignedRoute(
             'hr.incident-report.respond',
             $responseDeadline,
@@ -74,7 +81,7 @@ class HRIncidentReportController extends Controller
             'incident_date' => $ir->date,
             'location' => $ir->filed_by->location ?? 'N/A',
             'infraction' => $ir->infraction,
-            'notes' => $validated['notes'],
+            'notes' => strip_tags($validated['notes']), // Clean HTML for email
             'response_deadline' => $responseDeadline,
             'response_days' => $responseDays,
             'responseUrl' => $responseUrl,
@@ -260,20 +267,40 @@ class HRIncidentReportController extends Controller
             return response()->json(['message' => 'You have already submitted a response.'], 400);
         }
 
-        $fileUrl = null;
+        // Save the written explanation as a text file
+        $cleanExplanation = strip_tags($validated['explanation']);
+        $explanationFileName = 'hr/employee_responses/explanation_' . $id . '_' . time() . '.txt';
+        Storage::disk('s3')->put($explanationFileName, $cleanExplanation);
+        $explanationUrl = Storage::disk('s3')->url($explanationFileName);
+
+        // Save supporting documents if uploaded
+        $supportingDocUrl = null;
         if ($request->hasFile('response_file')) {
-            $fileUrl = $request->file('response_file')->store('hr/employee_responses', 's3');
+            $supportingDocUrl = $request->file('response_file')->store('hr/employee_responses', 's3');
+            $supportingDocUrl = Storage::disk('s3')->url($supportingDocUrl);
         }
 
         $ir->update(['status' => 'Employee Response Submitted']);
 
+        // Create first log entry for written explanation
         HRIncidentReportLog::create([
             'incident_report_id' => $id,
             'user' => $validated['employee_name'] . ' (' . $validated['employee_email'] . ')',
             'status' => 'Employee Response Submitted',
-            'notes' => strip_tags($validated['explanation']), // Strip HTML tags
-            'files' => $fileUrl
+            'notes' => 'Employee submitted written explanation.',
+            'files' => $explanationUrl // Link to explanation file
         ]);
+
+        // Create second log entry for supporting documents if uploaded
+        if ($supportingDocUrl) {
+            HRIncidentReportLog::create([
+                'incident_report_id' => $id,
+                'user' => $validated['employee_name'] . ' (' . $validated['employee_email'] . ')',
+                'status' => 'Employee Response Submitted',
+                'notes' => 'Supporting documents attached.',
+                'files' => $supportingDocUrl
+            ]);
+        }
 
         return response()->json(['message' => 'Your response has been submitted successfully.'], 200);
     }
