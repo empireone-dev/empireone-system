@@ -3,6 +3,7 @@ import { XMarkIcon, ClockIcon } from "@heroicons/react/24/outline";
 import { FileIcon } from "lucide-react";
 import moment from "moment";
 import { useSelector } from "react-redux";
+import ShowMoreNotesSection from "./show-more-notes-section";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -10,7 +11,7 @@ function classNames(...classes) {
 
 export default function StepperSection() {
     const { ir } = useSelector((store) => store.hr);
-    
+
     // Full workflow stages matching HR requirements
     const workflowStages = [
         { key: "IR Submitted", label: "IR Submitted" },
@@ -18,25 +19,31 @@ export default function StepperSection() {
         { key: "NTE Served", label: "NTE Served" },
         { key: "Employee Response", label: "Employee Response" },
         { key: "Review / Hearing", label: "Review / Hearing (If Grave)" },
-        { key: "NOD Issued", label: "NOD Issued / Closed" }
+        { key: "NOD Issued", label: "NOD Issued / Closed" },
     ];
 
     // Build logs with proper initial status
-    const logs = ir?.logs?.length > 0 ? ir.logs : [
-        {
-            status: "IR Submitted",
-            created_at: ir?.created_at || new Date(),
-            notes: "Incident report has been filed",
-            files: null,
-            user: ir?.filed_by?.name || "System"
-        }
-    ];
+    const logs =
+        ir?.logs?.length > 0
+            ? ir.logs
+            : [
+                  {
+                      status: "IR Submitted",
+                      created_at: ir?.created_at || new Date(),
+                      notes: "Incident report has been filed",
+                      files: null,
+                      user: ir?.filed_by?.name || "System",
+                  },
+              ];
 
     // Helper to determine step status color
     const getStepColor = (status) => {
         const invalidStatuses = ["Invalid – Closed", "Declined"];
-        const pendingStatuses = ["Pending HR Validation", "Awaiting Employee Response"];
-        
+        const pendingStatuses = [
+            "Pending HR Validation",
+            "Awaiting Employee Response",
+        ];
+
         if (invalidStatuses.includes(status)) {
             return "bg-red-600 group-hover:bg-red-800";
         } else if (pendingStatuses.includes(status)) {
@@ -50,12 +57,19 @@ export default function StepperSection() {
     // Helper to determine icon
     const getStepIcon = (status) => {
         const invalidStatuses = ["Invalid – Closed", "Declined"];
-        const pendingStatuses = ["Pending HR Validation", "Awaiting Employee Response"];
-        
+        const pendingStatuses = [
+            "Pending HR Validation",
+            "Awaiting Employee Response",
+        ];
+
         if (invalidStatuses.includes(status)) {
-            return <XMarkIcon aria-hidden="true" className="size-5 text-white" />;
+            return (
+                <XMarkIcon aria-hidden="true" className="size-5 text-white" />
+            );
         } else if (pendingStatuses.includes(status)) {
-            return <ClockIcon aria-hidden="true" className="size-5 text-white" />;
+            return (
+                <ClockIcon aria-hidden="true" className="size-5 text-white" />
+            );
         }
         return <CheckIcon aria-hidden="true" className="size-5 text-white" />;
     };
@@ -64,22 +78,30 @@ export default function StepperSection() {
         <div className="space-y-6">
             {/* Current Status Badge */}
             <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="text-sm font-medium text-gray-700 mb-2">Current Status</h3>
-                <span className={classNames(
-                    "inline-flex items-center px-3 py-1 rounded-full text-sm font-medium",
-                    ir?.status === "Invalid – Closed" || ir?.status === "Declined"
-                        ? "bg-red-100 text-red-800"
-                        : ir?.status === "Closed" || ir?.status === "NOD Issued"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-blue-100 text-blue-800"
-                )}>
+                <h3 className="text-sm font-medium text-gray-700 mb-2">
+                    Current Status
+                </h3>
+                <span
+                    className={classNames(
+                        "inline-flex items-center px-3 py-1 rounded-full text-sm font-medium",
+                        ir?.status === "Invalid – Closed" ||
+                            ir?.status === "Declined"
+                            ? "bg-red-100 text-red-800"
+                            : ir?.status === "Closed" ||
+                              ir?.status === "NOD Issued"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-blue-100 text-blue-800"
+                    )}
+                >
                     {ir?.status || "Pending HR Validation"}
                 </span>
             </div>
 
             {/* Progress Timeline */}
             <nav aria-label="Progress">
-                <h3 className="text-sm font-medium text-gray-700 mb-4">Workflow Progress</h3>
+                <h3 className="text-sm font-medium text-gray-700 mb-4">
+                    Workflow Progress
+                </h3>
                 <ol role="list" className="overflow-hidden">
                     {logs?.map((step, i) => (
                         <li
@@ -97,7 +119,11 @@ export default function StepperSection() {
                             )}
                             <div className="group relative flex items-start">
                                 <span className="flex h-9 items-center">
-                                    <span className={`${getStepColor(step.status)} relative z-10 flex size-8 items-center justify-center rounded-full`}>
+                                    <span
+                                        className={`${getStepColor(
+                                            step.status
+                                        )} relative z-10 flex size-8 items-center justify-center rounded-full`}
+                                    >
                                         {getStepIcon(step.status)}
                                     </span>
                                 </span>
@@ -116,23 +142,30 @@ export default function StepperSection() {
                                     <div className="flex flex-col gap-1 mt-2">
                                         {step.notes && (
                                             <span className="text-sm text-gray-700 bg-gray-50 p-2 rounded">
-                                                {step.notes}
+                                                <ShowMoreNotesSection
+                                                    data={step.notes}
+                                                />
                                             </span>
                                         )}
-                                        {step.files && (
+                                        {/* {step.files && (
                                             <a
-                                                href={step.status === 'Employee Response Submitted' 
-                                                    ? `/hr/incident-report/${ir.id}/view-response/${step.id}`
-                                                    : step.files
+                                                href={
+                                                    step.status ===
+                                                    "Employee Response Submitted"
+                                                        ? `/hr/incident-report/${ir.id}/view-response/${step.id}`
+                                                        : step.files
                                                 }
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
                                             >
                                                 <FileIcon className="inline size-4" />
-                                                {step.status === 'Employee Response Submitted' ? 'View Response' : 'View attachment'}
+                                                {step.status ===
+                                                "Employee Response Submitted"
+                                                    ? "View Response"
+                                                    : "View attachment"}
                                             </a>
-                                        )}
+                                        )} */}
                                     </div>
                                 </span>
                             </div>

@@ -200,9 +200,14 @@ Route::middleware('auth')->group(function () {
 
 
 // Public Employee Response Routes (no auth required)
-Route::get('/hr/incident-report/{id}/respond', [HRIncidentReportController::class, 'showResponseForm'])
-    ->name('hr.incident-report.respond');
-    
+
+Route::get('/hr/incident-report/{id}/respond', function () {
+    return Inertia::render('hr/incident_report_response/page');
+});
+
+// Route::get('/hr/incident-report/{id}/respond', [HRIncidentReportController::class, 'showResponseForm'])
+//     ->name('hr.incident-report.respond');
+
 Route::post('/hr/incident-report/{id}/submit-response', [HRIncidentReportController::class, 'submitEmployeeResponse'])
     ->name('hr.incident-report.submit-response');
 
