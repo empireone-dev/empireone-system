@@ -8,7 +8,7 @@ import axios from "axios";
 
 const { Dragger } = Upload;
 
-export default function EmployeeResponsePage({ incident_report, has_responded }) {
+export default function EmployeeResponsePage({ incident_report, has_responded, case_facts }) {
     const [formData, setFormData] = useState({
         employee_name: incident_report.violator || "", // Pre-fill with violator name
         employee_email: incident_report.employee_email || "", // Pre-fill if available
@@ -142,13 +142,13 @@ export default function EmployeeResponsePage({ incident_report, has_responded })
                         </div>
                     </div>
 
-                    {/* Case Facts Section - NEW */}
+                    {/* Case Facts Section */}
                     <div className="px-6 py-6 bg-yellow-50 border-b border-yellow-200">
                         <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
                             <span>📋</span> Case Facts / Incident Description
                         </h2>
                         <div className="bg-white p-4 rounded-lg border border-yellow-300">
-                            <p className="text-gray-700 whitespace-pre-wrap">{incident_report.notes || 'No additional details provided.'}</p>
+                            <p className="text-gray-700 whitespace-pre-wrap">{case_facts || 'No case facts provided.'}</p>
                         </div>
                         <p className="text-sm text-yellow-700 mt-3">
                             <strong>Note:</strong> Please read the case facts above carefully before submitting your explanation.

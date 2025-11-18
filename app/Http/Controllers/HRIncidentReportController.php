@@ -49,20 +49,23 @@ class HRIncidentReportController extends Controller
 
         $ir->update(['status' => 'Valid — NTE Served']);
 
-        // Create a summary instead of storing full HTML
-        $noteSummary = 'NTE has been served to the employee. Response deadline: ' . 
-                       ((int)($validated['response_days'] ?? 5)) . ' business days.';
+        // Save full NTE notes (this will be used for case facts)
+        $fullNotes = strip_tags($validated['notes']);
         
-        if ($fileUrl) {
-            $noteSummary .= ' NTE document attached.';
-        }
+        // Create short summary for timeline display
+        $shortSummary = 'NTE served. Response deadline: ' . ((int)($validated['response_days'] ?? 5)) . ' business days.';
+
+        // Store the full notes in a text file for case facts retrieval
+        $nteFileName = 'hr/nte/case_facts_' . $id . '_' . time() . '.txt';
+        Storage::disk('s3')->put($nteFileName, $fullNotes);
+        $nteFileUrl = Storage::disk('s3')->url($nteFileName);
 
         HRIncidentReportLog::create([
             'incident_report_id' => $id,
             'user' => Auth::user()->name,
             'status' => 'Valid — NTE Served',
-            'notes' => $noteSummary, // Short summary
-            'files' => $fileUrl, // File URL for viewing
+            'notes' => $shortSummary, // Short summary for timeline
+            'files' => $nteFileUrl, // Full case facts stored as file
         ]);
 
         // Send NTE email to employee
@@ -81,12 +84,12 @@ class HRIncidentReportController extends Controller
             'incident_date' => $ir->date,
             'location' => $ir->filed_by->location ?? 'N/A',
             'infraction' => $ir->infraction,
-            'notes' => strip_tags($validated['notes']),
+            'notes' => $fullNotes, // Full notes for email
             'response_deadline' => $responseDeadline,
             'response_days' => $responseDays,
             'responseUrl' => $responseUrl,
             'nte_file_path' => $filePath,
-            'supervisor_name' => Auth::user()->name, 
+            'supervisor_name' => Auth::user()->name,
         ];
 
         Mail::to($validated['employee_email'])->send(new HRIncidentReportNTEMail($mailData));
@@ -230,21 +233,36 @@ class HRIncidentReportController extends Controller
 
     public function showResponseForm(Request $request, $id)
     {
-        // Validate the signed URL
         if (!$request->hasValidSignature()) {
             abort(403, 'This response link has expired or is invalid.');
         }
 
         $ir = HRIncidentReport::with(['filed_by', 'logs'])->findOrFail($id);
 
-        // Check if employee has already responded
         $hasResponded = HRIncidentReportLog::where('incident_report_id', $id)
             ->where('status', 'Employee Response Submitted')
             ->exists();
 
+        // Get the NTE case facts from the file
+        $nteLog = HRIncidentReportLog::where('incident_report_id', $id)
+            ->where('status', 'Valid — NTE Served')
+            ->latest()
+            ->first();
+        
+        $caseFacts = 'No case facts provided.';
+        if ($nteLog && $nteLog->files) {
+            try {
+                $filePath = str_replace(Storage::disk('s3')->url(''), '', $nteLog->files);
+                $caseFacts = Storage::disk('s3')->get($filePath);
+            } catch (\Exception $e) {
+                $caseFacts = 'Unable to load case facts.';
+            }
+        }
+
         return Inertia::render('hr/incident_report_response/page', [
             'incident_report' => $ir,
             'has_responded' => $hasResponded,
+            'case_facts' => $caseFacts,
         ]);
     }
 
@@ -259,7 +277,6 @@ class HRIncidentReportController extends Controller
 
         $ir = HRIncidentReport::findOrFail($id);
 
-        // Check if already responded
         $hasResponded = HRIncidentReportLog::where('incident_report_id', $id)
             ->where('status', 'Employee Response Submitted')
             ->exists();
@@ -268,13 +285,11 @@ class HRIncidentReportController extends Controller
             return response()->json(['message' => 'You have already submitted a response.'], 400);
         }
 
-        // Save the written explanation as a text file
         $cleanExplanation = strip_tags($validated['explanation']);
         $explanationFileName = 'hr/employee_responses/explanation_' . $id . '_' . time() . '.txt';
         Storage::disk('s3')->put($explanationFileName, $cleanExplanation);
         $explanationUrl = Storage::disk('s3')->url($explanationFileName);
 
-        // Save supporting documents if uploaded
         $supportingDocUrl = null;
         if ($request->hasFile('response_file')) {
             $supportingDocUrl = $request->file('response_file')->store('hr/employee_responses', 's3');
@@ -283,16 +298,14 @@ class HRIncidentReportController extends Controller
 
         $ir->update(['status' => 'Employee Response Submitted']);
 
-        // Create first log entry for written explanation
         HRIncidentReportLog::create([
             'incident_report_id' => $id,
             'user' => $validated['employee_name'] . ' (' . $validated['employee_email'] . ')',
             'status' => 'Employee Response Submitted',
             'notes' => 'Employee submitted written explanation.',
-            'files' => $explanationUrl // Link to explanation file
+            'files' => $explanationUrl
         ]);
 
-        // Create second log entry for supporting documents if uploaded
         if ($supportingDocUrl) {
             HRIncidentReportLog::create([
                 'incident_report_id' => $id,
@@ -311,7 +324,6 @@ class HRIncidentReportController extends Controller
         $ir = HRIncidentReport::findOrFail($id);
         $log = HRIncidentReportLog::findOrFail($logId);
         
-        // Get the explanation from the stored file
         $explanation = '';
         if ($log->files) {
             try {
