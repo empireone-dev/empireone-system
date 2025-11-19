@@ -15,6 +15,7 @@ use App\Http\Controllers\EngagementCalendarController;
 use App\Http\Controllers\HRIncidentReportController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\OpenAIController;
+use App\Http\Controllers\OTPController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TicketController;
 use Illuminate\Http\Request;
@@ -97,6 +98,9 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
+
+Route::post('/send-otp', [OTPController::class, 'send_OTP']);
+Route::post('/verify-otp', [OTPController::class, 'verify_OTP']);
 // Route::post('/chat', function (Request $request) {
 //     $client = new \GuzzleHttp\Client();
 

@@ -1,1 +1,0 @@
-import{j as t}from"./app-DkEFLbrW.js";import{B as o}from"./button-Bg14wKVx.js";import"./index-CiFMepgb.js";function n(){return t.jsx(t.Fragment,{children:t.jsx(o,{variant:"outline",children:"Upload File"})})}export{n as default};

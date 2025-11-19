@@ -142,18 +142,12 @@ export default function LoginFormSection() {
 
                                 <div className="flex items-center justify-between">
                                     <div className="flex gap-3">
-                                        <input
-                                            id="remember-me"
-                                            name="remember-me"
-                                            type="checkbox"
-                                            className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                                        />
-                                        <label
-                                            htmlFor="remember-me"
-                                            className="text-sm text-white"
+                                        <Link
+                                            href="/auth/register"
+                                            className=" text-sm underline text-white hover:text-gray-100"
                                         >
-                                            Remember me
-                                        </label>
+                                            Create an account
+                                        </Link>
                                     </div>
                                     <div className="text-sm">
                                         <a
@@ -191,7 +185,7 @@ export default function LoginFormSection() {
 
                                 <div className="mt-6 grid grid-cols-1 gap-4">
                                     <a
-                                        href={route("auth.google")} 
+                                        href={route("auth.google")}
                                         className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50"
                                     >
                                         {/* Google Icon */}

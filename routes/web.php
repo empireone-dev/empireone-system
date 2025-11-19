@@ -33,6 +33,19 @@ Route::get('/', function () {
 })->name('login');
 
 
+Route::get('/auth/register', function () {
+    $user = Auth::user();
+    if ($user) {
+        if ($user->account_type == '1') {
+            return redirect('/administrator/dashboard');
+        } elseif ($user->account_type == '2') {
+            return redirect('/users/dashboard');
+        }
+    }
+    return Inertia::render('auth/register/page');
+})->name('register');
+
+
 Route::middleware(['auth:sanctum', 'account_type:1'])->prefix('administrator')->group(function () {
 
 

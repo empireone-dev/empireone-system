@@ -1,0 +1,1 @@
+import{r as l,j as o}from"./app-DIU4GHwx.js";function i({data:s}){const[t,n]=l.useState(!1),e=s.replace(/<[^>]+>/g,""),r=e.length>20?e.substring(0,20)+"...":e;return o.jsxs("div",{children:[o.jsx("div",{dangerouslySetInnerHTML:{__html:t?s:r}}),e.length>10&&o.jsx("button",{onClick:()=>n(!t),children:t?"Show Less":"Show More"})]})}export{i as default};

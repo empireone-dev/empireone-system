@@ -19,6 +19,25 @@ export default {
                 xxs: "320px", // very small phones
                 xs: "480px", // small phones
             },
+            keyframes: {
+                slideLeftFade: {
+                    "0%": { opacity: 0, transform: "translateX(20px)" },
+                    "100%": { opacity: 1, transform: "translateX(0)" },
+                },
+                slideRightFade: {
+                    "0%": { opacity: 0, transform: "translateX(-20px)" },
+                    "100%": { opacity: 1, transform: "translateX(0)" },
+                },
+                fadeIn: {
+                    "0%": { opacity: 0.4 },
+                    "100%": { opacity: 1 },
+                },
+            },
+            animation: {
+                slideLeftFade: "slideLeftFade 0.35s ease-out",
+                slideRightFade: "slideRightFade 0.35s ease-out",
+                fadeIn: "fadeIn 0.3s ease-out",
+            },
         },
     },
 
