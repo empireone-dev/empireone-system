@@ -1,6 +1,56 @@
-Pending
+1. Pending
 Invalid
 NTE Served
+
+2. create database for employee
+user_id
+first_name
+last_name
+middle_name
+suffix
+date_of_birth
+city
+province
+street
+zip_code
+address
+status
+hired_date
+civil_status
+gender
+nationality
+contact_number
+religion
+mother_name
+father_name
+emergency_contact_person
+emergency_contact_number
+emergency_contact_address
+emergency_contact_relationship
+educational_background
+course
+school_name
+sss
+tin
+philhealth
+pagibig
+
+
+3.create Employee experience 
+user_id
+company_name
+position
+start_date
+end_date
+salary
+responsibilities
+reason_for_leaving
+
+
+
+
+
+3. create migration,model controller (php artisan make model --controller --migration Employee)
 
 Unified System
 - resend email
