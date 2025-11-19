@@ -48,7 +48,7 @@ class HRIncidentReportController extends Controller
         }
 
         if ($ir) {
-            $ir->update(['status' => 'Valid — NTE Served', 'email' => $validated['employee_email']]);
+            $ir->update(['status' => 'NTE Served', 'email' => $validated['employee_email']]);
         }
 
 
@@ -57,7 +57,7 @@ class HRIncidentReportController extends Controller
         HRIncidentReportLog::create([
             'incident_report_id' => $id,
             'user' => Auth::user()->name,
-            'status' => 'Valid — NTE Served',
+            'status' => 'NTE Served',
             'notes' => $fullNotes, // Full notes for timeline
         ]);
 
@@ -238,7 +238,7 @@ class HRIncidentReportController extends Controller
             ->exists();
 
         $nteLog = HRIncidentReportLog::where('incident_report_id', $id)
-            ->where('status', 'Valid — NTE Served')
+            ->where('status', 'NTE Served')
             ->latest()
             ->first();
 

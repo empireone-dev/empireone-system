@@ -18,9 +18,11 @@ export default function UploadNODModal({ isOpen, onClose, irId }) {
         name: 'file',
         multiple: false,
         maxCount: 1,
+        accept: '.pdf,.doc,.docx',
         beforeUpload: (file) => {
+            // Store the raw File object
             setFormData(prev => ({ ...prev, file }));
-            return false;
+            return false; // Prevent automatic upload
         },
         onRemove: () => {
             setFormData(prev => ({ ...prev, file: null }));
@@ -42,7 +44,23 @@ export default function UploadNODModal({ isOpen, onClose, irId }) {
         setLoading(true);
         try {
             const data = new FormData();
-            data.append('nod_file', formData.file);
+            
+            // Get the raw file - Ant Design wraps it in an object with originFileObj
+            const fileToUpload = formData.file.originFileObj || formData.file;
+            
+            // Validate file type
+            const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            if (!allowedTypes.includes(fileToUpload.type)) {
+                SwalAlert({ 
+                    icon: "error", 
+                    title: "Invalid File Type", 
+                    text: "Please upload a PDF, DOC, or DOCX file" 
+                });
+                setLoading(false);
+                return;
+            }
+
+            data.append('nod_file', fileToUpload);
             data.append('sanction', formData.sanction);
             if (formData.notes && formData.notes.trim() !== "") {
                 data.append('notes', formData.notes);
@@ -51,7 +69,7 @@ export default function UploadNODModal({ isOpen, onClose, irId }) {
             // Debug: Log FormData contents
             console.log('FormData contents:');
             for (let [key, value] of data.entries()) {
-                console.log(key, ':', value);
+                console.log(key, ':', value instanceof File ? `File: ${value.name}, Type: ${value.type}` : value);
             }
 
             await store.dispatch(upload_nod_thunk(irId, data));

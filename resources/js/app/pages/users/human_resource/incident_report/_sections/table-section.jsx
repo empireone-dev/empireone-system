@@ -21,6 +21,50 @@ export default function TableSection() {
         // { header: "Files", accessor: "files" },
         { header: "Status", accessor: "status" },
     ];
+
+    // Helper to get status color
+    const getStatusColor = (status) => {
+        if (!status) return "default";
+
+        const statusLower = status.toLowerCase();
+
+        if (
+            statusLower.includes("invalid") ||
+            statusLower.includes("declined")
+        ) {
+            return "red";
+        }
+
+        if (
+            statusLower.includes("closed") ||
+            statusLower.includes("nod issued")
+        ) {
+            return "green";
+        }
+
+        if (
+            statusLower.includes("pending") ||
+            statusLower.includes("awaiting") ||
+            statusLower.includes("submitted")
+        ) {
+            return "gold";
+        }
+
+        if (
+            statusLower.includes("valid") ||
+            statusLower.includes("nte served") ||
+            statusLower.includes("response")
+        ) {
+            return "blue";
+        }
+
+        if (statusLower.includes("review") || statusLower.includes("hearing")) {
+            return "purple";
+        }
+
+        return "default";
+    };
+
     console.log("irsss", irs);
 
     return (
@@ -28,9 +72,14 @@ export default function TableSection() {
             <Table
                 columns={columns}
                 data={irs?.data?.map((res, i) => ({
-                    id: <Link 
-                    className="underline text-blue-600"
-                    href={`/users/human_resource/incident_report/${res.id}`}>IR-{res.id+moment().format('mdy')}</Link>,
+                    id: (
+                        <Link
+                            className="underline text-blue-600"
+                            href={`/users/human_resource/incident_report/${res.id}`}
+                        >
+                            IR-{res.id + moment().format("mdy")}
+                        </Link>
+                    ),
                     date: moment(res.date).format("LLL"),
                     violator: res.violator,
                     witness: res.witness,
@@ -38,7 +87,11 @@ export default function TableSection() {
                     // files: res.files,
                     // violation: res.violation,
                     details: res.details,
-                    status: res.status,
+                    status: (
+                        <Tag color={getStatusColor(res.status)}>
+                            {res.status}
+                        </Tag>
+                    ),
                     notes: res.notes,
                     // action: (
                     //     <Link

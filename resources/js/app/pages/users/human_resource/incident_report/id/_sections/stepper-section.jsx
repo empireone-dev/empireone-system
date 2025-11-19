@@ -15,7 +15,7 @@ export default function StepperSection() {
 
     // Full workflow stages matching HR requirements
     const workflowStages = [
-        { key: "IR Submitted", label: "IR Submitted" },
+        { key: "Pending", label: "Pending" },
         { key: "HR Validation", label: "HR Validation" },
         { key: "NTE Served", label: "NTE Served" },
         { key: "Employee Response", label: "Employee Response" },
@@ -29,7 +29,7 @@ export default function StepperSection() {
             ? ir.logs
             : [
                   {
-                      status: "IR Submitted",
+                      status: "Pending",
                       created_at: ir?.created_at || new Date(),
                       notes: "Incident report has been filed",
                       files: null,
