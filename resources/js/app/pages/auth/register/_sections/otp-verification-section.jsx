@@ -79,9 +79,9 @@ export default function OTPVerificationSection({ onSubmit }) {
     };
 
     return (
-        <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-md max-w-md mx-auto">
+        <div className="p-4 bg-gray-50  rounded-md max-w-md mx-auto">
             <h2 className="text-lg font-semibold">Email OTP Verification</h2>
-            <p className="mt-2 text-gray-600 dark:text-gray-300">
+            <p className="mt-2 text-gray-600 ">
                 Enter the 6-digit OTP sent to your email.
             </p>
             {loading && <div>Loading...</div>}
@@ -95,7 +95,7 @@ export default function OTPVerificationSection({ onSubmit }) {
                         ref={(el) => (inputsRef.current[index] = el)}
                         onChange={(e) => handleChange(e.target, index)}
                         onKeyDown={(e) => handleKeyDown(e, index)}
-                        className="w-12 h-12 text-center border rounded-md focus:outline-none focus:ring focus:ring-indigo-500 text-lg font-medium dark:bg-gray-900 dark:text-white"
+                        className="w-12 h-12 text-center border rounded-md focus:outline-none focus:ring focus:ring-indigo-500 text-lg font-medium  "
                     />
                 ))}
             </div>

@@ -216,16 +216,13 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/hr/incident-report/{id}/respond', function () {
     return Inertia::render('hr/incident_report_response/page');
+})->name('hr.incident-report.respond');
+
+
+// View employee response details (for HR - requires auth)
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/hr/incident-report/{id}/view-response/{logId}', [HRIncidentReportController::class, 'viewEmployeeResponse'])
+        ->name('hr.incident-report.view-response');
 });
-
-// Route::get('/hr/incident-report/{id}/respond', [HRIncidentReportController::class, 'showResponseForm'])
-//     ->name('hr.incident-report.respond');
-
-Route::post('/hr/incident-report/{id}/submit-response', [HRIncidentReportController::class, 'submitEmployeeResponse'])
-    ->name('hr.incident-report.submit-response');
-
-// View employee response details
-Route::get('/hr/incident-report/{id}/view-response/{logId}', [HRIncidentReportController::class, 'viewEmployeeResponse'])
-    ->name('hr.incident-report.view-response');
 
 require __DIR__ . '/auth.php';

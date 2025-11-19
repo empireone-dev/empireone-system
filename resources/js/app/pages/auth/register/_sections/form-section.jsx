@@ -52,9 +52,9 @@ export default function FormSection({ setCurrentStep }) {
     }
     return (
         <form onSubmit={handleSubmit}>
-            <div className="flex flex-col w-96 gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-md">
+            <div className="flex flex-col w-96 gap-4 p-4 bg-gray-50  rounded-md">
                 <h2 className="text-lg font-semibold">Employee ID</h2>
-                <p className="mt-2 mb-5 text-gray-600 dark:text-gray-300">
+                <p className="mt-2 mb-5 text-gray-600 ">
                     Please enter your unique Employee ID assigned by the
                     company. This ID is required to verify your identity and
                     link your information to your employee profile. Ensure that
@@ -72,6 +72,7 @@ export default function FormSection({ setCurrentStep }) {
                     SUBMIT
                 </Button>
             </div>
+            
         </form>
     );
 }

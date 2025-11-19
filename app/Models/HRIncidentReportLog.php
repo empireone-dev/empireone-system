@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class HRIncidentReportLog extends Model
 {
     protected $fillable = [    
-        'incident_report_id',  // Changed from h_r_incident_report_id
-        'user',
+        'incident_report_id',
         'notes',
         'files',
         'status'

@@ -1,27 +1,38 @@
 import React, { useState } from "react";
-import { Upload } from "antd";
+import { Upload, message } from "antd";
 import Input from "@/app/_components/input";
 import Wysiwyg from "@/app/_components/wysiwyg";
 import { InboxOutlined } from "@ant-design/icons";
 import Button from "@/app/_components/button";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { submit_incident_report_response_data_service } from "@/app/services/hr-incident-report-service";
 
 const { Dragger } = Upload;
+
 export default function FormSection() {
-    const incident_report = {};
+    const { incident_report } = useSelector((store) => store.hr);
+    console.log("incident_report", incident_report);
     const [formData, setFormData] = useState({
-        employee_name: "", // Pre-fill with violator name
-        employee_email: "", // Pre-fill if available
+        employee_name: incident_report?.violator || "",
+        employee_email: incident_report?.employee_email || "",
         explanation: "",
         file: null,
     });
     const [loading, setLoading] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState("");
+
     const uploadProps = {
         name: "file",
         multiple: false,
         maxCount: 1,
         beforeUpload: (file) => {
+            const isValidSize = file.size / 1024 / 1024 < 5;
+            if (!isValidSize) {
+                message.error("File must be smaller than 5MB!");
+                return false;
+            }
             setFormData((prev) => ({ ...prev, file }));
             return false;
         },
@@ -33,17 +44,6 @@ export default function FormSection() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
-
-        if (!formData.employee_name || !formData.employee_email) {
-            setError("Please fill in your name and email.");
-            return;
-        }
-
-        if (!formData.explanation || formData.explanation.length < 50) {
-            setError("Your explanation must be at least 50 characters.");
-            return;
-        }
-
         setLoading(true);
         try {
             const data = new FormData();
@@ -55,17 +55,11 @@ export default function FormSection() {
             }
 
             // Use current URL to preserve signature
-            const currentUrl =
-                window.location.pathname.replace(
-                    "/respond",
-                    "/submit-response"
-                ) + window.location.search;
 
-            await axios.post(currentUrl, data, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
+            await submit_incident_report_response_data_service(data);
 
             setSubmitted(true);
+            message.success("Your response has been submitted successfully!");
         } catch (err) {
             setError(
                 err.response?.data?.message ||
@@ -75,6 +69,22 @@ export default function FormSection() {
             setLoading(false);
         }
     };
+
+    if (submitted) {
+        return (
+            <div className="px-6 py-12 text-center">
+                <div className="text-6xl mb-4">✅</div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    Response Submitted Successfully!
+                </h3>
+                <p className="text-gray-600">
+                    Thank you for submitting your explanation. HR will review
+                    your response.
+                </p>
+            </div>
+        );
+    }
+
     return (
         <form onSubmit={handleSubmit} className="px-6 py-6 space-y-6">
             {error && (
@@ -85,28 +95,30 @@ export default function FormSection() {
 
             <div className="grid grid-cols-2 gap-4">
                 <Input
-                    label="Your Full Name *"
+                    label="Violator *"
                     type="text"
-                    value={formData.employee_name}
-                    onChange={(e) =>
-                        setFormData((prev) => ({
-                            ...prev,
-                            employee_name: e.target.value,
-                        }))
-                    }
+                    value={incident_report.violator}
+                    // onChange={(e) =>
+                    //     setFormData((prev) => ({
+                    //         ...prev,
+                    //         employee_name: e.target.value,
+                    //     }))
+                    // }
+                    disabled
                     placeholder="Juan Dela Cruz"
                     required
                 />
                 <Input
+                    disabled
                     label="Your Email Address *"
                     type="email"
-                    value={formData.employee_email}
-                    onChange={(e) =>
-                        setFormData((prev) => ({
-                            ...prev,
-                            employee_email: e.target.value,
-                        }))
-                    }
+                    value={incident_report.email}
+                    // onChange={(e) =>
+                    //     setFormData((prev) => ({
+                    //         ...prev,
+                    //         employee_email: e.target.value,
+                    //     }))
+                    // }
                     placeholder="juan.delacruz@empireonegroup.com"
                     required
                 />
@@ -115,7 +127,7 @@ export default function FormSection() {
             <Wysiwyg
                 label="Your Written Explanation * (Minimum 50 characters)"
                 name="explanation"
-                value={formData.explanation}
+                value={incident_report.explanation}
                 onChange={(html) =>
                     setFormData((prev) => ({
                         ...prev,

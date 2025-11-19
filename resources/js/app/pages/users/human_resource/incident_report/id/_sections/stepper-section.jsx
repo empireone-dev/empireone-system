@@ -4,6 +4,7 @@ import { FileIcon } from "lucide-react";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import ShowMoreNotesSection from "./show-more-notes-section";
+// import EmployeeResponseInline from "./EmployeeResponseInline"; // Add this
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -147,25 +148,28 @@ export default function StepperSection() {
                                                 />
                                             </span>
                                         )}
-                                        {/* {step.files && (
-                                            <a
-                                                href={
-                                                    step.status ===
-                                                    "Employee Response Submitted"
-                                                        ? `/hr/incident-report/${ir.id}/view-response/${step.id}`
-                                                        : step.files
-                                                }
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
-                                            >
-                                                <FileIcon className="inline size-4" />
-                                                {step.status ===
-                                                "Employee Response Submitted"
-                                                    ? "View Response"
-                                                    : "View attachment"}
-                                            </a>
-                                        )} */}
+                                        {/* Add this: Show explanation text inline for Employee Response */}
+                                        {/* {step.status === "Employee Response Submitted" &&
+                                            step.files && (
+                                                <EmployeeResponseInline
+                                                    filesUrl={step.files}
+                                                    irId={ir.id}
+                                                    logId={step.id}
+                                                />
+                                            )} */}
+                                        {step.files &&
+                                            step.status !==
+                                                "Employee Response Submitted" && (
+                                                <a
+                                                    href={step.files}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                                                >
+                                                    <FileIcon className="inline size-4" />
+                                                    View attachment
+                                                </a>
+                                            )}
                                     </div>
                                 </span>
                             </div>

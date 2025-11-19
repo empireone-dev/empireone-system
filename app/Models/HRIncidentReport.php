@@ -10,6 +10,7 @@ class HRIncidentReport extends Model
 {
     protected $fillable = [
         'violator',
+        'email',
         'date',
         'filed_by',
         'witness',

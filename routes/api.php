@@ -101,6 +101,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/send-otp', [OTPController::class, 'send_OTP']);
 Route::post('/verify-otp', [OTPController::class, 'verify_OTP']);
+
+
+Route::get('/hr/incident-report/{id}/respond-data', [HRIncidentReportController::class, 'showResponseForm'])
+    ->name('hr.incident-report.respond-data');
+
+Route::post('/hr/incident-report/{id}/submit-response', [HRIncidentReportController::class, 'submitEmployeeResponse'])
+    ->name('hr.incident-report.submit-response');
+
 // Route::post('/chat', function (Request $request) {
 //     $client = new \GuzzleHttp\Client();
 

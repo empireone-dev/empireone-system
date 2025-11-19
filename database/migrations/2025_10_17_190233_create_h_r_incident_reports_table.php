@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('h_r_incident_reports', function (Blueprint $table) {
             $table->id();
             $table->string('violator')->nullable();
+            $table->string('email')->nullable();
             $table->string('date')->nullable();
             $table->string('filed_by')->nullable();
             $table->string('witness')->nullable();

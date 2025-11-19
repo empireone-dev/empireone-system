@@ -5,10 +5,21 @@ import {
     invalidate_ir_service,
     upload_employee_response_service,
     schedule_hearing_service,
-    upload_nod_service
+    upload_nod_service,
+    get_incident_report_response_data_service
 } from "../services/hr-incident-report-service";
 import { hrSlice } from "./hr-slice";
 
+
+export function get_incident_report_response_data_thunk() {
+    return async function (dispatch, getState) {
+        const res = await get_incident_report_response_data_service()
+        dispatch(hrSlice.actions.setIncidentReport({
+            ...res,
+            ...res.incident_report
+        }));
+    };
+}
 
 export function incident_report_thunk() {
     return async function (dispatch, getState) {

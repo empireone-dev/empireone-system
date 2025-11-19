@@ -1,6 +1,11 @@
+import moment from "moment";
 import React from "react";
+import { useSelector } from "react-redux";
 
-export default function DetailsSection() {
+export default function DetailsSection({ case_facts }) {
+    const { incident_report } = useSelector((store) => store.hr);
+
+    console.log("incident_reportsss", incident_report);
     return (
         <>
             <div className="px-6 py-6 bg-gray-50 border-b">
@@ -10,19 +15,28 @@ export default function DetailsSection() {
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <p className="text-sm text-gray-500">IR Number</p>
-                        <p className="font-medium text-gray-900">ss</p>
+                        <p className="font-medium text-gray-900">
+                            #IR-{incident_report?.id}-
+                            {moment(incident_report?.created_at).format("mdy")}
+                        </p>
                     </div>
                     <div>
                         <p className="text-sm text-gray-500">Employee Name</p>
-                        <p className="font-medium text-gray-900">ss</p>
+                        <p className="font-medium text-gray-900">
+                            {incident_report?.violator}
+                        </p>
                     </div>
                     <div>
                         <p className="text-sm text-gray-500">Incident Date</p>
-                        <p className="font-medium text-gray-900">sss</p>
+                        <p className="font-medium text-gray-900">
+                            {incident_report?.date}
+                        </p>
                     </div>
                     <div>
                         <p className="text-sm text-gray-500">Infraction</p>
-                        <p className="font-medium text-gray-900">sss</p>
+                        <p className="font-medium text-gray-900">
+                            {incident_report?.infraction}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -33,7 +47,13 @@ export default function DetailsSection() {
                 </h2>
                 <div className="bg-white p-4 rounded-lg border border-yellow-300">
                     <p className="text-gray-700 whitespace-pre-wrap">
-                        {"No case facts provided."}
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html:
+                                    incident_report.case_facts ||
+                                    "No case facts provided.",
+                            }}
+                        />
                     </p>
                 </div>
                 <p className="text-sm text-yellow-700 mt-3">

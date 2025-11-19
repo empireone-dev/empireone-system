@@ -46,7 +46,7 @@ export default function StepperSection() {
         <div className="space-y-6 p-5 h-full">
             {/* Stepper */}
             <nav aria-label="Progress">
-                <ol className="divide-y divide-gray-300 rounded-md border border-gray-300 md:flex md:divide-y-0 dark:divide-white/15 dark:border-white/15">
+                <ol className="divide-y divide-gray-300 rounded-md border border-gray-300 md:flex md:divide-y-0 ">
                     {stepsData.map((step, index) => {
                         let status =
                             index + 1 < currentStep
@@ -81,7 +81,7 @@ export default function StepperSection() {
                                                     className="size-6 text-white"
                                                 />
                                             </span>
-                                            <span className="ml-4 text-sm font-medium text-gray-900 dark:text-white transition-all duration-300">
+                                            <span className="ml-4 text-sm font-medium text-gray-900  transition-all duration-300">
                                                 {step.name}
                                             </span>
                                         </span>

@@ -5,6 +5,7 @@ export const hrSlice = createSlice({
     initialState: {
         ir: {},
         irs: [],
+        incident_report:{}
     },
     reducers: {
         setIr: (state, action) => {
@@ -13,8 +14,11 @@ export const hrSlice = createSlice({
         setIrs: (state, action) => {
             state.irs = action.payload;
         },
+        setIncidentReport: (state, action) => {
+            state.incident_report = action.payload;
+        }
     },
 });
-export const { setIr, setIrs } = hrSlice.actions;
+export const { setIr, setIrs, setIncidentReport } = hrSlice.actions;
 
 export default hrSlice.reducer;

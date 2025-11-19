@@ -1,14 +1,14 @@
 export default function TermsAndConditionSection({ onAgreeChange, agreed }) {
     return (
-        <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-md w-full max-w-2xl">
+        <div className="p-4 bg-gray-50  rounded-md w-full max-w-2xl">
             <h2 className="text-lg font-semibold">BPO Terms & Conditions</h2>
-            <p className="mt-2 text-gray-600 dark:text-gray-300">
+            <p className="mt-2 ">
                 Please carefully read the following terms and conditions before
                 proceeding with your onboarding.
             </p>
 
             {/* Scrollable T&C content */}
-            <div className="mt-4 h-[45vh] overflow-y-auto border border-gray-300 dark:border-gray-700 p-4 rounded-md bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-gray-200">
+            <div className="mt-4 h-[45vh] overflow-y-auto border border-gray-300  p-4 rounded-md bg-white  text-sm text-gray-700 ">
                 <p>
                     <strong>1. Compliance with Company Policies</strong>
                 </p>
@@ -80,7 +80,7 @@ export default function TermsAndConditionSection({ onAgreeChange, agreed }) {
                         onChange={(e) => onAgreeChange(e.target.checked)}
                         className="form-checkbox h-5 w-5 text-indigo-600"
                     />
-                    <span className="ml-2 text-gray-700 dark:text-gray-200">
+                    <span className="ml-2 text-gray-700 ">
                         I have read and agree to the EmpireOne BPO Solutions
                         Terms & Conditions.
                     </span>
