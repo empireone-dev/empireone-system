@@ -6,6 +6,7 @@ use App\Events\TicketNotification;
 use App\Mail\TicketAnalysisReport;
 use App\Models\Activity;
 use App\Models\File;
+use App\Models\QuickNotes;
 use App\Models\Ticket;
 use App\Models\User;
 use Carbon\Carbon;
@@ -98,8 +99,15 @@ class TicketController extends Controller
                 'message' => 'Ticket status changed to <strong>' . strtoupper($request->status) . '</strong>, ' . $request->notes,
                 'type' => 'status_change',
             ]);
+        }
 
-            // event(new TicketNotification($ticket));
+        if ($request->quick_notes && is_array($request->quick_notes)) {
+            foreach ($request->quick_notes as $item) {
+                QuickNotes::create([
+                    'ticket_id' => $request->ticket_id,
+                    'note' => $item,
+                ]);
+            }
         }
 
         return response()->json(['message' => 'Ticket status updated successfully'], 200);

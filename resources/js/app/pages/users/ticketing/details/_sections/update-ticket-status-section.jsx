@@ -56,6 +56,7 @@ export default function UpdateTicketStatusSection() {
                 ...ticket,
                 status: data.status,
                 notes: combinedNotes,
+                quick_notes: selectedNotes, // Send selected notes as array
             });
 
             await store.dispatch(get_tickets_by_id_thunk(ticket_id()));
