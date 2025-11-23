@@ -1,16 +1,15 @@
 import Modal from "@/app/_components/modal";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { FolderIcon } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 
-export default function ShowFileSection({ data }) {
-    const [open, setOpen] = useState(false);
+export default function ShowFileSection({ data, isOpen, onClose }) {
     return (
         <Modal
-            isOpen={open}
-            onClose={() => setOpen(false)}
+            isOpen={isOpen}
+            onClose={onClose}
             title="Uploaded Files"
-            width="w-1/2"
+            width="max-w-2xl"
         >
             <div className="p-6 overflow-y-auto max-h-[60vh]">
                 {data?.evidence && data?.evidence.length > 0 ? (

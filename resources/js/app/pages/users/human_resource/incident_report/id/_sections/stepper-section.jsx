@@ -2,9 +2,10 @@ import { CheckIcon } from "@heroicons/react/20/solid";
 import { XMarkIcon, ClockIcon } from "@heroicons/react/24/outline";
 import { FileIcon } from "lucide-react";
 import moment from "moment";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import ShowMoreNotesSection from "./show-more-notes-section";
-// import EmployeeResponseInline from "./EmployeeResponseInline"; // Add this
+import ShowFileSection from "./show-file-section";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -12,6 +13,8 @@ function classNames(...classes) {
 
 export default function StepperSection() {
     const { ir } = useSelector((store) => store.hr);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [isFileModalOpen, setIsFileModalOpen] = useState(false);
 
     // Full workflow stages matching HR requirements
     const workflowStages = [
@@ -75,108 +78,159 @@ export default function StepperSection() {
         return <CheckIcon aria-hidden="true" className="size-5 text-white" />;
     };
 
-    return (
-        <div className="space-y-6">
-            {/* Current Status Badge */}
-            <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="text-sm font-medium text-gray-700 mb-2">
-                    Current Status
-                </h3>
-                <span
-                    className={classNames(
-                        "inline-flex items-center px-3 py-1 rounded-full text-sm font-medium",
-                        ir?.status === "Invalid – Closed" ||
-                            ir?.status === "Declined"
-                            ? "bg-red-100 text-red-800"
-                            : ir?.status === "Closed" ||
-                              ir?.status === "NOD Issued"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-blue-100 text-blue-800"
-                    )}
-                >
-                    {ir?.status || "Pending HR Validation"}
-                </span>
-            </div>
+    // Helper to determine if this is a supporting document (not explanation text file)
+    const isSupportingDocument = (step) => {
+        return (
+            step.status === "Employee Response Submitted" &&
+            step.files &&
+            step.notes &&
+            step.notes.toLowerCase().includes("supporting documents")
+        );
+    };
 
-            {/* Progress Timeline */}
-            <nav aria-label="Progress">
-                <h3 className="text-sm font-medium text-gray-700 mb-4">
-                    Workflow Progress
-                </h3>
-                <ol role="list" className="overflow-hidden">
-                    {logs?.map((step, i) => (
-                        <li
-                            key={i}
-                            className={classNames(
-                                i !== logs.length - 1 ? "pb-8" : "",
-                                "relative"
-                            )}
-                        >
-                            {i !== logs.length - 1 && (
-                                <div
-                                    aria-hidden="true"
-                                    className="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-gray-300"
-                                />
-                            )}
-                            <div className="group relative flex items-start">
-                                <span className="flex h-9 items-center">
-                                    <span
-                                        className={`${getStepColor(
-                                            step.status
-                                        )} relative z-10 flex size-8 items-center justify-center rounded-full`}
-                                    >
-                                        {getStepIcon(step.status)}
-                                    </span>
-                                </span>
-                                <span className="ml-4 flex min-w-0 flex-col">
-                                    <span className="text-sm font-medium text-gray-900">
-                                        {step.status}
-                                    </span>
-                                    <span className="text-sm text-gray-500">
-                                        {moment(step.created_at).format("LLL")}
-                                    </span>
-                                    {step.user && (
-                                        <span className="text-xs text-gray-400">
-                                            By: {step.user}
+    // Handle file click - format data for ShowFileSection
+    const handleFileClick = (fileUrl, fileName, createdAt) => {
+        setSelectedFile({
+            evidence: [
+                {
+                    file: fileUrl,
+                    files: fileName,
+                    created_at: createdAt,
+                },
+            ],
+        });
+        setIsFileModalOpen(true);
+    };
+
+    return (
+        <>
+            <div className="space-y-6">
+                {/* Current Status Badge */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                    <h3 className="text-sm font-medium text-gray-700 mb-2">
+                        Current Status
+                    </h3>
+                    <span
+                        className={classNames(
+                            "inline-flex items-center px-3 py-1 rounded-full text-sm font-medium",
+                            ir?.status === "Invalid – Closed" ||
+                                ir?.status === "Declined"
+                                ? "bg-red-100 text-red-800"
+                                : ir?.status === "Closed" ||
+                                  ir?.status === "NOD Issued"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-blue-100 text-blue-800"
+                        )}
+                    >
+                        {ir?.status || "Pending HR Validation"}
+                    </span>
+                </div>
+
+                {/* Progress Timeline */}
+                <nav aria-label="Progress">
+                    <h3 className="text-sm font-medium text-gray-700 mb-4">
+                        Workflow Progress
+                    </h3>
+                    <ol role="list" className="overflow-hidden">
+                        {logs?.map((step, i) => (
+                            <li
+                                key={i}
+                                className={classNames(
+                                    i !== logs.length - 1 ? "pb-8" : "",
+                                    "relative"
+                                )}
+                            >
+                                {i !== logs.length - 1 && (
+                                    <div
+                                        aria-hidden="true"
+                                        className="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-gray-300"
+                                    />
+                                )}
+                                <div className="group relative flex items-start">
+                                    <span className="flex h-9 items-center">
+                                        <span
+                                            className={`${getStepColor(
+                                                step.status
+                                            )} relative z-10 flex size-8 items-center justify-center rounded-full`}
+                                        >
+                                            {getStepIcon(step.status)}
                                         </span>
-                                    )}
-                                    <div className="flex flex-col gap-1 mt-2">
-                                        {step.notes && (
-                                            <span className="text-sm text-gray-700 bg-gray-50 p-2 rounded">
-                                                <ShowMoreNotesSection
-                                                    data={step.notes}
-                                                />
+                                    </span>
+                                    <span className="ml-4 flex min-w-0 flex-col">
+                                        <span className="text-sm font-medium text-gray-900">
+                                            {step.status}
+                                        </span>
+                                        <span className="text-sm text-gray-500">
+                                            {moment(step.created_at).format("LLL")}
+                                        </span>
+                                        {step.user && (
+                                            <span className="text-xs text-gray-400">
+                                                By: {step.user}
                                             </span>
                                         )}
-                                        {/* Add this: Show explanation text inline for Employee Response */}
-                                        {/* {step.status === "Employee Response Submitted" &&
-                                            step.files && (
-                                                <EmployeeResponseInline
-                                                    filesUrl={step.files}
-                                                    irId={ir.id}
-                                                    logId={step.id}
-                                                />
-                                            )} */}
-                                        {step.files &&
-                                            step.status !==
-                                                "Employee Response Submitted" && (
-                                                <a
-                                                    href={step.files}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                                        <div className="flex flex-col gap-1 mt-2">
+                                            {/* Always show notes if they exist */}
+                                            {step.notes && (
+                                                <span className="text-sm text-gray-700 bg-gray-50 p-2 rounded">
+                                                    <ShowMoreNotesSection
+                                                        data={step.notes}
+                                                    />
+                                                </span>
+                                            )}
+
+                                            {/* Show supporting document with modal */}
+                                            {isSupportingDocument(step) && step.files && (
+                                                <button
+                                                    onClick={() =>
+                                                        handleFileClick(
+                                                            step.files,
+                                                            "Supporting Document",
+                                                            step.created_at
+                                                        )
+                                                    }
+                                                    className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1 cursor-pointer"
                                                 >
                                                     <FileIcon className="inline size-4" />
-                                                    View attachment
-                                                </a>
+                                                    View supporting document
+                                                </button>
                                             )}
-                                    </div>
-                                </span>
-                            </div>
-                        </li>
-                    ))}
-                </ol>
-            </nav>
-        </div>
+
+                                            {/* Show other file attachments (not employee response) */}
+                                            {step.files &&
+                                                step.status !==
+                                                    "Employee Response Submitted" && (
+                                                    <button
+                                                        onClick={() =>
+                                                            handleFileClick(
+                                                                step.files,
+                                                                step.status,
+                                                                step.created_at
+                                                            )
+                                                        }
+                                                        className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1 cursor-pointer"
+                                                    >
+                                                        <FileIcon className="inline size-4" />
+                                                        View attachment
+                                                    </button>
+                                                )}
+                                        </div>
+                                    </span>
+                                </div>
+                            </li>
+                        ))}
+                    </ol>
+                </nav>
+            </div>
+
+            {/* File Modal */}
+            <ShowFileSection
+                data={selectedFile}
+                isOpen={isFileModalOpen}
+                onClose={() => {
+                    setIsFileModalOpen(false);
+                    setSelectedFile(null);
+                }}
+            />
+        </>
     );
 }

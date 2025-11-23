@@ -25,7 +25,7 @@
             text-align: center;
             padding: 20px;
             background-color: #f8f9fa;
-            border-bottom: 3px solid  #0000FF;
+            border-bottom: 3px solid #0000FF;
             margin-bottom: 30px;
         }
 
@@ -35,7 +35,7 @@
         }
 
         .header h1 {
-            color:  #0000FF;
+            color: #0000FF;
             font-size: 24px;
             margin: 10px 0;
         }
@@ -70,7 +70,7 @@
         .section-title {
             font-size: 16px;
             font-weight: bold;
-            color:  #0000FF;
+            color: #0000FF;
             margin-bottom: 10px;
             padding-bottom: 5px;
             border-bottom: 2px solid #dee2e6;
@@ -96,7 +96,7 @@
             background-color: #f8f9fa;
             padding: 15px;
             border-radius: 4px;
-            border-left: 4px solid  #0000FF;
+            border-left: 4px solid #0000FF;
             margin-bottom: 20px;
         }
 
@@ -114,7 +114,7 @@
         }
 
         .deadline {
-            background-color:  #0000FF;
+            background-color: #0000FF;
             color: white;
             padding: 10px 15px;
             border-radius: 4px;
@@ -154,17 +154,18 @@
 </head>
 
 <body>
+    <div class="header">
+        <img src="https://eo-unified-ims.com/images/logo.png" alt="EmpireOne BPO Solutions Inc.">
+        <h1>NOTICE TO EXPLAIN (NTE)</h1>
+        <p><strong>EMPIREONE BPO SOLUTIONS INC.</strong></p>
+        <p>Human Resources Department</p>
+    </div>
     <div class="container">
-        <div class="header">
-            <img src="https://eo-unified-ims.com/images/logo.png" alt="EmpireOne BPO Solutions Inc.">
-            <h1>NOTICE TO EXPLAIN (NTE)</h1>
-            <p><strong>EMPIREONE BPO SOLUTIONS INC.</strong></p>
-            <p>Human Resources Department</p>
-        </div>
+
 
         <div class="content">
             <div class="alert-box">
-                <strong>URGENT NOTICE:</strong> This Notice is issued as part of the Company’s due process mechanism and does not constitute a pre-judgment of guilt. It is intended to give you the opportunity to explain your side regarding the matter stated below in accordance with the requirements of due process under the Labor Code of the Philippines.
+                <strong>NOTICE:</strong> This Notice is issued as part of the Company’s due process mechanism and does not constitute a pre-judgment of guilt. It is intended to give you the opportunity to explain your side regarding the matter stated below in accordance with the requirements of due process under the Labor Code of the Philippines.
             </div>
 
             <div class="section">
@@ -205,7 +206,7 @@
             </div>
 
             <div class="deadline">
-                 RESPONSE DEADLINE: {{ \Carbon\Carbon::parse($irData['response_deadline'])->format('F d, Y h:i A') }}
+                RESPONSE DEADLINE: {{ \Carbon\Carbon::parse($irData['response_deadline'])->format('F d, Y h:i A') }}
             </div>
 
             <div class="response-section">

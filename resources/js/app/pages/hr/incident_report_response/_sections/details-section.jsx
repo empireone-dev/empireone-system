@@ -16,7 +16,7 @@ export default function DetailsSection({ case_facts }) {
                     <div>
                         <p className="text-sm text-gray-500">IR Number</p>
                         <p className="font-medium text-gray-900">
-                            #IR-{incident_report?.id}-
+                            IR-{incident_report?.id}-
                             {moment(incident_report?.created_at).format("mdy")}
                         </p>
                     </div>
@@ -41,11 +41,11 @@ export default function DetailsSection({ case_facts }) {
                 </div>
             </div>
 
-            <div className="px-6 py-6 bg-yellow-50 border-b border-yellow-200">
+            <div className="px-6 py-6 bg-blue-50 border-b border-blue-200">
                 <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
                     <span>📋</span> Case Facts / Incident Description
                 </h2>
-                <div className="bg-white p-4 rounded-lg border border-yellow-300">
+                <div className="bg-white p-4 rounded-lg border border-blue-200 shadow-sm">
                     <p className="text-gray-700 whitespace-pre-wrap">
                         <div
                             dangerouslySetInnerHTML={{
@@ -56,7 +56,7 @@ export default function DetailsSection({ case_facts }) {
                         />
                     </p>
                 </div>
-                <p className="text-sm text-yellow-700 mt-3">
+                <p className="text-sm text-blue-700 mt-3">
                     <strong>Note:</strong> Please read the case facts above
                     carefully before submitting your explanation.
                 </p>

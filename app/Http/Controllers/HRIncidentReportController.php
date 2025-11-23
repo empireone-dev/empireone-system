@@ -170,32 +170,108 @@ class HRIncidentReportController extends Controller
             'files' => $fileUrl
         ]);
 
-        return response()->json(['message' => 'Hearing scheduled successfully'], 200);
+        // Send email notification
+        try {
+            $hearingData = [
+                'ir_id' => $ir->id,
+                'violator_name' => $ir->violator,
+                'violator_email' => $ir->email,
+                'incident_date' => $ir->date,
+                'infraction' => $ir->infraction,
+                'hearing_date' => \Carbon\Carbon::parse($request->hearing_date)->format('F d, Y g:i A'),
+                'notes' => $request->notes,
+                'hearing_file_path' => $fileUrl
+            ];
+
+            \Mail::to($ir->email)->send(new \App\Mail\HRIncidentReportHearingMail($hearingData));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send hearing email: ' . $e->getMessage());
+            // Don't fail the request if email fails, just log it
+        }
+
+        return response()->json(['message' => 'Hearing scheduled and notification sent successfully'], 200);
     }
 
     public function uploadNOD(Request $request, $id)
     {
-        $request->validate([
-            'nod_file' => 'required|file|mimes:pdf,doc,docx|max:5120',
-            'sanction' => 'required|string',
-            'notes' => 'nullable|string'
-        ]);
+        try {
+            $request->validate([
+                'nod_file' => 'required|file|mimes:pdf,doc,docx|max:5120',
+                'sanction' => 'required|string',
+                'notes' => 'nullable|string'
+            ]);
 
-        $ir = HRIncidentReport::findOrFail($id);
+            $ir = HRIncidentReport::findOrFail($id);
 
-        $fileUrl = $request->file('nod_file')->store('hr/nod', 's3');
+            // Store file to S3 with error handling
+            if (!$request->hasFile('nod_file')) {
+                return response()->json(['message' => 'No file was uploaded'], 422);
+            }
 
-        $ir->update(['status' => 'Closed']);
+            $file = $request->file('nod_file');
+            
+            // Check if file is valid
+            if (!$file->isValid()) {
+                return response()->json(['message' => 'The uploaded file is invalid or corrupted'], 422);
+            }
 
-        HRIncidentReportLog::create([
-            'incident_report_id' => $id,
-            'user' => Auth::user()->name,
-            'status' => 'NOD Issued',
-            'notes' => 'Sanction: ' . $request->sanction . ' | ' . ($request->notes ?? 'Case closed with NOD'),
-            'files' => $fileUrl
-        ]);
+            // Try to store file
+            try {
+                $fileUrl = $file->store('hr/nod', 's3');
+                
+                if (!$fileUrl) {
+                    return response()->json(['message' => 'Failed to store file to S3'], 500);
+                }
+            } catch (\Exception $e) {
+                \Log::error('S3 Upload Error: ' . $e->getMessage());
+                return response()->json(['message' => 'S3 upload failed: ' . $e->getMessage()], 500);
+            }
 
-        return response()->json(['message' => 'NOD uploaded and case closed successfully'], 200);
+            // Update IR status
+            $ir->update(['status' => 'Closed']);
+
+            // Create log entry
+            HRIncidentReportLog::create([
+                'incident_report_id' => $id,
+                'user' => Auth::user()->name,
+                'status' => 'NOD Issued',
+                'notes' => 'Sanction: ' . $request->sanction . ' | ' . ($request->notes ?? 'Case closed with NOD'),
+                'files' => $fileUrl
+            ]);
+
+            // Send NOD email notification
+            try {
+                $nodData = [
+                    'ir_id' => $ir->id,
+                    'violator_name' => $ir->violator,
+                    'violator_email' => $ir->email,
+                    'incident_date' => $ir->date,
+                    'infraction' => $ir->infraction,
+                    'sanction' => $request->sanction,
+                    'notes' => $request->notes,
+                    'nod_file_path' => $fileUrl
+                ];
+
+                \Mail::to($ir->email)->send(new \App\Mail\HRIncidentReportNODMail($nodData));
+            } catch (\Exception $e) {
+                \Log::error('Failed to send NOD email: ' . $e->getMessage());
+                // Don't fail the request if email fails, just log it
+            }
+
+            return response()->json(['message' => 'NOD uploaded, case closed, and notification sent successfully'], 200);
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Upload NOD Error: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'An error occurred while uploading NOD',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function addLog(Request $request, $id)

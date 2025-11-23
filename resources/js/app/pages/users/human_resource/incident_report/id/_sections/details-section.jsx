@@ -180,7 +180,11 @@ export default function DetailsSection() {
             </div>
 
             {/* Files Modal */}
-          <ShowFileSection data={ir} />
+            <ShowFileSection
+                data={ir}
+                isOpen={showFilesModal}
+                onClose={() => setShowFilesModal(false)}
+            />
         </>
     );
 }
