@@ -41,11 +41,11 @@ export default function DetailsSection({ case_facts }) {
                 </div>
             </div>
 
-            <div className="px-6 py-6 bg-blue-50 border-b border-blue-200">
+            <div className="px-6 py-6 bg-gray-50 border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                    <span>📋</span> Case Facts / Incident Description
+                    <span>📋</span> <strong>Incident Description</strong>
                 </h2>
-                <div className="bg-white p-4 rounded-lg border border-blue-200 shadow-sm">
+                <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
                     <p className="text-gray-700 whitespace-pre-wrap">
                         <div
                             dangerouslySetInnerHTML={{
@@ -56,8 +56,8 @@ export default function DetailsSection({ case_facts }) {
                         />
                     </p>
                 </div>
-                <p className="text-sm text-blue-700 mt-3">
-                    <strong>Note:</strong> Please read the case facts above
+                <p className="text-sm text-black mt-3">
+                    <strong>Note:</strong> Please read the incident description above
                     carefully before submitting your explanation.
                 </p>
             </div>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -165,8 +166,8 @@
 
         @if(isset($hearingData['notes']) && $hearingData['notes'])
         <div class="notes-box">
-            <h3 style="margin-top: 0; color: #000000;"> 📋 Hearing Details:</h3>
-            <p style="margin: 0; white-space: pre-wrap;">{{ $hearingData['notes'] }}</p>
+            <h3 style="margin-top: 0; color: #000000;">📋 Hearing Details:</h3>
+            <div style="margin: 0;">{!! $hearingData['notes'] !!}</div>
         </div>
         @endif
 

@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Upload, DatePicker } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import Modal from "@/app/_components/modal";
-import TextArea from "@/app/_components/textarea";
 import Button from "@/app/_components/button";
 import SwalAlert from "@/app/_components/swal";
 import store from "@/app/store/store";
 import { schedule_hearing_thunk } from "@/app/redux/hr-thunk";
+import Wysiwyg from "@/app/_components/wysiwyg";
 
 const { Dragger } = Upload;
 
@@ -18,6 +18,7 @@ export default function ScheduleHearingModal({ isOpen, onClose, irId }) {
         name: 'file',
         multiple: false,
         maxCount: 1,
+        accept: '.pdf,.doc,.docx',
         beforeUpload: (file) => {
             setFormData(prev => ({ ...prev, file }));
             return false;
@@ -39,7 +40,8 @@ export default function ScheduleHearingModal({ isOpen, onClose, irId }) {
             data.append('hearing_date', formData.hearing_date.format('YYYY-MM-DD'));
             data.append('notes', formData.notes);
             if (formData.file) {
-                data.append('hearing_file', formData.file);
+                const fileToUpload = formData.file.originFileObj || formData.file;
+                data.append('hearing_file', fileToUpload);
             }
 
             await store.dispatch(schedule_hearing_thunk(irId, data));
@@ -72,11 +74,11 @@ export default function ScheduleHearingModal({ isOpen, onClose, irId }) {
                     />
                 </div>
 
-                <TextArea
+                <Wysiwyg
                     label="Hearing Notes *"
-                    rows={4}
+                    name="notes"
                     value={formData.notes}
-                    onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+                    onChange={(html) => setFormData(prev => ({ ...prev, notes: html }))}
                     placeholder="Enter hearing details, panel members, location, etc."
                 />
                 
@@ -89,6 +91,7 @@ export default function ScheduleHearingModal({ isOpen, onClose, irId }) {
                             <InboxOutlined />
                         </p>
                         <p className="ant-upload-text">Click or drag file to upload</p>
+                        <p className="ant-upload-hint">PDF, DOC, or DOCX (max 5MB)</p>
                     </Dragger>
                 </div>
 

@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import Modal from "@/app/_components/modal";
-import TextArea from "@/app/_components/textarea";
 import Button from "@/app/_components/button";
 import SwalAlert from "@/app/_components/swal";
 import store from "@/app/store/store";
 import { upload_nod_thunk } from "@/app/redux/hr-thunk";
+import Wysiwyg from "@/app/_components/wysiwyg";
 
 const { Dragger } = Upload;
 
@@ -64,12 +64,6 @@ export default function UploadNODModal({ isOpen, onClose, irId }) {
             data.append('sanction', formData.sanction);
             if (formData.notes && formData.notes.trim() !== "") {
                 data.append('notes', formData.notes);
-            }
-
-            // Debug: Log FormData contents
-            console.log('FormData contents:');
-            for (let [key, value] of data.entries()) {
-                console.log(key, ':', value instanceof File ? `File: ${value.name}, Type: ${value.type}` : value);
             }
 
             await store.dispatch(upload_nod_thunk(irId, data));
@@ -138,11 +132,11 @@ export default function UploadNODModal({ isOpen, onClose, irId }) {
                     </Dragger>
                 </div>
 
-                <TextArea
+                <Wysiwyg
                     label="Additional Notes (Optional)"
-                    rows={3}
+                    name="notes"
                     value={formData.notes}
-                    onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+                    onChange={(html) => setFormData(prev => ({ ...prev, notes: html }))}
                     placeholder="Enter final notes"
                 />
 
