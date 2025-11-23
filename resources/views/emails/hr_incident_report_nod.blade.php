@@ -151,7 +151,7 @@
         <div class="info-box">
             <div class="info-row">
                 <span class="label">Incident Report ID:</span>
-                <span class="value">IR-{{ $nodData['ir_id'] }}</span>
+                <span class="value">{{ $nodData['ir_id'] }}</span>
             </div>
             <div class="info-row">
                 <span class="label">Employee Name:</span>

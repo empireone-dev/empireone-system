@@ -173,7 +173,7 @@
                 <table class="info-table">
                     <tr>
                         <td>Incident Report ID:</td>
-                        <td><strong>IR-{{ $irData['ir_id'] }}</strong></td>
+                        <td><strong>{{ $irData['ir_id'] }}</strong></td>
                     </tr>
                     <tr>
                         <td>Employee Name:</td>
