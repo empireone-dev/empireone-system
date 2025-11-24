@@ -179,10 +179,11 @@
             </p>
         </div>
 
+
         @if(isset($nodData['notes']) && $nodData['notes'])
         <div class="notes-box">
             <h3 style="margin-top: 0; color: #000000;">📋 Additional Notes:</h3>
-            <p style="margin: 0; white-space: pre-wrap;">{{ $nodData['notes'] }}</p>
+            <div style="margin: 0;">{!! $nodData['notes'] !!}</div>
         </div>
         @endif
 

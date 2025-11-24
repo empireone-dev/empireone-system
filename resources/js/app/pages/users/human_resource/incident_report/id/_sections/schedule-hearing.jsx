@@ -57,7 +57,7 @@ export default function ScheduleHearingModal({ isOpen, onClose, irId }) {
 
     return (
         <Modal
-            width="max-w-lg"
+            width="max-w-4xl"
             isOpen={isOpen}
             onClose={onClose}
             title="Schedule Hearing"
