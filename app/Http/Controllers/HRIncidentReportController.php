@@ -161,7 +161,7 @@ class HRIncidentReportController extends Controller
         $fileUrl = null;
         if ($request->hasFile('hearing_file')) {
             $filePath = $request->file('hearing_file')->store('hr/hearings', 's3');
-            $fileUrl = Storage::disk('s3')->url($filePath);  // Generate full URL
+            $fileUrl = Storage::disk('s3')->url($filePath);
         }
 
         $ir->update(['status' => 'Hearing Scheduled']);
@@ -171,7 +171,7 @@ class HRIncidentReportController extends Controller
             'user' => Auth::user()->name,
             'status' => 'Hearing Scheduled',
             'notes' => $request->notes . " | Hearing Date: " . $request->hearing_date,
-            'files' => $fileUrl  // Use full URL for database
+            'files' => $fileUrl
         ]);
 
         // Send email notification
@@ -184,14 +184,16 @@ class HRIncidentReportController extends Controller
                 'infraction' => $ir->infraction,
                 'hearing_date' => \Carbon\Carbon::parse($request->hearing_date)->format('F d, Y g:i A'),
                 'notes' => $request->notes,
-                'hearing_file_path' => $filePath,  // Email uses path
-                'supervisor_name' => $ir->manager_tl_name ?? 'N/A',  // Added
+                'hearing_file_path' => $filePath,
+                'supervisor_name' => $ir->manager_tl_name ?? 'N/A',
             ];
             
             \Mail::to($ir->email)->send(new \App\Mail\HRIncidentReportHearingMail($hearingData));
+            
+            \Log::info('Hearing email sent successfully to: ' . $ir->email);
+            
         } catch (\Exception $e) {
             \Log::error('Failed to send hearing email: ' . $e->getMessage());
-            // Don't fail the request if email fails, just log it
         }
 
         return response()->json(['message' => 'Hearing scheduled successfully'], 200);
@@ -228,7 +230,7 @@ class HRIncidentReportController extends Controller
             $nodData = [
                 'ir_id' => 'IR-' . $ir->id . '-' . \Carbon\Carbon::parse($ir->created_at)->format('mdy'),
                 'violator_name' => $ir->violator,
-                'violator_email' => $ir->email,
+                'employee_email' => $ir->email,  // Renamed from violator_email
                 'incident_date' => $ir->date,
                 'infraction' => $ir->infraction,
                 'sanction' => $request->sanction,

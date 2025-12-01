@@ -16,7 +16,7 @@ export default function FormSection() {
     console.log("incident_report", incident_report);
     const [formData, setFormData] = useState({
         employee_name: incident_report?.violator || "",
-        employee_email: incident_report?.employee_email || "",
+        employee_email: incident_report?.email || "",
         explanation: "",
         file: null,
     });
@@ -128,7 +128,7 @@ export default function FormSection() {
             <Wysiwyg
                 label="Your Written Explanation * (Minimum 50 characters)"
                 name="explanation"
-                value={incident_report.explanation}
+                value={formData.explanation} // ✅ Use formData, not incident_report
                 onChange={(html) =>
                     setFormData((prev) => ({
                         ...prev,

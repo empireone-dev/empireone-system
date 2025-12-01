@@ -10,6 +10,8 @@ class HRIncidentReport extends Model
 {
     protected $fillable = [
         'violator',
+        'email',
+        'manager_tl_name',  // ✅ ADD THIS
         'date',
         'filed_by',
         'witness',
@@ -19,7 +21,7 @@ class HRIncidentReport extends Model
         'infraction',
         'files',
         'status',
-        
+
     ];
 
     protected $attributes = [
@@ -30,7 +32,7 @@ class HRIncidentReport extends Model
     {
         return $this->hasOne(User::class, 'id', 'filed_by');
     }
-    
+
     public function evidence(): HasMany
     {
         return $this->hasMany(HREvidence::class, 'incident_report_id', 'id');

@@ -179,10 +179,10 @@
                         <td>Employee Name:</td>
                         <td><strong>{{ $irData['violator'] }}</strong></td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td>Supervisor Name:</td>
                         <td><strong>{{ $irData['supervisor_name'] }}</strong></td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <td>Date of Incident:</td>
                         <td><strong>{{ \Carbon\Carbon::parse($irData['incident_date'])->format('F d, Y') }}</strong></td>
@@ -245,11 +245,11 @@
                 <table class="info-table">
                     <tr>
                         <td>Email:</td>
-                        <td>hr@empireonegroup.com</td>
+                        <td>schr@empireonegroup.com</td>
                     </tr>
                     <tr>
                         <td>HR Hotline:</td>
-                        <td>(032) XXX-XXXX</td>
+                        <td><strong>+63 917-107-4079</strong></td>
                     </tr>
                 </table>
             </div>
