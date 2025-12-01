@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import Modal from "@/app/_components/modal";
@@ -11,14 +11,20 @@ import { validate_ir_thunk } from "@/app/redux/hr-thunk";
 
 const { Dragger } = Upload;
 
-export default function ValidateIRModal({ isOpen, onClose, irId }) {
+export default function ValidateIRModal({ isOpen, onClose, irId, ir }) {
     const [formData, setFormData] = useState({ 
         notes: "", 
         file: null, 
-        employee_email: "",
+        employee_email: ir?.email || "",
         response_days: "5"
     });
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (ir?.email) {
+            setFormData(prev => ({ ...prev, employee_email: ir.email }));
+        }
+    }, [ir?.email]);
 
     const uploadProps = {
         name: 'file',
@@ -35,12 +41,12 @@ export default function ValidateIRModal({ isOpen, onClose, irId }) {
 
     const handleSubmit = async () => {
         if (!formData.notes || formData.notes.trim() === "") {
-            SwalAlert({ icon: "error", title: "Validation Error", text: "Please provide notes" });
+            await SwalAlert({ type: "error", title: "Please provide notes" });
             return;
         }
 
         if (!formData.employee_email || !formData.employee_email.includes('@')) {
-            SwalAlert({ icon: "error", title: "Validation Error", text: "Please enter a valid employee email address" });
+            await SwalAlert({ type: "error", title: "Please enter a valid employee email address" });
             return;
         }
 
@@ -55,15 +61,11 @@ export default function ValidateIRModal({ isOpen, onClose, irId }) {
             }
 
             await store.dispatch(validate_ir_thunk(irId, data));
-            SwalAlert({ 
-                icon: "success", 
-                title: "Success", 
-                text: `IR validated and NTE email sent to ${formData.employee_email}` 
-            });
+            await SwalAlert({ type: "success", title: "NTE submitted successfully." });
             setFormData({ notes: "", file: null, employee_email: "", response_days: "5" });
             onClose();
         } catch (error) {
-            SwalAlert({ icon: "error", title: "Error", text: "Failed to validate IR and send NTE" });
+            await SwalAlert({ type: "error", title: "Failed to validate IR and send NTE" });
         } finally {
             setLoading(false);
         }

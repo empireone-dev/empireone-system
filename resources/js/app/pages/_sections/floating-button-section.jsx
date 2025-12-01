@@ -83,17 +83,17 @@ export default function ChatbotModal() {
     };
 
     const handleQuickNoteSelect = (option) => {
-        if (option == "Incident Report") {
-            setInput(
-                `Name of Violator:\nDate and Time: ${moment().format(
-                    "LLL"
-                )}\nWitnesses (if any):\nDetails of Incident:\nAdditional Notes:`
-            );
-        } else {
-            setInput("");
-        }
-        setSelectedOption(option);
-    };
+    if (option == "Incident Report") {
+        setInput(
+            `Name of Violator:\nDate and Time: ${moment().format(
+                "LLL"
+            )}\nWitnesses (if any):\nDetails of Incident:\nAdditional Notes:`
+        );
+    } else {
+        setInput("");
+    }
+    setSelectedOption(option);
+};
 
     const props = {
         name: "file",

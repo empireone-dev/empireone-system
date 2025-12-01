@@ -15,38 +15,49 @@ export default function InvalidateIRModal({ isOpen, onClose, irId }) {
     const [loading, setLoading] = useState(false);
 
     const uploadProps = {
-        name: 'file',
+        name: "file",
         multiple: false,
         maxCount: 1,
         beforeUpload: (file) => {
-            setFormData(prev => ({ ...prev, file }));
+            setFormData((prev) => ({ ...prev, file }));
             return false;
         },
         onRemove: () => {
-            setFormData(prev => ({ ...prev, file: null }));
-        }
+            setFormData((prev) => ({ ...prev, file: null }));
+        },
     };
 
     const handleSubmit = async () => {
         if (!formData.reason || formData.reason.trim() === "") {
-            SwalAlert({ icon: "error", title: "Validation Error", text: "Please provide a reason" });
+            SwalAlert({
+                icon: "error",
+                title: "Validation Error",
+                text: "Please provide a reason",
+            });
             return;
         }
 
         setLoading(true);
         try {
             const data = new FormData();
-            data.append('reason', formData.reason);
+            data.append("reason", formData.reason);
             if (formData.file) {
-                data.append('closure_file', formData.file);
+                data.append("closure_file", formData.file);
             }
 
             await store.dispatch(invalidate_ir_thunk(irId, data));
-            SwalAlert({ icon: "success", title: "Success", text: "IR marked as invalid and closed" });
+            await SwalAlert({
+                type: "success",
+                title: "IR invalidated successfully.",
+            });
+
             setFormData({ reason: "", file: null });
             onClose();
         } catch (error) {
-            SwalAlert({ icon: "error", title: "Error", text: "Failed to invalidate IR" });
+            await SwalAlert({
+                type: "error",
+                title: "Failed to invalidate IR",
+            });
         } finally {
             setLoading(false);
         }
@@ -64,9 +75,11 @@ export default function InvalidateIRModal({ isOpen, onClose, irId }) {
                     label="Reason for Invalidation"
                     name="reason"
                     value={formData.reason}
-                    onChange={(html) => setFormData(prev => ({ ...prev, reason: html }))}
+                    onChange={(html) =>
+                        setFormData((prev) => ({ ...prev, reason: html }))
+                    }
                 />
-                
+
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                         Upload Closure Documentation (Optional)
@@ -75,14 +88,24 @@ export default function InvalidateIRModal({ isOpen, onClose, irId }) {
                         <p className="ant-upload-drag-icon">
                             <InboxOutlined />
                         </p>
-                        <p className="ant-upload-text">Click or drag file to upload</p>
-                        <p className="ant-upload-hint">PDF, DOC, DOCX (max 5MB)</p>
+                        <p className="ant-upload-text">
+                            Click or drag file to upload
+                        </p>
+                        <p className="ant-upload-hint">
+                            PDF, DOC, DOCX (max 5MB)
+                        </p>
                     </Dragger>
                 </div>
 
                 <div className="flex gap-3 justify-end mt-4">
-                    <Button variant="secondary" onClick={onClose}>Cancel</Button>
-                    <Button variant="danger" onClick={handleSubmit} loading={loading}>
+                    <Button variant="secondary" onClick={onClose}>
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="danger"
+                        onClick={handleSubmit}
+                        loading={loading}
+                    >
                         Mark as Invalid
                     </Button>
                 </div>

@@ -102,6 +102,7 @@ export default function HRActionsSection() {
                     isOpen={showValidateModal}
                     onClose={() => setShowValidateModal(false)}
                     irId={ir?.id}
+                    ir={ir}
                 />
                 <InvalidateIRModal
                     isOpen={showInvalidateModal}

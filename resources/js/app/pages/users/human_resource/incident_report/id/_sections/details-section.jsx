@@ -62,6 +62,14 @@ export default function DetailsSection() {
                                         {ir?.filed_by?.name ?? "N/A"}
                                     </div>
                                 </div>
+                                {/* <div className="grid grid-cols-3 gap-4 py-3 border-b border-gray-100">
+                                    <div className="font-medium text-gray-900">
+                                        Manager/TL Name:
+                                    </div>
+                                    <div className="col-span-2 text-gray-700">
+                                        {ir?.manager_tl_name ?? "N/A"}
+                                    </div>
+                                </div> */}
 
                                 <div className="grid grid-cols-3 gap-4 py-3 border-b border-gray-100">
                                     <div className="font-medium text-gray-900">
@@ -71,6 +79,14 @@ export default function DetailsSection() {
                                         {ir?.violator ?? "N/A"}
                                     </div>
                                 </div>
+                                {/* <div className="grid grid-cols-3 gap-4 py-3 border-b border-gray-100">
+                                    <div className="font-medium text-gray-900">
+                                        Violator Email:
+                                    </div>
+                                    <div className="col-span-2 text-gray-700">
+                                        {ir?.email ?? "N/A"}
+                                    </div>
+                                </div> */}
 
                                 <div className="grid grid-cols-3 gap-4 py-3 border-b border-gray-100">
                                     <div className="font-medium text-gray-900">

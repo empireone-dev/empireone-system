@@ -85,7 +85,7 @@ class HRIncidentReportController extends Controller
             'response_days' => $responseDays,
             'responseUrl' => route('hr.incident-report.respond', ['id' => $id]) . '?' . parse_url($responseUrl, PHP_URL_QUERY),
             'nte_file_path' => $filePath,
-            'supervisor_name' => Auth::user()->name,
+            'supervisor_name' => $ir->manager_tl_name ?? 'N/A',
         ];
 
         Mail::to($validated['employee_email'])->send(new HRIncidentReportNTEMail($mailData));
@@ -157,9 +157,11 @@ class HRIncidentReportController extends Controller
 
         $ir = HRIncidentReport::findOrFail($id);
 
+        $filePath = null;
         $fileUrl = null;
         if ($request->hasFile('hearing_file')) {
-            $fileUrl = $request->file('hearing_file')->store('hr/hearings', 's3');
+            $filePath = $request->file('hearing_file')->store('hr/hearings', 's3');
+            $fileUrl = Storage::disk('s3')->url($filePath);  // Generate full URL
         }
 
         $ir->update(['status' => 'Hearing Scheduled']);
@@ -169,7 +171,7 @@ class HRIncidentReportController extends Controller
             'user' => Auth::user()->name,
             'status' => 'Hearing Scheduled',
             'notes' => $request->notes . " | Hearing Date: " . $request->hearing_date,
-            'files' => $fileUrl
+            'files' => $fileUrl  // Use full URL for database
         ]);
 
         // Send email notification
@@ -182,9 +184,10 @@ class HRIncidentReportController extends Controller
                 'infraction' => $ir->infraction,
                 'hearing_date' => \Carbon\Carbon::parse($request->hearing_date)->format('F d, Y g:i A'),
                 'notes' => $request->notes,
-                'hearing_file_path' => $fileUrl
+                'hearing_file_path' => $filePath,  // Email uses path
+                'supervisor_name' => $ir->manager_tl_name ?? 'N/A',  // Added
             ];
-
+            
             \Mail::to($ir->email)->send(new \App\Mail\HRIncidentReportHearingMail($hearingData));
         } catch (\Exception $e) {
             \Log::error('Failed to send hearing email: ' . $e->getMessage());
@@ -204,7 +207,11 @@ class HRIncidentReportController extends Controller
 
         $ir = HRIncidentReport::findOrFail($id);
 
-        $fileUrl = $request->file('nod_file')->store('hr/nod', 's3');
+        // Store the file and get the path
+        $filePath = $request->file('nod_file')->store('hr/nod', 's3');
+        
+        // Generate the full S3 URL
+        $fileUrl = Storage::disk('s3')->url($filePath);
 
         $ir->update(['status' => 'Closed']);
 
@@ -213,7 +220,7 @@ class HRIncidentReportController extends Controller
             'user' => Auth::user()->name,
             'status' => 'NOD Issued',
             'notes' => 'Sanction: ' . $request->sanction . ' | ' . ($request->notes ?? 'Case closed with NOD'),
-            'files' => $fileUrl
+            'files' => $fileUrl  // Now stores full URL
         ]);
 
         // Send NOD email notification
@@ -226,7 +233,8 @@ class HRIncidentReportController extends Controller
                 'infraction' => $ir->infraction,
                 'sanction' => $request->sanction,
                 'notes' => $request->notes,
-                'nod_file_path' => $fileUrl,
+                'nod_file_path' => $filePath,  // Email attachment uses path, not URL
+                'supervisor_name' => $ir->manager_tl_name ?? 'N/A',  // Added this as discussed
             ];
 
             \Mail::to($ir->email)->send(new HRIncidentReportNODMail($nodData));

@@ -100,9 +100,25 @@ class OpenAIController extends Controller
         return 'You are an assistant that answers based only on the provided COCD PDF document. Respond in clean HTML suitable for WYSIWYG editors. Do not use markdown or code fences.';
     }
 
+
     public function incident_report_content($data)
     {
-        return 'You are to create an incident report based only on the provided Incident Report document and the COCD document. Respond in clean JSON format with the following fields: violator, date, witness, details, notes, gravity_of_infraction, and article_of_infraction_details. the article_of_infraction_details is only first column of the table and make it string. Do not use markdown or code fences. Here is the data: ' . $data;
+        return 'You are to create an incident report by extracting data from the user input text and referencing the COCD document. 
+
+Parse the following fields from the input text:
+- violator: Extract from "Name of Violator:" line
+- date: Extract from "Date and Time:" line
+- witness: Extract from "Witnesses (if any):" line
+- details: Extract from "Details of Incident:" line
+- notes: Extract from "Additional Notes:" line
+
+Then analyze the incident using the COCD document to determine:
+- gravity_of_infraction: Classify as "Minor", "Major", or "Grave" based on COCD
+- article_of_infraction_details: The specific article/section from COCD that was violated (first column only, return as a string)
+
+Return ONLY valid JSON with these exact field names. No markdown, no code fences, no explanations. 
+
+Here is the incident report data to parse: ' . $data;
     }
 
     public function cocd_prompt(Request $request)
