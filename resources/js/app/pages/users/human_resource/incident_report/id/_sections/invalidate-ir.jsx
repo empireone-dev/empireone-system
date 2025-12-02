@@ -48,7 +48,7 @@ export default function InvalidateIRModal({ isOpen, onClose, irId }) {
             await store.dispatch(invalidate_ir_thunk(irId, data));
             await SwalAlert({
                 type: "success",
-                title: "IR invalidated successfully.",
+                title: "Successfully",
             });
 
             setFormData({ reason: "", file: null });
@@ -56,7 +56,7 @@ export default function InvalidateIRModal({ isOpen, onClose, irId }) {
         } catch (error) {
             await SwalAlert({
                 type: "error",
-                title: "Failed to invalidate IR",
+                title: "Failed",
             });
         } finally {
             setLoading(false);

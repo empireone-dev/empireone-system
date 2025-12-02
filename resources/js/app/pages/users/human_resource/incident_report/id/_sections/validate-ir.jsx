@@ -61,11 +61,11 @@ export default function ValidateIRModal({ isOpen, onClose, irId, ir }) {
             }
 
             await store.dispatch(validate_ir_thunk(irId, data));
-            await SwalAlert({ type: "success", title: "NTE submitted successfully." });
+            await SwalAlert({ type: "success", title: "Successfully" });
             setFormData({ notes: "", file: null, employee_email: "", response_days: "5" });
             onClose();
         } catch (error) {
-            await SwalAlert({ type: "error", title: "Failed to validate IR and send NTE" });
+            await SwalAlert({ type: "error", title: "Failed" });
         } finally {
             setLoading(false);
         }

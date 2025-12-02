@@ -45,11 +45,11 @@ export default function ScheduleHearingModal({ isOpen, onClose, irId }) {
             }
 
             await store.dispatch(schedule_hearing_thunk(irId, data));
-            SwalAlert({ icon: "success", title: "Success", text: "Hearing scheduled successfully" });
+            await SwalAlert({ type: "success", title: "Successfully" });
             setFormData({ notes: "", file: null, hearing_date: null });
             onClose();
         } catch (error) {
-            SwalAlert({ icon: "error", title: "Error", text: "Failed to schedule hearing" });
+             await SwalAlert({ type: "error", title: "Failed" });
         } finally {
             setLoading(false);
         }

@@ -32,12 +32,13 @@ export default function UploadNODModal({ isOpen, onClose, irId }) {
     const handleSubmit = async () => {
         // Validate required fields
         if (!formData.file) {
-            SwalAlert({ icon: "error", title: "Validation Error", text: "Please upload NOD file" });
+             await SwalAlert({ type: "error", title: "Validation Error" });
+           
             return;
         }
         
         if (!formData.sanction || formData.sanction === "") {
-            SwalAlert({ icon: "error", title: "Validation Error", text: "Please select a sanction" });
+           await SwalAlert({ type: "error", title: "Validation Error", text: "Please select a sanction" });
             return;
         }
 
@@ -51,7 +52,7 @@ export default function UploadNODModal({ isOpen, onClose, irId }) {
             // Validate file type
             const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
             if (!allowedTypes.includes(fileToUpload.type)) {
-                SwalAlert({ 
+                await SwalAlert({ 
                     icon: "error", 
                     title: "Invalid File Type", 
                     text: "Please upload a PDF, DOC, or DOCX file" 
@@ -67,7 +68,8 @@ export default function UploadNODModal({ isOpen, onClose, irId }) {
             }
 
             await store.dispatch(upload_nod_thunk(irId, data));
-            SwalAlert({ icon: "success", title: "Success", text: "NOD uploaded and case closed successfully" });
+            await SwalAlert({ type: "success", title: "Successfully" });
+           
             setFormData({ notes: "", file: null, sanction: "" });
             onClose();
         } catch (error) {
@@ -77,14 +79,14 @@ export default function UploadNODModal({ isOpen, onClose, irId }) {
             // Check for Laravel validation errors
             if (error.response?.data?.errors) {
                 const errors = Object.values(error.response.data.errors).flat();
-                SwalAlert({ 
-                    icon: "error", 
-                    title: "Validation Error", 
-                    text: errors.join(', ') 
+                await SwalAlert({ 
+                    type: "error", 
+                    title: "Validation Error",
+                    text: errors.join(', ')
                 });
             } else {
                 const errorMsg = error.response?.data?.message || "Failed to upload NOD";
-                SwalAlert({ icon: "error", title: "Error", text: errorMsg });
+                await SwalAlert({ icon: "error", title: "Error", text: errorMsg });
             }
         } finally {
             setLoading(false);

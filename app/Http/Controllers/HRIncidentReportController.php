@@ -177,7 +177,8 @@ class HRIncidentReportController extends Controller
         // Send email notification
         try {
             $hearingData = [
-                'ir_id' => $ir->id,
+                'ir_id' => 'IR-' . $ir->id . '-' . \Carbon\Carbon::parse($ir->created_at)->format('mdy'),
+
                 'violator_name' => $ir->violator,
                 'violator_email' => $ir->email,
                 'incident_date' => $ir->date,
@@ -187,11 +188,10 @@ class HRIncidentReportController extends Controller
                 'hearing_file_path' => $filePath,
                 'supervisor_name' => $ir->manager_tl_name ?? 'N/A',
             ];
-            
+
             \Mail::to($ir->email)->send(new \App\Mail\HRIncidentReportHearingMail($hearingData));
-            
+
             \Log::info('Hearing email sent successfully to: ' . $ir->email);
-            
         } catch (\Exception $e) {
             \Log::error('Failed to send hearing email: ' . $e->getMessage());
         }
@@ -211,7 +211,7 @@ class HRIncidentReportController extends Controller
 
         // Store the file and get the path
         $filePath = $request->file('nod_file')->store('hr/nod', 's3');
-        
+
         // Generate the full S3 URL
         $fileUrl = Storage::disk('s3')->url($filePath);
 

@@ -143,19 +143,19 @@
         <div class="info-box">
             <div class="info-row">
                 <span class="label">Incident Report ID:</span>
-                <span class="value">IR-{{ $hearingData['ir_id'] }}</span>
+                <span class="value"><strong>{{ $hearingData['ir_id'] }}</strong></span>
             </div>
             <div class="info-row">
                 <span class="label">Employee Name:</span>
-                <span class="value">{{ $hearingData['violator_name'] }}</span>
+                <span class="value"><strong>{{ $hearingData['violator_name'] }}</strong></span>
             </div>
             <div class="info-row">
                 <span class="label">Incident Date:</span>
-                <span class="value">{{ $hearingData['incident_date'] }}</span>
+                <span class="value"><strong>{{ $hearingData['incident_date'] }}</strong></span>
             </div>
             <div class="info-row">
                 <span class="label">Infraction:</span>
-                <span class="value">{{ $hearingData['infraction'] }}</span>
+                <span class="value"><strong>{{ $hearingData['infraction'] }}</strong></span>
             </div>
         </div>
 
