@@ -106,6 +106,18 @@ export default function StatsSearchSection() {
                 )}
             </div>
             <div className="w-full">
+                <Select
+                    label="Status"
+                    name="status"
+                    options={[
+                        { label: "Pending", value: "Pending" },
+                        { label: "Closed", value: "Closed" },
+                    ]}
+                    error={errors?.status?.message}
+                    register={register("status")}
+                />
+            </div>
+            <div className="w-full">
                 <Button
                     className="w-full"
                     type="submit"

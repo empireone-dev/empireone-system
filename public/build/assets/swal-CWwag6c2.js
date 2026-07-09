@@ -1,0 +1,1 @@
+import"./app-CPCMjmla.js";import{S as e}from"./sweetalert2.esm.all-CAQlxK8Y.js";function i({type:r,title:o="Your work has been saved"}){return e.fire({icon:r,title:o,showConfirmButton:!1,timer:1500})}export{i as S};

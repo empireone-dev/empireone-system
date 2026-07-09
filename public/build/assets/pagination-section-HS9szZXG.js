@@ -1,0 +1,1 @@
+import{u as s,j as t}from"./app-CPCMjmla.js";import{P as i}from"./pagination-udcBs3YY.js";function r(){const{tickets:o}=s(e=>e.tickets);return console.log("tickets",o),t.jsx(t.Fragment,{children:t.jsx(i,{data:o})})}export{r as default};

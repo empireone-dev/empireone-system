@@ -27,9 +27,10 @@ class TicketController extends Controller
         $department = $request->input('department');
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-        $search = $request->input('search'); // Keeping this just in case your table has a text search
+        $status = $request->input('status'); // Capture the new status filter
+        $search = $request->input('search');
 
-        $response = new StreamedResponse(function () use ($search, $location, $department, $startDate, $endDate) {
+        $response = new StreamedResponse(function () use ($search, $location, $department, $startDate, $endDate, $status) {
             $handle = fopen('php://output', 'w');
 
             // Headers matching your $fillable array
@@ -58,12 +59,16 @@ class TicketController extends Controller
                 ->when($department, function ($query, $department) {
                     $query->where('department', $department);
                 })
+                // Apply Status Filter
+                ->when($status, function ($query, $status) {
+                    $query->where('status', $status);
+                })
                 // Apply Date Filters safely using Carbon
                 ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
-                    $start = Carbon::parse($startDate)->startOfDay(); // "2026-07-01 00:00:00"
-                    $end = Carbon::parse($endDate)->endOfDay();       // "2026-07-09 23:59:59"
+                    $start = Carbon::parse($startDate)->startOfDay();
+                    $end = Carbon::parse($endDate)->endOfDay();
 
-                    // IMPORTANT: Change 'created_at' to whatever date column your dashboard uses to filter
+                    // Change 'created_at' to whatever date column your dashboard uses to filter
                     $query->whereBetween('created_at', [$start, $end]);
                 })
                 // Apply Search Filter (if used)
