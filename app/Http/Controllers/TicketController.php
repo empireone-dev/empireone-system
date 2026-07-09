@@ -16,9 +16,101 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TicketController extends Controller
 {
+    public function export_ticket(Request $request)
+    {
+        // 1. Capture exact parameters from your URL string
+        $location = $request->input('location');
+        $department = $request->input('department');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $search = $request->input('search'); // Keeping this just in case your table has a text search
+
+        $response = new StreamedResponse(function () use ($search, $location, $department, $startDate, $endDate) {
+            $handle = fopen('php://output', 'w');
+
+            // Headers matching your $fillable array
+            fputcsv($handle, [
+                'User (Requestor)',
+                'Ticket ID',
+                'Category',
+                'Site',
+                'Details',
+                'Station',
+                'Location',
+                'Assigned To',
+                'Department',
+                'Status',
+                'Is Urgent',
+                'Start',
+                'End'
+            ]);
+
+            $tickets = Ticket::with(['user', 'assignee', 'category', 'site'])
+                // Apply Location Filter
+                ->when($location, function ($query, $location) {
+                    $query->where('location', $location);
+                })
+                // Apply Department Filter
+                ->when($department, function ($query, $department) {
+                    $query->where('department', $department);
+                })
+                // Apply Date Filters safely using Carbon
+                ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                    $start = Carbon::parse($startDate)->startOfDay(); // "2026-07-01 00:00:00"
+                    $end = Carbon::parse($endDate)->endOfDay();       // "2026-07-09 23:59:59"
+
+                    // IMPORTANT: Change 'created_at' to whatever date column your dashboard uses to filter
+                    $query->whereBetween('created_at', [$start, $end]);
+                })
+                // Apply Search Filter (if used)
+                ->when($search, function ($query, $search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('ticket_id', 'like', "%{$search}%")
+                            ->orWhere('status', 'like', "%{$search}%")
+                            ->orWhereHas('user', function ($q2) use ($search) {
+                                $q2->where('name', 'like', "%{$search}%");
+                            })
+                            ->orWhereHas('assignee', function ($q2) use ($search) {
+                                $q2->where('name', 'like', "%{$search}%");
+                            });
+                    });
+                })
+                ->orderBy('id', 'desc')
+                ->cursor();
+
+            foreach ($tickets as $ticket) {
+                fputcsv($handle, [
+                    $ticket->user ? $ticket->user->name : $ticket->user_id,
+                    $ticket->ticket_id,
+                    $ticket->category ? $ticket->category->name : $ticket->category_id,
+                    $ticket->site ? $ticket->site->name : $ticket->site_id,
+
+                    // Strip HTML tags and decode HTML entities
+                    html_entity_decode(strip_tags($ticket->details)),
+
+                    $ticket->station,
+                    $ticket->location,
+                    $ticket->assignee ? $ticket->assignee->name : $ticket->assigned_to,
+                    $ticket->department,
+                    $ticket->status,
+                    $ticket->isUrgent ? 'Yes' : 'No',
+                    $ticket->start,
+                    $ticket->end,
+                ]);
+            }
+
+            fclose($handle);
+        });
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename="raw_tickets_export.csv"');
+
+        return $response;
+    }
     public function get_account_tickets(Request $request)
     {
         $user = Auth::user();

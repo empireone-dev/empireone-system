@@ -1,0 +1,1 @@
+import{a as c}from"./app-K3Apvc6b.js";async function a(r){try{return await c.post("/api/scan_receipt",r)}catch{}}async function e(r){try{return await c.post("/api/cocd_prompt",r)}catch{}}export{e as c,a as s};

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -26,7 +27,12 @@ class Ticket extends Model
         'end',
     ];
 
-     public function activities(): HasMany
+    public function assignee(): BelongsTo
+    {
+        // Renamed method to 'assignee' to prevent conflict with 'assigned_to' DB column
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
+    public function activities(): HasMany
     {
         return $this->hasMany(Activity::class, 'ticket_id', 'id');
     }
@@ -39,7 +45,7 @@ class Ticket extends Model
     {
         return $this->hasOne(User::class, 'id', 'assigned_to');
     }
-     public function site(): HasOne
+    public function site(): HasOne
     {
         return $this->hasOne(Site::class, 'id', 'site_id');
     }

@@ -167,9 +167,9 @@ class PostgresGrammar extends Grammar
             $language = 'english';
         }
 
-        $columns = (new Collection($where['columns']))->map(function ($column) use ($language) {
-            return "to_tsvector('{$language}', {$this->wrap($column)})";
-        })->implode(' || ');
+        $columns = (new Collection($where['columns']))
+            ->map(fn ($column) => "to_tsvector('{$language}', {$this->wrap($column)})")
+            ->implode(' || ');
 
         $mode = 'plainto_tsquery';
 
@@ -383,7 +383,7 @@ class PostgresGrammar extends Grammar
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
-     * @param  string  $sequence
+     * @param  string|null  $sequence
      * @return string
      */
     public function compileInsertGetId(Builder $query, $values, $sequence)
@@ -618,6 +618,7 @@ class PostgresGrammar extends Grammar
      * @param  array  $values
      * @return array
      */
+    #[\Override]
     public function prepareBindingsForUpdate(array $bindings, array $values)
     {
         $values = (new Collection($values))->map(function ($value, $column) {
@@ -627,6 +628,8 @@ class PostgresGrammar extends Grammar
         })->all();
 
         $cleanBindings = Arr::except($bindings, 'select');
+
+        $values = Arr::flatten(array_map(fn ($value) => value($value), $values));
 
         return array_values(
             array_merge($values, Arr::flatten($cleanBindings))

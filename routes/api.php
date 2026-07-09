@@ -37,6 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('tickets', TicketController::class);
     Route::get('get_tickets_by_user', [TicketController::class, 'get_tickets_by_user']);
+    Route::get('export_ticket', [TicketController::class, 'export_ticket']);
     Route::get('get_tickets_by_internal', [TicketController::class, 'get_tickets_by_internal']);
     Route::post('assign_ticket', [TicketController::class, 'assign_ticket']);
     Route::post('change_ticket_status', [TicketController::class, 'change_ticket_status']);
