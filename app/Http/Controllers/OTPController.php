@@ -64,7 +64,7 @@ class OTPController extends Controller
         User::create([
             'name' => $request->applicant['fname'] . ' ' . $request->applicant['lname'],
             'email' => $request->email,
-            'location' => stripos($request->applicant['caddress'], 'San Carlos') !== false ? 'San Carlos' : 'Carcar',
+            'location' => stripos($request->applicant['caddress'], 'San Carlos') !== false ? 'San Carlos' : (stripos($request->applicant['caddress'], 'Carcar') !== false ? 'Carcar' : 'Urdaneta'),
             'account_type' => 2,
             'department' => 'Operations Department',
             'position' => $request->position,

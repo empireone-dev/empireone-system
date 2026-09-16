@@ -101,6 +101,10 @@ export default function CreateUserSection() {
                                         label: "Carcar",
                                         value: "Carcar",
                                     },
+                                    {
+                                        label: "Urdaneta",
+                                        value: "Urdaneta",
+                                    },
                                 ]}
                                 error={errors?.location?.message}
                                 register={register("location", {

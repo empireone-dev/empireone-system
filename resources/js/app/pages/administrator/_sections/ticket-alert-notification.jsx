@@ -135,6 +135,37 @@ export default function TicketAlertNotification() {
                             `/users/ticketing/internal_request/${ticket.ticket_id}/details`
                         );
                     }
+                } else if (
+                    ticket.location == "Urdaneta" &&
+                    user?.id != user_id
+                ) {
+                    if (ticket?.user?.department == user?.department) {
+                        browser_notification(
+                            "New Message",
+                            {
+                                body: `You have a new message from ${ticket.ticket_id}`,
+                                icon: "/images/logs.png",
+                            },
+                            () => {
+                                const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
+                                router.visit(path);
+                            },
+                            `/users/ticketing/internal_request/${ticket.ticket_id}/details`
+                        );
+                    } else if (ticket?.department == user?.department) {
+                        browser_notification(
+                            "New Message",
+                            {
+                                body: `You have a new message from ${ticket.ticket_id}`,
+                                icon: "/images/logs.png",
+                            },
+                            () => {
+                                const path = `/users/ticketing/internal_request/${ticket.ticket_id}/details`;
+                                router.visit(path);
+                            },
+                            `/users/ticketing/internal_request/${ticket.ticket_id}/details`
+                        );
+                    }
                 }
             } else if (
                 user?.account_type == "1" &&

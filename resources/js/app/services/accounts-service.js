@@ -10,7 +10,7 @@ export function get_user_service() {
 export function get_employee_by_employee_id_service(employee_id) {
     try {
         const result = axios.get(
-            `https://empireone-hris.com/api/employee/${employee_id}`
+            `https://empireone-hris.com/api/employee/${employee_id}`,
         );
         return result;
     } catch (error) {
@@ -40,7 +40,7 @@ export function get_account_by_department_service(data) {
     try {
         const result = axios.get(
             "/api/get_account_by_department?" +
-                new URLSearchParams(data).toString()
+                new URLSearchParams(data).toString(),
         );
         return result;
     } catch (error) {}
@@ -61,10 +61,12 @@ export function get_accounts_service() {
         const ticketing_location =
             window.location.pathname.split("/")[3] == "carcar"
                 ? "Carcar"
-                : "San Carlos";
+                : window.location.pathname.split("/")[3] == "urdaneta"
+                  ? "Urdaneta"
+                  : "San Carlos";
 
         const result = axios.get(
-            `/api/accounts${queryString}${separator}location=${ticketing_location}`
+            `/api/accounts${queryString}${separator}location=${ticketing_location}`,
         );
         return result;
     } catch (error) {

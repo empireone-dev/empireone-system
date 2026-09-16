@@ -71,6 +71,7 @@ export default function StatsSearchSection() {
                     options={[
                         { label: "San Carlos", value: "San Carlos" },
                         { label: "Carcar", value: "Carcar" },
+                        { label: "Urdaneta", value: "Urdaneta" }
                     ]}
                     error={errors?.location?.message}
                     register={register("location")}

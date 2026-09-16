@@ -85,7 +85,7 @@ export default function Layout({ children }) {
                     icon: <FcPortraitMode className="h-6 w-6" />,
                     current: isCurrentSub == "Accounting_Department",
                 },
-                
+
                 {
                     name: "Engagement Department",
                     href: "/administrator/users/Engagement_Department",
@@ -120,6 +120,12 @@ export default function Layout({ children }) {
                     icon: <FcHome className="h-6 w-6" />,
                     current: isCurrentSub == "san_carlos",
                 },
+                {
+                    name: "Urdaneta",
+                    href: "/administrator/ticketing/urdaneta/tickets",
+                    icon: <FcHome className="h-6 w-6" />,
+                    current: isCurrentSub == "urdaneta",
+                },
             ],
         },
         //  {
@@ -140,6 +146,12 @@ export default function Layout({ children }) {
         //             href: "/administrator/ticketing/san_carlos/tickets",
         //             icon: <FcHome className="h-6 w-6" />,
         //             current: isCurrentSub == "san_carlos",
+        //         },
+        //         {
+        //             name: "Urdaneta",
+        //             href: "/administrator/ticketing/urdaneta/tickets",
+        //             icon: <FcHome className="h-6 w-6" />,
+        //             current: isCurrentSub == "urdaneta",
         //         },
         //     ],
         // },

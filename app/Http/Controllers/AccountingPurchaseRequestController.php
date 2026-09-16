@@ -134,7 +134,7 @@ class AccountingPurchaseRequestController extends Controller
         if ($newStatus == "Final Approved") {
             $newPath = 'Budget Released';
         }
-        $site = $pr->requestor['location'] == 'San Carlos' ? 'SCC' : 'CARCAR';
+        $site = $pr->requestor['location'] == 'San Carlos' ? 'SCC' : ($pr->requestor['location'] == 'Carcar' ? 'CARCAR' : 'URDANETA');
         $send_to  = $this->email($statusFlow[$pr->status]['email_level'], $site);
 
         // Update status
@@ -282,7 +282,7 @@ class AccountingPurchaseRequestController extends Controller
 
 
 
-        $site = $auth->location == 'San Carlos' ? 'SCC' : 'CARCAR';
+        $site = $auth->location == 'San Carlos' ? 'SCC' : ($auth->location == 'Carcar' ? 'CARCAR' : 'URDANETA');
         Mail::to($this->email(1, $site))->send(new AccountingPurchaseRequestMail([
             ...$request->all(),
             'items' => $items,
