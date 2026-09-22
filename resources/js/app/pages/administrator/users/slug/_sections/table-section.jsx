@@ -22,7 +22,7 @@ export default function TableSection() {
                     email: res?.email,
                     location: res?.location,
                     position: res?.position ?? "NONE",
-                    action: <>Proceed</>,
+                    action: <>LockProfile</>,
                 }))}
             />
         </>
