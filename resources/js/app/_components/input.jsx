@@ -31,7 +31,7 @@ export default function Input({
                     disabled={disabled}
                     required={required}
                     value={value}
-                    onChange={onChange}
+                    onChange={onChange ?? register?.onChange}
                     type={type}
                     id={name}
                     name={name}

@@ -92,6 +92,12 @@ export default function Layout({ children }) {
                     icon: <FcPortraitMode className="h-6 w-6" />,
                     current: isCurrentSub == "Engagement_Department",
                 },
+                {
+                    name: "Employee",
+                    href: "/administrator/users/Employee",
+                    icon: <FcPortraitMode className="h-6 w-6" />,
+                    current: isCurrentSub == "Employee",
+                },
             ],
         },
 

@@ -1,0 +1,1 @@
+import{u as s,j as t}from"./app-VJRuvf0v.js";import{P as o}from"./pagination-B3WUCCfg.js";function i(){const{purchase_requests:a}=s(e=>e.accounting);return console.log("purchase_requests",a.data),t.jsx(t.Fragment,{children:t.jsx(o,{data:a})})}export{i as default};

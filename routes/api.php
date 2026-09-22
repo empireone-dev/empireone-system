@@ -32,8 +32,13 @@ Route::post('/twilio/voice', [CallController::class, 'voiceResponse'])->name('tw
 
 Route::post('/auth/login', [AccountController::class, 'login']);
 Route::post('/submit_declined', [AccountingPurchaseRequestController::class, 'submit_declined']);
+// Public self-registration endpoint (used by unauthenticated register2 flow)
+Route::post('/accounts', [AccountController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::put('/profile', [AccountController::class, 'update_profile']);
+    Route::put('/password', [AccountController::class, 'update_password']);
 
     Route::resource('tickets', TicketController::class);
     Route::get('get_tickets_by_user', [TicketController::class, 'get_tickets_by_user']);
@@ -51,7 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('dashboard', DashboardController::class);
     Route::resource('sites', SiteController::class);
-    Route::resource('accounts', AccountController::class);
+    Route::resource('accounts', AccountController::class)->except(['store']);
     Route::resource('notes', NoteController::class);
 
 

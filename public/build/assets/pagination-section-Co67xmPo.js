@@ -1,0 +1,1 @@
+import{u as s,j as t}from"./app-VJRuvf0v.js";import{P as i}from"./pagination-B3WUCCfg.js";function r(){const{tickets:o}=s(e=>e.tickets);return console.log("tickets",o),t.jsx(t.Fragment,{children:t.jsx(i,{data:o})})}export{r as default};

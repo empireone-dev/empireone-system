@@ -93,3 +93,11 @@ export function update_accounts_service(data) {
         return result;
     } catch (error) {}
 }
+
+export function update_profile_service(data) {
+    return axios.put("/api/profile", data);
+}
+
+export function update_password_service(data) {
+    return axios.put("/api/password", data);
+}

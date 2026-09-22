@@ -42,6 +42,10 @@ class DashboardController extends Controller
                 "label" => "Engagement Department",
                 "value" => "Engagement Department",
             ],
+            [
+                "label" => "Employee",
+                "value" => "Employee",
+            ],
         ];
         return $departments;
     }
