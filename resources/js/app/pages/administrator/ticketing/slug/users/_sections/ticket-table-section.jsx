@@ -10,7 +10,7 @@ export default function TicketTableSection() {
         { header: "Email", accessor: "email" },
         { header: "Location", accessor: "location" },
         { header: "Position", accessor: "position" },
-        { header: "Action", accessor: "action" },
+        // { header: "Action", accessor: "action" },
     ];
 
     return (
@@ -22,7 +22,7 @@ export default function TicketTableSection() {
                     email: res?.email,
                     location: res?.location,
                     position: res?.position ?? "NONE",
-                    action: <>Procceed</>,
+                    action: <>Proceed</>,
                 }))}
             />
         </>

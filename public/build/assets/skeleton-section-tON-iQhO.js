@@ -1,0 +1,1 @@
+import{j as t}from"./app-DxMjSsUA.js";import{S as e}from"./skeleton-Dbu2sglr.js";function r(){return t.jsxs(t.Fragment,{children:[t.jsx(e,{}),t.jsx(e,{}),t.jsx(e,{}),t.jsx(e,{})]})}export{r as default};
