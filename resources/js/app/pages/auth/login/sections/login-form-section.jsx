@@ -49,7 +49,8 @@ export default function LoginFormSection() {
                     <div className="text-center">
                         <div className="mb-6">
                             <div className="animate-pulse text-lg">
-                                Welcome to <b>E</b>mpire<b>O</b>ne! Please Wait!
+                                Welcome to <b>E</b>mpire<b>O</b>neCX Ticketing
+                                System! Please Wait!
                             </div>
                         </div>
 
@@ -99,20 +100,23 @@ export default function LoginFormSection() {
                     bgLoaded ? "opacity-100" : "opacity-0"
                 }`}
                 style={{
-                    backgroundImage: `url('/images/login_background2.gif')`,
+                    backgroundImage: `url('/images/newbgticketing.gif')`,
                     backgroundSize: "cover",
                     backgroundPosition: "left",
                 }}
             >
-                <div className="flex flex-1 border-2 shadow-2xl bg-white/10 border-white my-3 rounded-lg m-5 p-2 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+                <div className="flex flex-1 ml-24 border-2 shadow-2xl backdrop-blur-xl bg-white/30  border-fuchsia-200 to-purple-200 rounded-3xl m-5 p-2 flex-col justify-center px-4 my-12 py-14 mt-20 sm:px-6 lg:flex-none lg:px-20 xl:px-60">
                     <div className="mx-auto w-full max-w-sm lg:w-96">
                         <div>
                             <div className="text-2xl font-black border-4 p-2 px-10 rounded-tr-3xl rounded-bl-3xl">
                                 <img
                                     alt="Your Company"
-                                    src="/images/newlogo.png"
+                                    src="/images/E1CXlogo.png"
                                     className="h-18 w-auto"
                                 />
+                                <h1 className="text-sm text-white items-center justify-center flex font-bold ml-4">
+                                    Unified Ticketing System
+                                </h1>
                             </div>
                             <h2 className="mt-8 text-2xl/9 text-center font-bold tracking-tight text-white">
                                 Sign in to your account
@@ -152,7 +156,7 @@ export default function LoginFormSection() {
                                     <div className="text-sm">
                                         <a
                                             href="#"
-                                            className="font-semibold text-indigo-600 hover:text-indigo-500"
+                                            className="font-semibold text-white hover:text-gray-100"
                                         >
                                             Forgot password?
                                         </a>
