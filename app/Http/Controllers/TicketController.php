@@ -7,6 +7,7 @@ use App\Mail\TicketAnalysisReport;
 use App\Models\Activity;
 use App\Models\File;
 use App\Models\QuickNotes;
+use App\Models\Site;
 use App\Models\Ticket;
 use App\Models\User;
 use Carbon\Carbon;
@@ -426,13 +427,16 @@ class TicketController extends Controller
     {
         $user = Auth::user();
 
+        $site = Site::find($request->site_id);
+        $location = $this->resolve_location_from_site($site);
+
         $ticket = Ticket::create([
             'site_id' =>  $request->site_id,
             'user_id' => $user->id,
             'category_id' => intval($request->category_id),
             'details' => $request->details,
             'station' => $request->station,
-            'location' => in_array($request->site_id, [1, 3, 4]) ? "San Carlos" : "Carcar",
+            'location' => $location,
             'status' => 'Pending',
             'isUrgent' => $request->isUrgent,
             'start' => $request->start,
@@ -481,5 +485,21 @@ class TicketController extends Controller
         return response()->json([
             'result' => 'success',
         ], 200);
+    }
+
+    // Derives the routing location (Carcar / San Carlos / Urdaneta) from the site name.
+    private function resolve_location_from_site(?Site $site): string
+    {
+        $name = $site->name ?? '';
+
+        if (stripos($name, 'Urdaneta') !== false) {
+            return 'Urdaneta';
+        }
+
+        if (stripos($name, 'San Carlos') !== false) {
+            return 'San Carlos';
+        }
+
+        return 'Carcar';
     }
 }
