@@ -31,11 +31,16 @@ export const department_data = [
         value: "Accounting Department",
     },
     {
-        label: "Legal Department",
-        value: "Legal Department",
+        label: "Facilities and Admin Department",
+        value: "Facilities and Admin Department",
     },
     {
         label: "Engagement Department",
         value: "Engagement Department",
+    },
+
+    {
+        label: "Security & Transportation",
+        value: "Security & Transportation",
     },
 ];

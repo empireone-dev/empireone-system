@@ -43,6 +43,10 @@ class DashboardController extends Controller
                 "value" => "Engagement Department",
             ],
             [
+                "label" => "Security & Transportation",
+                "value" => "Security & Transportation",
+            ],
+            [
                 "label" => "Employee",
                 "value" => "Employee",
             ],

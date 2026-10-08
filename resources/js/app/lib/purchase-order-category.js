@@ -68,7 +68,7 @@ export const purchase_order_categories = [
         ],
     },
     {
-        department: "Legal Department",
+        department: "Facilities and Admin Department",
         categories: [
             "Legal Research and Reference Tools",
             "Contract Management Software",
@@ -89,6 +89,18 @@ export const purchase_order_categories = [
             "Training and Development Resources",
             "Office and Pantry Supplies",
             "Promotional and Branding Items",
+        ],
+    },
+    {
+        department: "Security & Transportation",
+        categories: [
+            "Security Equipment and Devices",
+            "Transportation and Vehicle Maintenance",
+            "Monitoring and Surveillance Systems",
+            "Safety and Compliance Tools",
+            "Training and Certification Programs",
+            "Office Equipment and Supplies",
+            "Emergency Preparedness Materials",
         ],
     },
 ];

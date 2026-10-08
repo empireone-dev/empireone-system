@@ -72,12 +72,12 @@ export default function CreateCategorySection() {
     console.log("sites", sites);
     return (
         <>
-            <Button onClick={() => setOpen(true)}>Create Account</Button>
+            <Button onClick={() => setOpen(true)}>Create Category</Button>
             <Modal
                 width="max-w-lg"
                 isOpen={open}
                 onClose={setOpen}
-                title={`Create ${department} Account`}
+                title={`Create ${department} Category`}
             >
                 <form
                     onSubmit={handleSubmit(submit_data)}

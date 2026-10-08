@@ -51,7 +51,7 @@ export default function CreateUserSection() {
             await store.dispatch(
                 get_account_by_department_thunk({
                     department: department_slug(),
-                })
+                }),
             );
             await SwalAlert({
                 type: "success",
@@ -100,6 +100,10 @@ export default function CreateUserSection() {
                                     {
                                         label: "Carcar",
                                         value: "Carcar",
+                                    },
+                                    {
+                                        label: "Cebu",
+                                        value: "Cebu",
                                     },
                                     {
                                         label: "Urdaneta",

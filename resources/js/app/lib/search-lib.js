@@ -10,7 +10,7 @@ export const status = queryParams.get("status")??'';
 export function department_slug(params) {
     return window.location.pathname
             .split("/")[3]
-            .replace("_", " ");
+            .replaceAll("_", " ");
 }
 
 
