@@ -238,11 +238,7 @@ class ComposerStaticInit025b36eb07408494350128f825d9ca6f
         array (
             0 => __DIR__ . '/..' . '/voku/portable-ascii/src/voku',
         ),
-<<<<<<< HEAD
         'phpDocumentor\\Reflection\\' =>
-=======
-        'phpDocumentor\\Reflection\\' => 
->>>>>>> ba1f95f334dce96e7aebd0fb9bb09377747c5dae
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
@@ -280,7 +276,6 @@ class ComposerStaticInit025b36eb07408494350128f825d9ca6f
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-uuid',
         ),
-<<<<<<< HEAD
         'Symfony\\Polyfill\\Php85\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php85',
@@ -290,17 +285,6 @@ class ComposerStaticInit025b36eb07408494350128f825d9ca6f
             0 => __DIR__ . '/..' . '/symfony/polyfill-php84',
         ),
         'Symfony\\Polyfill\\Php83\\' =>
-=======
-        'Symfony\\Polyfill\\Php85\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php85',
-        ),
-        'Symfony\\Polyfill\\Php84\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php84',
-        ),
-        'Symfony\\Polyfill\\Php83\\' => 
->>>>>>> ba1f95f334dce96e7aebd0fb9bb09377747c5dae
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php83',
         ),
@@ -517,11 +501,7 @@ class ComposerStaticInit025b36eb07408494350128f825d9ca6f
         array (
             0 => __DIR__ . '/..' . '/pestphp/pest/src',
         ),
-<<<<<<< HEAD
         'ParagonIE\\Sodium\\' =>
-=======
-        'ParagonIE\\Sodium\\' => 
->>>>>>> ba1f95f334dce96e7aebd0fb9bb09377747c5dae
         array (
             0 => __DIR__ . '/..' . '/paragonie/sodium_compat/namespaced',
         ),
@@ -541,20 +521,12 @@ class ComposerStaticInit025b36eb07408494350128f825d9ca6f
         array (
             0 => __DIR__ . '/..' . '/nunomaduro/collision/src',
         ),
-<<<<<<< HEAD
         'Nette\\' =>
-=======
-        'Nette\\' => 
->>>>>>> ba1f95f334dce96e7aebd0fb9bb09377747c5dae
         array (
             0 => __DIR__ . '/..' . '/nette/schema/src',
             1 => __DIR__ . '/..' . '/nette/utils/src',
         ),
-<<<<<<< HEAD
         'Monolog\\' =>
-=======
-        'Monolog\\' => 
->>>>>>> ba1f95f334dce96e7aebd0fb9bb09377747c5dae
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
@@ -567,11 +539,7 @@ class ComposerStaticInit025b36eb07408494350128f825d9ca6f
             0 => __DIR__ . '/..' . '/league/uri',
             1 => __DIR__ . '/..' . '/league/uri-interfaces',
         ),
-<<<<<<< HEAD
         'League\\MimeTypeDetection\\' =>
-=======
-        'League\\MimeTypeDetection\\' => 
->>>>>>> ba1f95f334dce96e7aebd0fb9bb09377747c5dae
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
         ),
@@ -599,11 +567,7 @@ class ComposerStaticInit025b36eb07408494350128f825d9ca6f
         array (
             0 => __DIR__ . '/..' . '/laravel/tinker/src',
         ),
-<<<<<<< HEAD
         'Laravel\\SerializableClosure\\' =>
-=======
-        'Laravel\\SerializableClosure\\' => 
->>>>>>> ba1f95f334dce96e7aebd0fb9bb09377747c5dae
         array (
             0 => __DIR__ . '/..' . '/laravel/serializable-closure/src',
         ),
@@ -677,11 +641,7 @@ class ComposerStaticInit025b36eb07408494350128f825d9ca6f
         array (
             0 => __DIR__ . '/..' . '/fruitcake/php-cors/src',
         ),
-<<<<<<< HEAD
         'Fidry\\CpuCoreCounter\\' =>
-=======
-        'Fidry\\CpuCoreCounter\\' => 
->>>>>>> ba1f95f334dce96e7aebd0fb9bb09377747c5dae
         array (
             0 => __DIR__ . '/..' . '/fidry/cpu-core-counter/src',
         ),

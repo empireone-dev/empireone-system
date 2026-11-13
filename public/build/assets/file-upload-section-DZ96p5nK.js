@@ -1,0 +1,1 @@
+import{j as t}from"./app-DlyTSRBT.js";import{B as o}from"./button-DAAT0t_U.js";import"./index-d1zIYMPN.js";function n(){return t.jsx(t.Fragment,{children:t.jsx(o,{variant:"outline",children:"Upload File"})})}export{n as default};

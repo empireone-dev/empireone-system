@@ -47,98 +47,109 @@ export default function FormSection({ setCurrentStep }) {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center h-full mt-20">
-            <img
-                alt="Your Company"
-                src="/images/E1CXlogo.png"
-                className="h-16 w-auto"
-            />
-            <form onSubmit={handleSubmit(submit_data)}>
-                <div className="relative flex flex-col w-[650px] p-6 bg-white rounded-xl shadow-xl border border-gray-100">
-                    {/* Close Button / Header Icon */}
-                    <button
-                        type="button"
-                        className="absolute top-5 right-5 text-red-500 hover:text-red-700 text-xl font-bold focus:outline-none"
-                        onClick={() => {
-                            router.visit("/");
-                        }}
-                    >
-                        &times;
-                    </button>
-                    <div className="flex justify-center">
-                        <h2 className="text-2xl font-bold text-gray-800">
-                            TICKETING SYSTEM
-                        </h2>
-                    </div>
-                    <hr className=" w-full border-gray-200" />
-                    <h2 className="flex justify-start text-left text-lg font-bold text-gray-800 mt-6">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-slate-900 px-4 py-12 sm:px-6 lg:px-8">
+            {/* Top Logo and Title */}
+            <div className="mb-8 flex flex-col items-center text-center">
+                <div className="inline-flex flex-col items-center ">
+                    <img
+                        alt="EmpireOneCX"
+                        src="/images/E1CXlogo.png"
+                        className="h-14 w-auto object-contain"
+                    />
+                    <span className="mt-2 text-xs font-semibold tracking-wider text-blue-300 uppercase">
+                        Unified Ticketing System
+                    </span>
+                </div>
+            </div>
+
+            {/* Form Card */}
+            <div className="relative w-full max-w-lg rounded-3xl border border-white/20 bg-white p-8 shadow-[0_25px_60px_rgba(0,0,0,0.4)] sm:p-10">
+                {/* Close Button */}
+                <button
+                    type="button"
+                    className="absolute top-6 right-6 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-red-50 hover:text-red-600 focus:outline-none"
+                    onClick={() => {
+                        router.visit("/");
+                    }}
+                    title="Close"
+                >
+                    ×
+                </button>
+
+                {/* Header */}
+                <div className="mb-6">
+                    <h2 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
                         Create a New Account
                     </h2>
-
-                    {/* Floating Label Input container styled like the screenshot */}
-                    <div className="relative w-full flex flex-col gap-5">
-                        <Input type="hidden" name="department" />
-                        <Select
-                            label="Location"
-                            name="location"
-                            options={[
-                                {
-                                    label: "San Carlos",
-                                    value: "San Carlos",
-                                },
-                                {
-                                    label: "Carcar",
-                                    value: "Carcar",
-                                },
-                                {
-                                    label: "Urdaneta",
-                                    value: "Urdaneta",
-                                },
-                            ]}
-                            error={errors?.location?.message}
-                            register={register("location", {
-                                required: "This field is required",
-                            })}
-                        />
-                        <Input
-                            label="Fullname"
-                            type="text"
-                            name="name"
-                            error={errors?.name?.message}
-                            register={register("name", {
-                                required: "This field is required",
-                            })}
-                        />
-                        <Input
-                            label="Email"
-                            type="email"
-                            name="email"
-                            error={errors?.email?.message}
-                            register={register("email", {
-                                required: "This field is required",
-                            })}
-                        />
-                        <Input
-                            label="Position"
-                            type="text"
-                            name="position"
-                            error={errors?.position?.message}
-                            register={register("position", {
-                                required: "This field is required",
-                            })}
-                        />
-                    </div>
-
-                    <Button
-                        loading={isSubmitting}
-                        disabled={isSubmitting}
-                        type="submit"
-                        className="w-full py-3 mt-5 text-white bg-blue-600 hover:bg-blue-700 font-semibold rounded-lg shadow-md transition-colors"
-                    >
-                        SUBMIT
-                    </Button>
+                    <p className="mt-1 text-sm text-slate-500">
+                        Fill in the details below to provision a new user account.
+                    </p>
                 </div>
-            </form>
+
+                <hr className="mb-6 border-slate-100" />
+
+                <form onSubmit={handleSubmit(submit_data)} className="space-y-5">
+                    <Input type="hidden" name="department" />
+
+                    <Select
+                        label="Location"
+                        name="location"
+                        options={[
+                            { label: "San Carlos", value: "San Carlos" },
+                            { label: "Carcar", value: "Carcar" },
+                            { label: "Urdaneta", value: "Urdaneta" },
+                        ]}
+                        error={errors?.location?.message}
+                        register={register("location", {
+                            required: "This field is required",
+                        })}
+                    />
+
+                    <Input
+                        label="Full Name"
+                        type="text"
+                        name="name"
+                        placeholder="John Doe"
+                        error={errors?.name?.message}
+                        register={register("name", {
+                            required: "This field is required",
+                        })}
+                    />
+
+                    <Input
+                        label="Email Address"
+                        type="email"
+                        name="email"
+                        placeholder="name@company.com"
+                        error={errors?.email?.message}
+                        register={register("email", {
+                            required: "This field is required",
+                        })}
+                    />
+
+                    <Input
+                        label="Position"
+                        type="text"
+                        name="position"
+                        placeholder="e.g. Support Specialist"
+                        error={errors?.position?.message}
+                        register={register("position", {
+                            required: "This field is required",
+                        })}
+                    />
+
+                    <div className="pt-2">
+                        <Button
+                            loading={isSubmitting}
+                            disabled={isSubmitting}
+                            type="submit"
+                            className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 py-3 text-sm font-semibold tracking-wider text-white shadow-lg shadow-blue-600/30 transition-all hover:from-blue-500 hover:to-cyan-500"
+                        >
+                            CREATE ACCOUNT
+                        </Button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
