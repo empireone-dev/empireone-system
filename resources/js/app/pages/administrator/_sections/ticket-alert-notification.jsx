@@ -40,9 +40,7 @@ export default function TicketAlertNotification() {
                 const { type, url } =
                     priorityMap[isUrgent] || priorityMap["High Priority"];
 
-                if (user.account_type != "1") {
-                    playNotificationAudio(type);
-                }
+                playNotificationAudio(type);
 
                 showTicketNotificationSection({
                     type,

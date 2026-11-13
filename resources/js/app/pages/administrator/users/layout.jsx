@@ -26,7 +26,7 @@ export default function UsersLayout({ children }) {
         <div className="flex flex-col gap-3">
             <div className="w-full flex items-end justify-end">
                 <CreateUserSection />
-                {/* {page} */}
+                {page}
             </div>
             {children}
         </div>
