@@ -1,1 +1,0 @@
-import{j as r}from"./app-DlyTSRBT.js";import s from"./view-respond-section-UG89b4BX.js";function p({incident_report:e,log:o,explanation:t}){return r.jsx(s,{incident_report:e,log:o,explanation:t})}export{p as default};

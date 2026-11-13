@@ -1,1 +1,0 @@
-import{j as t}from"./app-DlyTSRBT.js";import{B as r}from"./button-DAAT0t_U.js";import"./index-d1zIYMPN.js";function n(){return t.jsx(t.Fragment,{children:t.jsx(r,{variant:"success",children:"Status Update"})})}export{n as default};
