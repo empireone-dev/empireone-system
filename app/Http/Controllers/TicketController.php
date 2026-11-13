@@ -7,6 +7,7 @@ use App\Mail\TicketAnalysisReport;
 use App\Models\Activity;
 use App\Models\File;
 use App\Models\QuickNotes;
+use App\Models\Site;
 use App\Models\Ticket;
 use App\Models\User;
 use Carbon\Carbon;
@@ -16,9 +17,106 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TicketController extends Controller
 {
+    public function export_ticket(Request $request)
+    {
+        // 1. Capture exact parameters from your URL string
+        $location = $request->input('location');
+        $department = $request->input('department');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $status = $request->input('status'); // Capture the new status filter
+        $search = $request->input('search');
+
+        $response = new StreamedResponse(function () use ($search, $location, $department, $startDate, $endDate, $status) {
+            $handle = fopen('php://output', 'w');
+
+            // Headers matching your $fillable array
+            fputcsv($handle, [
+                'User (Requestor)',
+                'Ticket ID',
+                'Category',
+                'Site',
+                'Details',
+                'Station',
+                'Location',
+                'Assigned To',
+                'Department',
+                'Status',
+                'Is Urgent',
+                'Start',
+                'End'
+            ]);
+
+            $tickets = Ticket::with(['user', 'assignee', 'category', 'site'])
+                // Apply Location Filter
+                ->when($location, function ($query, $location) {
+                    $query->where('location', $location);
+                })
+                // Apply Department Filter
+                ->when($department, function ($query, $department) {
+                    $query->where('department', $department);
+                })
+                // Apply Status Filter
+                ->when($status, function ($query, $status) {
+                    $query->where('status', $status);
+                })
+                // Apply Date Filters safely using Carbon
+                ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                    $start = Carbon::parse($startDate)->startOfDay();
+                    $end = Carbon::parse($endDate)->endOfDay();
+
+                    // Change 'created_at' to whatever date column your dashboard uses to filter
+                    $query->whereBetween('created_at', [$start, $end]);
+                })
+                // Apply Search Filter (if used)
+                ->when($search, function ($query, $search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('ticket_id', 'like', "%{$search}%")
+                            ->orWhere('status', 'like', "%{$search}%")
+                            ->orWhereHas('user', function ($q2) use ($search) {
+                                $q2->where('name', 'like', "%{$search}%");
+                            })
+                            ->orWhereHas('assignee', function ($q2) use ($search) {
+                                $q2->where('name', 'like', "%{$search}%");
+                            });
+                    });
+                })
+                ->orderBy('id', 'desc')
+                ->cursor();
+
+            foreach ($tickets as $ticket) {
+                fputcsv($handle, [
+                    $ticket->user ? $ticket->user->name : $ticket->user_id,
+                    $ticket->ticket_id,
+                    $ticket->category ? $ticket->category->name : $ticket->category_id,
+                    $ticket->site ? $ticket->site->name : $ticket->site_id,
+
+                    // Strip HTML tags and decode HTML entities
+                    html_entity_decode(strip_tags($ticket->details)),
+
+                    $ticket->station,
+                    $ticket->location,
+                    $ticket->assignee ? $ticket->assignee->name : $ticket->assigned_to,
+                    $ticket->department,
+                    $ticket->status,
+                    $ticket->isUrgent ? 'Yes' : 'No',
+                    $ticket->start,
+                    $ticket->end,
+                ]);
+            }
+
+            fclose($handle);
+        });
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename="raw_tickets_export.csv"');
+
+        return $response;
+    }
     public function get_account_tickets(Request $request)
     {
         $user = Auth::user();
@@ -329,13 +427,16 @@ class TicketController extends Controller
     {
         $user = Auth::user();
 
+        $site = Site::find($request->site_id);
+        $location = $this->resolve_location_from_site($site);
+
         $ticket = Ticket::create([
             'site_id' =>  $request->site_id,
             'user_id' => $user->id,
             'category_id' => intval($request->category_id),
             'details' => $request->details,
             'station' => $request->station,
-            'location' => in_array($request->site_id, [1, 3, 4]) ? "San Carlos" : "Carcar",
+            'location' => $location,
             'status' => 'Pending',
             'isUrgent' => $request->isUrgent,
             'start' => $request->start,
@@ -384,5 +485,22 @@ class TicketController extends Controller
         return response()->json([
             'result' => 'success',
         ], 200);
+    }
+
+    // Derives the routing location (Carcar / San Carlos / Urdaneta) from the site name.
+    private function resolve_location_from_site(?Site $site): string
+    {
+        $name = $site->name ?? '';
+
+        if (stripos($name, 'Urdaneta') !== false) {
+            return 'Urdaneta';
+        }
+
+        if (stripos($name, 'San Carlos') !== false) {
+            return 'San Carlos';
+        }
+
+
+        return 'Carcar';
     }
 }

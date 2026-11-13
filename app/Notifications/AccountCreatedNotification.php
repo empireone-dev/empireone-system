@@ -32,9 +32,9 @@ class AccountCreatedNotification extends Notification
             ->line('An account has been created.')
             ->line('You can log in using your email: **' . $this->user->email . '**');
 
-        if ($this->password) {
-            $mail->line('Your temporary password is: **' . $this->password . '**');
-        }
+       if ($this->password) { 
+        $mail->line('Your temporary password is: **' . $this->password . '**'); 
+        $mail->line('After logging in, you may change your temporary password to a new password of your choice.'); }
 
         return $mail->action('Login Now', url('/'))
             ->line('Thank you for joining us!');

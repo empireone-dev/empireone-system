@@ -49,13 +49,18 @@ export default function SidebarDesktopSection({
                         </ul>
                     </li>
                     <li className="mt-auto px-2">
-                        <a
-                            href="#"
+                        <Link
+                            href={
+                                window.location.pathname.split("/")[1] ===
+                                "administrator"
+                                    ? "/administrator/settings"
+                                    : "/users/settings"
+                            }
                             className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-black"
                         >
                            <FcServices className="h-6 w-6"  />
                             Settings
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </nav>

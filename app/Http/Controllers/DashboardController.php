@@ -42,6 +42,14 @@ class DashboardController extends Controller
                 "label" => "Engagement Department",
                 "value" => "Engagement Department",
             ],
+            [
+                "label" => "Security & Transportation",
+                "value" => "Security & Transportation",
+            ],
+            [
+                "label" => "Employee",
+                "value" => "Employee",
+            ],
         ];
         return $departments;
     }
@@ -51,7 +59,7 @@ class DashboardController extends Controller
         $user = Auth::user();
         if ($user->account_type == '1') {
             if ($request->location) {
-                $location = $request->location == 'carcar' ? 'Carcar' : 'San Carlos';
+                $location = $request->location == 'carcar' ? 'Carcar' : ($request->location == 'sancarlos' ? 'San Carlos' : 'Urdaneta');
 
                 $departmentStats = [];
 

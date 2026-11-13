@@ -81,7 +81,7 @@ export default function SidebarSection({ navigation }) {
                     <div className="flex h-20 justify-center p-3  items-center">
                         <img
                             className="h-full w-full"
-                            src="/images/logo.png"
+                            src="/images/E1CXlogo.png"
                             alt="Your Company"
                         />
                     </div>

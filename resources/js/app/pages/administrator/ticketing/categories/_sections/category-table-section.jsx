@@ -19,7 +19,7 @@ export default function CategoryTableSection() {
                     name: res?.name ?? "NONE",
                     department: res?.department,
                     created_at: moment(res?.created_at).format("LLL"),
-                    action: <>Procceed</>,
+                    action: <>Proceed</>,
                 }))}
             />
         </>

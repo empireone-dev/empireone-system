@@ -1,0 +1,1 @@
+import{j as t}from"./app-DAJh7XaB.js";import{S as e}from"./skeleton-B7f-EMre.js";function r(){return t.jsxs(t.Fragment,{children:[t.jsx(e,{}),t.jsx(e,{}),t.jsx(e,{}),t.jsx(e,{})]})}export{r as default};

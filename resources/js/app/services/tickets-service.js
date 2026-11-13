@@ -1,84 +1,80 @@
-import axios from "axios"
+import axios from "axios";
 
 export function get_stats_service() {
     try {
-        const result = axios.get('/api/get_stats'+window.location.search)
-        return result
-    } catch (error) {
-
-    }
+        const result = axios.get("/api/get_stats" + window.location.search);
+        return result;
+    } catch (error) {}
 }
 
 export function change_ticket_status_service(data) {
     try {
-        const result = axios.post('/api/change_ticket_status', data)
-        return result
-    } catch (error) {
-
-    }
+        const result = axios.post("/api/change_ticket_status", data);
+        return result;
+    } catch (error) {}
 }
 
 export function assign_ticket_service(data) {
     try {
-        const result = axios.post('/api/assign_ticket', data)
-        return result
-    } catch (error) {
-
-    }
+        const result = axios.post("/api/assign_ticket", data);
+        return result;
+    } catch (error) {}
 }
 
 export async function get_tickets_by_user_service() {
-    const res = await axios.get('/api/get_tickets_by_user'+window.location.search)
-    return res
+    const res = await axios.get(
+        "/api/get_tickets_by_user" + window.location.search,
+    );
+    return res;
 }
 
 export async function get_tickets_by_internal_service() {
-    const res = await axios.get('/api/get_tickets_by_internal'+window.location.search)
-    return res
+    const res = await axios.get(
+        "/api/get_tickets_by_internal" + window.location.search,
+    );
+    return res;
 }
-
 
 export function create_tickets_service(data) {
     try {
-        const result = axios.post('/api/tickets', data)
-        return result
-    } catch (error) {
-
-    }
+        const result = axios.post("/api/tickets", data);
+        return result;
+    } catch (error) {}
 }
 
 export function get_tickets_service() {
     const queryString = window.location.search;
     const hasQuery = queryString.includes("?");
     const separator = hasQuery ? "&" : "?";
-    const ticketing_location = window.location.pathname.split('/')[3] == "carcar"?"Carcar":"San Carlos";
+    const ticketing_location =
+        window.location.pathname.split("/")[3] == "carcar"
+            ? "Carcar"
+            : window.location.pathname.split("/")[3] == "urdaneta"
+              ? "Urdaneta"
+              : "San Carlos";
     try {
-        const result = axios.get(`/api/tickets${queryString}${separator}location=${ticketing_location}`)
-        return result
-    } catch (error) {
-
-    }
+        const result = axios.get(
+            `/api/tickets${queryString}${separator}location=${ticketing_location}`,
+        );
+        return result;
+    } catch (error) {}
 }
 
 export async function get_tickets_by_id_service(id) {
-    const res = await axios.get('/api/tickets/' + id)
-    return res.data
+    const res = await axios.get("/api/tickets/" + id);
+    return res.data;
 }
 
 export function delete_tickets_service(id) {
     try {
-        const result = axios.delete(`/api/tickets/${id}`)
-        return result
-    } catch (error) {
-
-    }
+        const result = axios.delete(`/api/tickets/${id}`);
+        return result;
+    } catch (error) {}
 }
 
 export function update_tickets_service(data) {
     try {
-        const result = axios.put(`/api/tickets/${data.id}`, data)
-        return result
-    } catch (error) {
-
-    }
+        const result = axios.put(`/api/tickets/${data.id}`, data);
+        return result;
+    } catch (error) {}
 }

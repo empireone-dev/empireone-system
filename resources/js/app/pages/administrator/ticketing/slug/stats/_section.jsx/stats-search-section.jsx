@@ -71,6 +71,7 @@ export default function StatsSearchSection() {
                     options={[
                         { label: "San Carlos", value: "San Carlos" },
                         { label: "Carcar", value: "Carcar" },
+                        { label: "Urdaneta", value: "Urdaneta" }
                     ]}
                     error={errors?.location?.message}
                     register={register("location")}
@@ -104,6 +105,18 @@ export default function StatsSearchSection() {
                         {errors.date_range.message}
                     </p>
                 )}
+            </div>
+            <div className="w-full">
+                <Select
+                    label="Status"
+                    name="status"
+                    options={[
+                        { label: "Pending", value: "Pending" },
+                        { label: "Closed", value: "Closed" },
+                    ]}
+                    error={errors?.status?.message}
+                    register={register("status")}
+                />
             </div>
             <div className="w-full">
                 <Button
