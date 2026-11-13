@@ -18,7 +18,7 @@ if ("Notification" in window && Notification.permission !== "granted") {
     });
 }
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => `${title}  ${appName}`,
     resolve: (name) =>
         resolvePageComponent(
             `./app/pages/${name}.jsx`,
