@@ -1,0 +1,1 @@
+import{j as r}from"./app-DdUcZ5ZZ.js";import o from"./login-form-section-Cl-_A3Fu.js";import"./button-aIvMYiU-.js";import"./index-B1zbGBzi.js";import"./input-B-3Xe_tt.js";import"./iconBase-DEMNFl6o.js";function s(){return r.jsx(r.Fragment,{children:r.jsx(o,{})})}export{s as default};

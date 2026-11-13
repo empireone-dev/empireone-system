@@ -1,0 +1,1 @@
+import{j as r}from"./app-DdUcZ5ZZ.js";import s from"./view-respond-section-VSXrVvFK.js";function p({incident_report:e,log:o,explanation:t}){return r.jsx(s,{incident_report:e,log:o,explanation:t})}export{p as default};
